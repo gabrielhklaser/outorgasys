@@ -1,0 +1,113 @@
+{
+  "camadas": {
+    "cursos_dagua_rs": {
+      "erro": "download ANA falhou",
+      "status": "falhou"
+    },
+    "drenagem_rs": {
+      "erro": "download ANA falhou",
+      "status": "falhou"
+    },
+    "geologia_rs": {
+      "arquivo": "data/vetoriais/geologia_rs.gpkg",
+      "colunas": [
+        "id",
+        "Name",
+        "timestamp",
+        "drawOrder",
+        "NOME_UNIDA",
+        "LITOTIPO1",
+        "GEOBANK"
+      ],
+      "crs": "EPSG:4674",
+      "feicoes": 1,
+      "status": "ok"
+    },
+    "hidrogeologia_rs": {
+      "arquivo": "data/vetoriais/hidrogeologia_rs.gpkg",
+      "colunas": [
+        "id",
+        "Name",
+        "timestamp",
+        "drawOrder"
+      ],
+      "crs": "EPSG:4674",
+      "feicoes": 297,
+      "status": "ok"
+    },
+    "municipios_rs": {
+      "arquivo": "data/vetoriais/municipios_rs.gpkg",
+      "colunas": [
+        "CD_MUN",
+        "NM_MUN",
+        "SIGLA_UF",
+        "AREA_KM2"
+      ],
+      "crs": "EPSG:4674",
+      "feicoes": 499,
+      "status": "ok"
+    },
+    "osm_cache": {
+      "arquivos": {
+        "campo_bom": "data/cache/osm/osm_campo_bom_f1e49eba20bd.geojson",
+        "novo_hamburgo": "data/cache/osm/osm_novo_hamburgo_6585c8ce3419.geojson",
+        "sao_leopoldo": "data/cache/osm/osm_sao_leopoldo_e0e620a30aa5.geojson"
+      },
+      "status": "ok"
+    },
+    "otto_nivel_1": {
+      "erro": "download ANA falhou",
+      "status": "falhou"
+    },
+    "otto_nivel_2": {
+      "erro": "download ANA falhou",
+      "status": "falhou"
+    },
+    "otto_nivel_3": {
+      "erro": "download ANA falhou",
+      "status": "falhou"
+    },
+    "otto_nivel_4": {
+      "erro": "download ANA falhou",
+      "status": "falhou"
+    },
+    "ottobacias_rs": {
+      "erro": "download ANA falhou",
+      "status": "falhou"
+    },
+    "regioes_hidrograficas": {
+      "erro": "download ANA falhou",
+      "status": "falhou"
+    },
+    "solos_rs": {
+      "arquivo": "data/vetoriais/solos_rs.gpkg",
+      "colunas": [
+        "id",
+        "Name",
+        "timestamp",
+        "drawOrder"
+      ],
+      "crs": "EPSG:4674",
+      "feicoes": 1232,
+      "status": "ok"
+    },
+    "uf_rs": {
+      "arquivo": "data/vetoriais/uf_rs.gpkg",
+      "colunas": [
+        "CD_UF",
+        "NM_UF",
+        "SIGLA_UF",
+        "NM_REGIAO",
+        "AREA_KM2"
+      ],
+      "crs": "EPSG:4674",
+      "feicoes": 3,
+      "status": "ok"
+    },
+    "uph": {
+      "erro": "download ANA falhou",
+      "status": "falhou"
+    }
+  },
+  "gerado_em": "2026-09-22T22:47:44"
+}
