@@ -1,0 +1,28 @@
+# --- ambiente ---
+.venv/
+venv/
+.env
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.DS_Store
+
+# --- dados brutos / temporarios (nao versionar: sao recompilados pelo workflow) ---
+data/raw/
+data/tmp/
+data/processos/*
+!/data/processos/.gitkeep
+data/saida/
+*.part
+
+# --- artefatos gerados em runtime ---
+outorgasys/_runtime/
+.streamlit/secrets.toml
+
+# --- skills baixadas temporariamente ---
+.tmp_skills/
+
+# --- notebooks / rascunhos ---
+*.ipynb_checkpoints
