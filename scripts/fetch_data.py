@@ -109,6 +109,25 @@ HTTP_SOURCES = {
     "snirh_uph.zip": f"{ANA}/geonetwork/srv/api/records/{RHI_REC}/attachments/SNIRH_UPH.zip",
 }
 
+# Espelhos alternativos para o mesmo produto (portais antigo/novo da ANA e INDE).
+ANA_MIRROR = "https://metadados.ana.gov.br"
+INDE = "https://metadados.inde.gov.br"
+
+HTTP_SOURCE_MIRRORS: dict[str, list[str]] = {
+    f"{BHO_BASE}/geoft_bho_2017_trecho_drenagem.gpkg": [
+        f"{INDE}/files/b228d007-6d68-46e5-b30d-a1e191b2b21f/geoft_bho_2017_trecho_drenagem.gpkg",
+        f"{ANA_MIRROR}/files/0c698205-6b59-48dc-8b5e-a58a5dfcc989/geoft_bho_2017_trecho_drenagem.gpkg",
+    ],
+    f"{BHO_BASE}/geoft_bho_2017_curso_dagua.gpkg": [
+        f"{INDE}/files/b228d007-6d68-46e5-b30d-a1e191b2b21f/geoft_bho_2017_curso_dagua.gpkg",
+        f"{ANA_MIRROR}/files/0c698205-6b59-48dc-8b5e-a58a5dfcc989/geoft_bho_2017_curso_dagua.gpkg",
+    ],
+    f"{BHO_BASE}/geoft_bho_2017_area_drenagem.gpkg": [
+        f"{INDE}/files/b228d007-6d68-46e5-b30d-a1e191b2b21f/geoft_bho_2017_area_drenagem.gpkg",
+        f"{ANA_MIRROR}/files/0c698205-6b59-48dc-8b5e-a58a5dfcc989/geoft_bho_2017_area_drenagem.gpkg",
+    ],
+}
+
 OVERPASS_ENDPOINTS = [
     "https://overpass-api.de/api/interpreter",
     "https://overpass.kumi.systems/api/interpreter",
@@ -128,47 +147,106 @@ def ensure_dirs() -> None:
         p.mkdir(parents=True, exist_ok=True)
 
 
+def _curl_download(url: str, dest: Path, timeout: int = 900) -> bool:
+    """Fallback via curl -resolve conservador.
+
+    Servidores institucionais (ANA/SNIRH) as vezes rejeitam o padrao de TLS ou os
+    cabecalhos do ``requests``; o curl do runner costuma negociar melhor.
+    """
+    import shutil
+    import subprocess
+
+    if not shutil.which("curl"):
+        return False
+    tmp = dest.with_suffix(dest.suffix + ".part")
+    cmd = [
+        "curl", "-fL", "--retry", "3", "--retry-delay", "5",
+        "--connect-timeout", "45", "--max-time", str(timeout),
+        "-A", UA,
+        "-H", "Accept: */*",
+        "-H", "Accept-Language: pt-BR,pt;q=0.9,en;q=0.8",
+        "-o", str(tmp), url,
+    ]
+    log("  tentando via curl ...")
+    try:
+        r = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout + 60)
+    except Exception as exc:  # noqa: BLE001
+        log(f"  curl falhou: {exc}")
+        return False
+    if r.returncode == 0 and tmp.exists() and tmp.stat().st_size > 1024:
+        tmp.replace(dest)
+        log(f"  OK via curl: {dest.name} ({dest.stat().st_size/1e6:.1f} MB)")
+        return True
+    log(f"  curl rc={r.returncode}: {(r.stderr or '').strip()[:300]}")
+    tmp.unlink(missing_ok=True)
+    return False
+
+
 def http_download(url: str, dest: Path, tries: int = 3, **params) -> bool:
-    """Download com retomada simples e barra de progresso textual."""
+    """Download com retomada simples e barra de progresso textual.
+
+    Tenta ``requests``; em caso de falha, cai para ``curl`` e, por fim, para os
+    espelhos alternativos declarados em ``HTTP_SOURCE_MIRRORS``.
+    """
     if dest.exists() and dest.stat().st_size > 1024:
         log(f"  ja existe: {dest.name} ({dest.stat().st_size/1e6:.1f} MB)")
         return True
-    tmp = dest.with_suffix(dest.suffix + ".part")
-    for attempt in range(1, tries + 1):
-        try:
-            log(f"  GET {url[:110]}{'...' if len(url) > 110 else ''} (tentativa {attempt})")
-            with requests.get(
-                url,
-                stream=True,
-                timeout=(30, 300),
-                headers={"User-Agent": UA},
-                params=params,
-                allow_redirects=True,
-            ) as r:
-                r.raise_for_status()
-                total = int(r.headers.get("Content-Length", 0))
-                got = 0
-                with open(tmp, "wb") as fh:
-                    for chunk in r.iter_content(chunk_size=1 << 20):
-                        if not chunk:
-                            continue
-                        fh.write(chunk)
-                        got += len(chunk)
-                        if total:
-                            print(
-                                f"\r    {got/1e6:8.1f} / {total/1e6:8.1f} MB",
-                                end="",
-                                flush=True,
-                            )
-                print(flush=True)
-            tmp.replace(dest)
-            log(f"  OK {dest.name} ({dest.stat().st_size/1e6:.1f} MB)")
+
+    candidatos = [url, *HTTP_SOURCE_MIRRORS.get(url, [])]
+
+    for idx, target in enumerate(candidatos):
+        sufixo = "" if idx == 0 else f" (espelho {idx})"
+        for attempt in range(1, tries + 1):
+            tmp = dest.with_suffix(dest.suffix + ".part")
+            try:
+                log(f"  GET{sufixo} {target[:110]}"
+                    f"{'...' if len(target) > 110 else ''} (tentativa {attempt})")
+                with requests.get(
+                    target,
+                    stream=True,
+                    timeout=(45, 900),
+                    headers={
+                        "User-Agent": UA,
+                        "Accept": "*/*",
+                        "Accept-Language": "pt-BR,pt;q=0.9,en;q=0.8",
+                    },
+                    params=params,
+                    allow_redirects=True,
+                ) as r:
+                    r.raise_for_status()
+                    ctype = r.headers.get("Content-Type", "")
+                    if "text/html" in ctype and not target.endswith(".html"):
+                        corpo = r.text[:300]
+                        log(f"  resposta HTML inesperada: {corpo!r}")
+                        raise RuntimeError("resposta HTML em vez do arquivo")
+                    total = int(r.headers.get("Content-Length", 0))
+                    got = 0
+                    with open(tmp, "wb") as fh:
+                        for chunk in r.iter_content(chunk_size=1 << 20):
+                            if not chunk:
+                                continue
+                            fh.write(chunk)
+                            got += len(chunk)
+                            if total:
+                                print(
+                                    f"\r    {got/1e6:8.1f} / {total/1e6:8.1f} MB",
+                                    end="",
+                                    flush=True,
+                                )
+                    print(flush=True)
+                if tmp.stat().st_size <= 1024:
+                    raise RuntimeError("arquivo vazio")
+                tmp.replace(dest)
+                log(f"  OK {dest.name} ({dest.stat().st_size/1e6:.1f} MB)")
+                return True
+            except Exception as exc:  # noqa: BLE001
+                log(f"  FALHOU: {type(exc).__name__}: {str(exc)[:220]}")
+                tmp.unlink(missing_ok=True)
+                time.sleep(3 * attempt)
+        if _curl_download(target, dest):
             return True
-        except Exception as exc:  # noqa: BLE001
-            log(f"  FALHOU: {type(exc).__name__}: {exc}")
-            time.sleep(3 * attempt)
-    if tmp.exists():
-        tmp.unlink(missing_ok=True)
+
+    log(f"  !! todos os candidatos falharam para {Path(url).name}")
     return False
 
 
@@ -258,6 +336,16 @@ def import_geospatial() -> tuple:
     return gpd, list_layers
 
 
+def listar_camadas_vetoriais(path: Path) -> list[dict]:
+    """Enumera todas as camadas (folders, no caso de KML) de uma fonte vetorial."""
+    from pyogrio import list_layers  # noqa: PLC0415
+
+    saida = []
+    for nome, tipo in list_layers(path):
+        saida.append({"camada": nome, "tipo_geometrico": tipo})
+    return saida
+
+
 def read_any(path: Path, bbox=None, layer=None, **kw):
     """Le qualquer fonte vetorial suportada pelo GDAL, com fallback de driver."""
     import geopandas as gpd  # noqa: PLC0415
@@ -286,6 +374,70 @@ def read_any(path: Path, bbox=None, layer=None, **kw):
     return gpd.GeoDataFrame()
 
 
+def read_all_layers(path: Path, drivers=("LIBKML", "KML")) -> tuple[object, list[dict]]:
+    """Le TODAS as camadas de um KML/GPKG e devolve a uniao das feicoes.
+
+    KMLs de mapas tematicos normalmente organizam as unidades dentro de <Folder>.
+    O GDAL expoe cada Folder como uma camada: ler apenas a primeira costuma
+    devolver somente um placemark de legenda. Aqui varremos todas as camadas,
+    guardamos o inventario para auditoria e concatenamos as que tem geometria
+    utilisavel (poligonos primeiro, depois linhas e pontos como ultimo recurso).
+    """
+    import geopandas as gpd  # noqa: PLC0415
+    import pandas as pd  # noqa: PLC0415
+
+    inventario: list[dict] = []
+    coletados: dict[str, list] = {"poligono": [], "linha": [], "ponto": []}
+
+    try:
+        bruto = listar_camadas_vetoriais(path)
+    except Exception as exc:  # noqa: BLE001
+        log(f"  nao foi possivel listar camadas: {exc}")
+        bruto = [{"camada": None, "tipo_geometrico": None}]
+
+    nomes = [c["camada"] for c in bruto] or [None]
+    drivers = drivers if path.suffix.lower() == ".kml" else (None,)
+
+    for nome in nomes:
+        for drv in drivers:
+            kwargs = {"layer": nome} if nome is not None else {}
+            if drv:
+                kwargs["driver"] = drv
+            try:
+                g = gpd.read_file(path, **kwargs)
+            except Exception as exc:  # noqa: BLE001
+                inventario.append({"camada": nome, "driver": drv,
+                                   "erro": f"{type(exc).__name__}: {exc}"})
+                continue
+            if not len(g):
+                inventario.append({"camada": nome, "driver": drv, "feicoes": 0})
+                continue
+            tipos = set(g.geom_type.dropna().astype(str))
+            if tipos & {"Polygon", "MultiPolygon"}:
+                classe = "poligono"
+            elif tipos & {"LineString", "MultiLineString"}:
+                classe = "linha"
+            else:
+                classe = "ponto"
+            coletados[classe].append(g)
+            inventario.append({
+                "camada": nome, "driver": drv, "feicoes": int(len(g)),
+                "tipos": sorted(tipos), "colunas": [c for c in g.columns if c != "geometry"][:20],
+            })
+            break  # driver funcionou para esta camada
+
+    for classe in ("poligono", "linha", "ponto"):
+        if coletados[classe]:
+            gdf = gpd.GeoDataFrame(
+                pd.concat(coletados[classe], ignore_index=True),
+                geometry="geometry",
+                crs=coletados[classe][0].crs,
+            )
+            return gdf, inventario
+
+    return gpd.GeoDataFrame(), inventario
+
+
 def kmz_to_gpkg(kmz: Path, out: Path, simplify_m: float | None = None) -> dict:
     """Converte KMZ/KML em GeoPackage EPSG:4674, unificando todas as camadas.
 
@@ -303,7 +455,13 @@ def kmz_to_gpkg(kmz: Path, out: Path, simplify_m: float | None = None) -> dict:
     else:
         kml_path = kmz
 
-    gdf = read_any(kml_path)
+    gdf, inventario = read_all_layers(kml_path)
+    log(f"  camadas KML encontradas: {len(inventario)}")
+    for item in inventario[:15]:
+        log(f"    - {item.get('camada')!r} drv={item.get('driver')} "
+            f"n={item.get('feicoes', item.get('erro', '?'))}")
+    if not len(gdf):
+        raise RuntimeError(f"nenhuma feicao utilizavel em {kmz.name}")
 
     if gdf.crs is None:
         gdf = gdf.set_crs("EPSG:4326")
@@ -328,6 +486,7 @@ def kmz_to_gpkg(kmz: Path, out: Path, simplify_m: float | None = None) -> dict:
         "feicoes": int(len(gdf)),
         "colunas": [c for c in gdf.columns if c != "geometry"][:25],
         "crs": "EPSG:4674",
+        "camadas_kml": inventario[:40],
     }
 
 
@@ -520,20 +679,27 @@ def main() -> int:
             args.force or manifest["camadas"].get(key, {}).get("status") != "ok"
         )
 
-    # ---------------- Google Drive ----------------
-    if wanted("drive"):
-        log("=== Google Drive (fontes do usuario) ===")
-        for fname, fid in DRIVE_FILES.items():
-            dest = RAW / fname
-            if not drive_download(fid, dest):
-                log(f"  !! nao foi possivel baixar {fname}")
-
     # KMZ -> GPKG
     kmz_targets = {
         "geologia_rs": ("geologia_rs.kmz", 60.0),
         "hidrogeologia_rs": ("hidrogeologia_rs.kmz", 60.0),
         "solos_rs": ("solos_rs.kmz", 120.0),
     }
+
+    # ---------------- Google Drive ----------------
+    # Sempre garantimos os KMZ de origem: cada execucao do Actions comeca com
+    # data/raw vazio (a pasta nao e versionada), entao basta que UMA camada
+    # derivada precise ser reconstruida para exigir o download novamente.
+    precisa_drive = wanted("drive") or any(
+        wanted(k) or not (VET / f"{k}.gpkg").exists() for k in kmz_targets
+    )
+    if precisa_drive:
+        log("=== Google Drive (fontes do usuario) ===")
+        for fname, fid in DRIVE_FILES.items():
+            dest = RAW / fname
+            if not drive_download(fid, dest):
+                log(f"  !! nao foi possivel baixar {fname}")
+
     for key, (fname, simp) in kmz_targets.items():
         if not wanted(key):
             continue
