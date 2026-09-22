@@ -10,7 +10,7 @@ on:
       - ".github/workflows/probe-fontes.yml"
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: probe-fontes
@@ -21,9 +21,15 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
       - name: HTTP status das fontes
         run: |
           set +e
+          exec > >(tee /tmp/probe.log) 2>&1
           urls="
           https://geoftp.ibge.gov.br/organizacao_do_territorio/malhas_territoriais/malhas_municipais/municipio_2022/Brasil/BR/BR_UF_2022.zip
           https://metadados.snirh.gov.br/geonetwork/srv/api/records/0c698205-6b59-48dc-8b5e-a58a5dfcc989
@@ -54,6 +60,7 @@ jobs:
       - name: Tamanhos dos produtos ANA (HEAD)
         run: |
           set +e
+          exec > >(tee -a /tmp/probe.log) 2>&1
           for u in \
             "https://metadados.snirh.gov.br/files/0c698205-6b59-48dc-8b5e-a58a5dfcc989/geoft_bho_2017_trecho_drenagem.gpkg" \
             "https://metadados.snirh.gov.br/files/0c698205-6b59-48dc-8b5e-a58a5dfcc989/geoft_bho_2017_curso_dagua.gpkg" \
@@ -64,3 +71,20 @@ jobs:
             echo "--- $(basename "$u")"
             curl -sSI -L --max-time 25 -A 'Mozilla/5.0' "$u" | grep -iE '^(HTTP/|content-length|content-type|location)' | head -8
           done
+
+      - name: Publicar resultado no repositorio
+        # O ambiente do agente nao consegue baixar os logs do Actions, por isso o
+        # diagnostico e gravado no proprio repositorio.
+        run: |
+          git config user.name  "outorgasys-bot"
+          git config user.email "bot@users.noreply.github.com"
+          mkdir -p data
+          cp -f /tmp/probe.log data/.probe.log
+          git add -A -- data/.probe.log
+          if git diff --cached --quiet; then
+            echo "Sem mudancas no diagnostico."
+          else
+            git commit -m "ci: resultado da sondagem de fontes [skip ci]"
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" || true
+            git push origin "HEAD:${GITHUB_REF_NAME}" || true
+          fi
