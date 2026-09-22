@@ -1,5 +1,0 @@
-{
-  "_comentario": "Gatilho por commit: o Actions le este arquivo, executa o fetch_data.py com os parametros abaixo e o remove em seguida.",
-  "force": true,
-  "only": "geologia_rs,hidrogeologia_rs,solos_rs,drenagem_rs,cursos_dagua_rs,ottobacias_rs,otto_nivel_1,otto_nivel_2,otto_nivel_3,otto_nivel_4,regioes_hidrograficas,uph"
-}
