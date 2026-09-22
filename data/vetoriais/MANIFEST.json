@@ -5,8 +5,18 @@
       "status": "falhou"
     },
     "drenagem_rs": {
-      "erro": "download ANA falhou",
-      "status": "falhou"
+      "arquivo": "data/vetoriais/drenagem_rs.gpkg",
+      "crs": "EPSG:4674",
+      "feicoes": 67535,
+      "origem": "IBGE - Base Cartografica Continua 1:250.000 (2021) - hid_trecho_drenagem_l",
+      "status": "ok"
+    },
+    "ferrovias_rs": {
+      "arquivo": "data/vetoriais/ferrovias_rs.gpkg",
+      "crs": "EPSG:4674",
+      "feicoes": 374,
+      "origem": "IBGE - Base Cartografica Continua 1:250.000 (2021) - fer_trecho_ferroviario_l",
+      "status": "ok"
     },
     "geologia_rs": {
       "arquivo": "data/vetoriais/geologia_rs.gpkg",
@@ -1059,6 +1069,13 @@
       "feicoes": 297,
       "status": "ok"
     },
+    "massas_dagua_rs": {
+      "arquivo": "data/vetoriais/massas_dagua_rs.gpkg",
+      "crs": "EPSG:4674",
+      "feicoes": 6250,
+      "origem": "IBGE - Base Cartografica Continua 1:250.000 (2021) - hid_massa_dagua_a",
+      "status": "ok"
+    },
     "municipios_rs": {
       "arquivo": "data/vetoriais/municipios_rs.gpkg",
       "colunas": [
@@ -1158,5 +1175,5 @@
       "status": "falhou"
     }
   },
-  "gerado_em": "2026-09-22T22:58:23"
+  "gerado_em": "2026-09-22T23:20:55"
 }
