@@ -1,0 +1,66 @@
+name: probe-fontes
+
+# Diagnostico rapido de alcance de rede dos servidores institucionais.
+# Roda em grupo de concorrencia proprio para nao esperar o build de dados.
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/probe-fontes.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: probe-fontes
+  cancel-in-progress: true
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: HTTP status das fontes
+        run: |
+          set +e
+          urls="
+          https://geoftp.ibge.gov.br/organizacao_do_territorio/malhas_territoriais/malhas_municipais/municipio_2022/Brasil/BR/BR_UF_2022.zip
+          https://metadados.snirh.gov.br/geonetwork/srv/api/records/0c698205-6b59-48dc-8b5e-a58a5dfcc989
+          https://metadados.snirh.gov.br/files/0c698205-6b59-48dc-8b5e-a58a5dfcc989/geoft_bho_2017_trecho_drenagem.gpkg
+          https://metadados.snirh.gov.br/geonetwork/srv/api/records/fe192ba0-45a9-4215-90a5-3fba6abea174/attachments/SNIRH_RHI.zip
+          https://metadados.ana.gov.br/geonetwork/srv/api/records/0c698205-6b59-48dc-8b5e-a58a5dfcc989
+          https://metadados.inde.gov.br/geonetwork/srv/api/records/b228d007-6d68-46e5-b30d-a1e191b2b21f
+          https://metadados.inde.gov.br/files/b228d007-6d68-46e5-b30d-a1e191b2b21f/geoft_bho_2017_trecho_drenagem.gpkg
+          https://portal1.snirh.gov.br/
+          https://www.ana.gov.br/
+          https://dados.gov.br/
+          https://www.sema.rs.gov.br/
+          https://www.ibge.gov.br/
+          https://overpass-api.de/api/status
+          https://download.geofabrik.de/south-america/brazil/sul.html
+          https://raw.githubusercontent.com/osmbr/geojson-municipios/master/README.md
+          https://cdn.jsdelivr.net/npm/@geo-maps/geography-brazil@1.0.0/README.md
+          https://servicodados.ibge.gov.br/api/v1/localidades/municipios/430?view=level
+          "
+          for u in $urls; do
+            out=$(curl -sS -o /dev/null -L --max-time 20 -w '%{http_code} %{size_download} %{url_effective}' \
+                  -A 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Safari/537.36' \
+                  -r 0-2000 "$u" 2>&1)
+            printf '%-6s %s\n' "${out%% *}" "${u}"
+            echo "      -> ${out}"
+          done
+
+      - name: Tamanhos dos produtos ANA (HEAD)
+        run: |
+          set +e
+          for u in \
+            "https://metadados.snirh.gov.br/files/0c698205-6b59-48dc-8b5e-a58a5dfcc989/geoft_bho_2017_trecho_drenagem.gpkg" \
+            "https://metadados.snirh.gov.br/files/0c698205-6b59-48dc-8b5e-a58a5dfcc989/geoft_bho_2017_curso_dagua.gpkg" \
+            "https://metadados.snirh.gov.br/files/0c698205-6b59-48dc-8b5e-a58a5dfcc989/geoft_bho_2017_area_drenagem.gpkg" \
+            "https://metadados.snirh.gov.br/files/0c698205-6b59-48dc-8b5e-a58a5dfcc989/geoft_bho_ach_otto_nivel_01.gpkg" \
+            "https://metadados.snirh.gov.br/geonetwork/srv/api/records/fe192ba0-45a9-4215-90a5-3fba6abea174/attachments/SNIRH_RHI.zip" \
+            "https://metadados.snirh.gov.br/geonetwork/srv/api/records/fe192ba0-45a9-4215-90a5-3fba6abea174/attachments/SNIRH_UPH.zip" ; do
+            echo "--- $(basename "$u")"
+            curl -sSI -L --max-time 25 -A 'Mozilla/5.0' "$u" | grep -iE '^(HTTP/|content-length|content-type|location)' | head -8
+          done
