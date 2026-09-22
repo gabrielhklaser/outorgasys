@@ -490,6 +490,142 @@ def kmz_to_gpkg(kmz: Path, out: Path, simplify_m: float | None = None) -> dict:
     }
 
 
+# --------------------------------------------------------------------------------------
+# IBGE - Base Cartografica Continua 1:250.000 (BC250)
+# --------------------------------------------------------------------------------------
+
+BC250_URL = (
+    "https://geoftp.ibge.gov.br/cartas_e_mapas/bases_cartograficas_continuas/"
+    "bc250/versao2021/geopackage/bc250_2021_11_18.zip"
+)
+
+#: Camadas da BC250 aproveitadas pelo Agente 2.
+#: (arquivo de saida, prefixo(s) do nome da camada na BC250, tolerancia de simplificacao m)
+BC250_LAYERS = {
+    "drenagem_rs": (("hid_trecho_drenagem",), 20.0, "linha"),
+    "massas_dagua_rs": (("hid_massa_dagua_a", "hid_trecho_massa_dagua"), 20.0, "poligono"),
+    "nascentes_rs": (("hid_nascente",), 0.0, "ponto"),
+    "rodovias_rs": (("rod_rodovia",), 20.0, "linha"),
+    "ferrovias_rs": (("fer_trecho_ferroviario",), 20.0, "linha"),
+}
+
+#: Grade de recorte do RS, para limitar o consumo de memoria na conversao.
+TILES_X, TILES_Y = 6, 5
+
+
+def _tiles_rs() -> list[tuple[float, float, float, float]]:
+    minx, miny, maxx, maxy = RS_BBOX
+    dx = (maxx - minx) / TILES_X
+    dy = (maxy - miny) / TILES_Y
+    tiles = []
+    for i in range(TILES_X):
+        for j in range(TILES_Y):
+            tiles.append((
+                minx + i * dx - 0.02, miny + j * dy - 0.02,
+                minx + (i + 1) * dx + 0.02, miny + (j + 1) * dy + 0.02,
+            ))
+    return tiles
+
+
+def importar_bc250(zip_path: Path) -> dict:
+    """Recorta as camadas de interesse da BC250 para o Rio Grande do Sul.
+
+    A BC250 completa tem 867 MB e cobre o Brasil; por isso a leitura e feita em
+    grade (tiles) e gravada incrementalmente no GeoPackage, mantendo o consumo de
+    memoria limitado.
+    """
+    import geopandas as gpd  # noqa: PLC0415
+    from pyogrio import list_layers, read_dataframe, write_dataframe  # noqa: PLC0415
+
+    destino_dir = RAW / "bc250"
+    destino_dir.mkdir(parents=True, exist_ok=True)
+
+    log("  descompactando BC250 (pode levar alguns minutos) ...")
+    import subprocess
+
+    subprocess.run(["unzip", "-o", "-q", str(zip_path), "-d", str(destino_dir)],
+                   check=False, timeout=1800)
+
+    gpkgs = sorted(destino_dir.rglob("*.gpkg"))
+    log(f"  {len(gpkgs)} geopackages encontrados: {[p.name for p in gpkgs][:8]}")
+
+    indice: dict[str, tuple[Path, str]] = {}
+    for gp in gpkgs:
+        try:
+            for nome, _tipo in list_layers(gp):
+                baixo = (nome or "").lower()
+                for chave, (prefixos, _tol, _geo) in BC250_LAYERS.items():
+                    if any(baixo.startswith(p.lower()) for p in prefixos):
+                        # Prefere a primeira ocorrencia por camada.
+                        indice.setdefault(chave, (gp, nome))
+        except Exception as exc:  # noqa: BLE001
+            log(f"  falha ao listar {gp.name}: {exc}")
+
+    if not indice:
+        raise RuntimeError("nenhuma camada de interesse localizada na BC250")
+
+    resumo: dict[str, Any] = {}
+    tiles = _tiles_rs()
+
+    for chave, (gp, nome_camada) in indice.items():
+        prefixos, tolerancia, _geo = BC250_LAYERS[chave]
+        destino = VET / f"{chave}.gpkg"
+        destino.unlink(missing_ok=True)
+        total = 0
+        log(f"  [{chave}] <- {gp.name}:{nome_camada}")
+
+        for n_tile, bbox in enumerate(tiles, 1):
+            try:
+                gdf = read_dataframe(gp, layer=nome_camada, bbox=bbox)
+            except Exception as exc:  # noqa: BLE001
+                log(f"    tile {n_tile}/{len(tiles)}: {type(exc).__name__}: {exc}")
+                continue
+            if gdf is None or not len(gdf):
+                continue
+            if "geometry" not in gdf.columns and hasattr(gdf, "geometry"):
+                pass
+            try:
+                gdf = gpd.GeoDataFrame(gdf, geometry="geometry",
+                                       crs=gdf.crs or "EPSG:4674")
+            except Exception:  # noqa: BLE001
+                continue
+            gdf = gdf[gdf.geometry.notna() & ~gdf.geometry.is_empty]
+            if not len(gdf):
+                continue
+            if gdf.crs is None:
+                gdf = gdf.set_crs("EPSG:4674")
+            else:
+                gdf = gdf.to_crs("EPSG:4674")
+            if tolerancia:
+                try:
+                    gdf = gdf.set_geometry(
+                        gdf.to_crs("EPSG:31982").geometry.simplify(
+                            tolerancia, preserve_topology=True).to_crs("EPSG:4674")
+                    )
+                except Exception:  # noqa: BLE001
+                    pass
+            gdf = gdf.reset_index(drop=True)
+            try:
+                write_dataframe(gdf, destino, layer=chave, driver="GPKG",
+                                append=destino.exists())
+            except Exception as exc:  # noqa: BLE001
+                log(f"    tile {n_tile}: falha ao gravar: {exc}")
+                continue
+            total += len(gdf)
+            log(f"    tile {n_tile}/{len(tiles)}: +{len(gdf)} (total {total})")
+            del gdf
+
+        resumo[chave] = {
+            "arquivo": str(destino.relative_to(ROOT)),
+            "feicoes": total,
+            "origem": f"IBGE - Base Cartografica Continua 1:250.000 (2021) - {nome_camada}",
+            "crs": "EPSG:4674",
+        }
+        log(f"  [{chave}] {total} feicoes -> {destino.name}")
+
+    return resumo
+
+
 def filter_to_rs(src: Path, out: Path, layer: str | None = None) -> dict:
     """Recorta uma fonte nacional para a caixa envolvente do RS."""
     gdf = read_any(src, bbox=RS_BBOX, layer=layer)
@@ -776,6 +912,31 @@ def main() -> int:
             manifest["camadas"][key] = {"status": "falhou", "erro": "shapefile nao encontrado"}
             continue
         step(key, lambda s=shp, k=key: filter_to_rs(s, VET / f"{k}.gpkg"), manifest)
+
+    # ---------------- IBGE BC250 (drenagem, aguas, vias) ----------------
+    bc250_keys = set(BC250_LAYERS)
+    if (not only or (only & bc250_keys)) and any(wanted(k) for k in bc250_keys):
+        z = RAW / "bc250_2021_11_18.zip"
+        if z.exists() or http_download(BC250_URL, z, tries=2):
+            def _bc250(z=z):
+                info = importar_bc250(z)
+                return {"arquivo": "data/vetoriais/", "feicoes": sum(
+                    v["feicoes"] for v in info.values()),
+                    "detalhes": info}
+            step("bc250", _bc250, manifest)
+            # Propaga o resultado por camada para o manifesto.
+            detalhes = manifest["camadas"].get("bc250", {}).get("detalhes", {})
+            for chave, info in detalhes.items():
+                if info.get("feicoes"):
+                    manifest["camadas"][chave] = {
+                        "status": "ok", "arquivo": info["arquivo"],
+                        "feicoes": info["feicoes"], "origem": info["origem"],
+                        "crs": "EPSG:4674",
+                    }
+                else:
+                    manifest["camadas"][chave] = {
+                        "status": "falhou", "erro": "nenhuma feicao no recorte do RS"}
+            manifest["camadas"].pop("bc250", None)
 
     # ---------------- OSM ----------------
     if not args.skip_osm and (not only or "osm" in only):
