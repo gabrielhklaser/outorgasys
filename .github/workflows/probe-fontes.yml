@@ -2,6 +2,8 @@ name: probe-fontes
 
 # Diagnostico rapido de alcance de rede dos servidores institucionais.
 # Roda em grupo de concorrencia proprio para nao esperar o build de dados.
+# O resultado e gravado em data/.probe.log no proprio repositorio, porque o
+# ambiente do agente nao consegue baixar os logs do Actions.
 
 on:
   workflow_dispatch:
@@ -19,62 +21,63 @@ concurrency:
 jobs:
   probe:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: HTTP status das fontes
+      - name: Sondar fontes candidatas
         run: |
           set +e
           exec > >(tee /tmp/probe.log) 2>&1
           urls="
-          https://geoftp.ibge.gov.br/organizacao_do_territorio/malhas_territoriais/malhas_municipais/municipio_2022/Brasil/BR/BR_UF_2022.zip
-          https://metadados.snirh.gov.br/geonetwork/srv/api/records/0c698205-6b59-48dc-8b5e-a58a5dfcc989
-          https://metadados.snirh.gov.br/files/0c698205-6b59-48dc-8b5e-a58a5dfcc989/geoft_bho_2017_trecho_drenagem.gpkg
-          https://metadados.snirh.gov.br/geonetwork/srv/api/records/fe192ba0-45a9-4215-90a5-3fba6abea174/attachments/SNIRH_RHI.zip
-          https://metadados.ana.gov.br/geonetwork/srv/api/records/0c698205-6b59-48dc-8b5e-a58a5dfcc989
-          https://metadados.inde.gov.br/geonetwork/srv/api/records/b228d007-6d68-46e5-b30d-a1e191b2b21f
-          https://metadados.inde.gov.br/files/b228d007-6d68-46e5-b30d-a1e191b2b21f/geoft_bho_2017_trecho_drenagem.gpkg
-          https://portal1.snirh.gov.br/
-          https://www.ana.gov.br/
-          https://dados.gov.br/
+          https://geoftp.ibge.gov.br/cartas_e_mapas/bases_cartograficas_continuas/bc250/versao2021/geopackage/bc250_2021_11_18.zip
+          https://data.hydrosheds.org/file/HydroBASINS/standard/hybas_sa_lev01-12_v1c.zip
+          https://data.hydrosheds.org/file/HydroRIVERS/HydroRIVERS_v10_sa_shp.zip
+          https://data.hydrosheds.org/file/HydroSHEDS/hydrosheds-tech-documentation-v10.pdf
+          https://download.geofabrik.de/south-america/brazil/sul-latest-free.shp.zip
+          https://download.geofabrik.de/south-america/brazil/sul-latest.osm.pbf
+          https://raw.githubusercontent.com/python/cpython/main/README.rst
+          https://github.com/python/cpython
+          https://servicodados.ibge.gov.br/api/v1/localidades/municipios
+          https://servicodados.ibge.gov.br/api/v3/agregados
+          https://www.ibge.gov.br/geociencias/downloads-geociencias.html
           https://www.sema.rs.gov.br/
-          https://www.ibge.gov.br/
-          https://overpass-api.de/api/status
-          https://download.geofabrik.de/south-america/brazil/sul.html
-          https://raw.githubusercontent.com/osmbr/geojson-municipios/master/README.md
-          https://cdn.jsdelivr.net/npm/@geo-maps/geography-brazil@1.0.0/README.md
-          https://servicodados.ibge.gov.br/api/v1/localidades/municipios/430?view=level
+          https://sistemas.dsr.rs.gov.br/
+          https://portal1.snirh.gov.br/ana/apps/webappviewer/index.html
+          https://metadados.inde.gov.br/geonetwork/srv/api/records/b228d007-6d68-46e5-b30d-a1e191b2b21f
+          https://ows.terrestris.de/osm/service
+          https://tile.openstreetmap.org/10/512/620.png
+          https://basemaps.arcgis.com/arcgis/rest/services/World_Basemap_v2/MapServer
+          https://elevation-tiles-prod.s3.amazonaws.com/skadi/S30/S30W052/S30W052.hgt.gz
+          https://s3.amazonaws.com/elevation-tiles-prod/v2/terrarium/10/512/620.png
+          https://copernicus-dem-30m.s3.amazonaws.com/Copernicus_DSM_COG_30_S30_00_W052_00_DEM/Copernicus_DSM_COG_30_S30_00_W052_00_DEM.tif
           "
           for u in $urls; do
-            out=$(curl -sS -o /dev/null -L --max-time 20 -w '%{http_code} %{size_download} %{url_effective}' \
+            out=$(curl -sS -o /dev/null -L --max-time 25 -w '%{http_code} %{size_download} %{content_type}' \
                   -A 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Safari/537.36' \
                   -r 0-2000 "$u" 2>&1)
-            printf '%-6s %s\n' "${out%% *}" "${u}"
+            printf '%-6s %s\n' "${out%% *}" "$u"
             echo "      -> ${out}"
           done
 
-      - name: Tamanhos dos produtos ANA (HEAD)
+      - name: Tamanhos (HEAD) das fontes pesadas
         run: |
           set +e
           exec > >(tee -a /tmp/probe.log) 2>&1
           for u in \
-            "https://metadados.snirh.gov.br/files/0c698205-6b59-48dc-8b5e-a58a5dfcc989/geoft_bho_2017_trecho_drenagem.gpkg" \
-            "https://metadados.snirh.gov.br/files/0c698205-6b59-48dc-8b5e-a58a5dfcc989/geoft_bho_2017_curso_dagua.gpkg" \
-            "https://metadados.snirh.gov.br/files/0c698205-6b59-48dc-8b5e-a58a5dfcc989/geoft_bho_2017_area_drenagem.gpkg" \
-            "https://metadados.snirh.gov.br/files/0c698205-6b59-48dc-8b5e-a58a5dfcc989/geoft_bho_ach_otto_nivel_01.gpkg" \
-            "https://metadados.snirh.gov.br/geonetwork/srv/api/records/fe192ba0-45a9-4215-90a5-3fba6abea174/attachments/SNIRH_RHI.zip" \
-            "https://metadados.snirh.gov.br/geonetwork/srv/api/records/fe192ba0-45a9-4215-90a5-3fba6abea174/attachments/SNIRH_UPH.zip" ; do
+            "https://geoftp.ibge.gov.br/cartas_e_mapas/bases_cartograficas_continuas/bc250/versao2021/geopackage/bc250_2021_11_18.zip" \
+            "https://data.hydrosheds.org/file/HydroBASINS/standard/hybas_sa_lev01-12_v1c.zip" \
+            "https://data.hydrosheds.org/file/HydroRIVERS/HydroRIVERS_v10_sa_shp.zip" \
+            "https://download.geofabrik.de/south-america/brazil/sul-latest-free.shp.zip" \
+            "https://download.geofabrik.de/south-america/brazil/sul-latest.osm.pbf" ; do
             echo "--- $(basename "$u")"
-            curl -sSI -L --max-time 25 -A 'Mozilla/5.0' "$u" | grep -iE '^(HTTP/|content-length|content-type|location)' | head -8
+            curl -sSI -L --max-time 30 -A 'Mozilla/5.0' "$u" | grep -iE '^(HTTP/|content-length|content-type)' | head -6
           done
 
       - name: Publicar resultado no repositorio
-        # O ambiente do agente nao consegue baixar os logs do Actions, por isso o
-        # diagnostico e gravado no proprio repositorio.
         run: |
           git config user.name  "outorgasys-bot"
           git config user.email "bot@users.noreply.github.com"
