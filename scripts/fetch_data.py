@@ -655,12 +655,30 @@ def step(name: str, fn, manifest: dict) -> None:
         log(f"  -> FALHOU: {type(exc).__name__}: {exc}")
 
 
+def ler_pedido_build() -> dict:
+    """Le ``data/.build-request.json`` (gatilho por commit, usado no Actions)."""
+    p = ROOT / "data" / ".build-request.json"
+    if not p.exists():
+        return {}
+    try:
+        return json.loads(p.read_text(encoding="utf-8"))
+    except Exception:  # noqa: BLE001
+        return {}
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--force", action="store_true")
     ap.add_argument("--only", default="")
     ap.add_argument("--skip-osm", action="store_true")
     args = ap.parse_args()
+
+    pedido = ler_pedido_build()
+    if pedido:
+        args.force = args.force or bool(pedido.get("force"))
+        args.only = args.only or str(pedido.get("only") or "")
+        args.skip_osm = args.skip_osm or bool(pedido.get("skip_osm"))
+        log(f"pedido de build: force={args.force} only={args.only!r}")
 
     ensure_dirs()
     only = {s.strip() for s in args.only.split(",") if s.strip()}
