@@ -1,0 +1,5 @@
+{
+  "_comentario": "Reconstruir as camadas derivadas da BC250 do IBGE (drenagem, massas d'agua, nascentes, rodovias, ferrovias).",
+  "force": true,
+  "only": "drenagem_rs,massas_dagua_rs,nascentes_rs,rodovias_rs,ferrovias_rs"
+}
