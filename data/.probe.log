@@ -1,0 +1,58 @@
+206    https://geoftp.ibge.gov.br/organizacao_do_territorio/malhas_territoriais/malhas_municipais/municipio_2022/Brasil/BR/BR_UF_2022.zip
+      -> 206 2001 https://geoftp.ibge.gov.br/organizacao_do_territorio/malhas_territoriais/malhas_municipais/municipio_2022/Brasil/BR/BR_UF_2022.zip
+403    https://metadados.snirh.gov.br/geonetwork/srv/api/records/0c698205-6b59-48dc-8b5e-a58a5dfcc989
+      -> 403 520 https://metadados.snirh.gov.br/geonetwork/srv/api/records/0c698205-6b59-48dc-8b5e-a58a5dfcc989
+403    https://metadados.snirh.gov.br/files/0c698205-6b59-48dc-8b5e-a58a5dfcc989/geoft_bho_2017_trecho_drenagem.gpkg
+      -> 403 520 https://metadados.snirh.gov.br/files/0c698205-6b59-48dc-8b5e-a58a5dfcc989/geoft_bho_2017_trecho_drenagem.gpkg
+403    https://metadados.snirh.gov.br/geonetwork/srv/api/records/fe192ba0-45a9-4215-90a5-3fba6abea174/attachments/SNIRH_RHI.zip
+      -> 403 520 https://metadados.snirh.gov.br/geonetwork/srv/api/records/fe192ba0-45a9-4215-90a5-3fba6abea174/attachments/SNIRH_RHI.zip
+403    https://metadados.ana.gov.br/geonetwork/srv/api/records/0c698205-6b59-48dc-8b5e-a58a5dfcc989
+      -> 403 520 http://metadados.snirh.gov.br/
+200    https://metadados.inde.gov.br/geonetwork/srv/api/records/b228d007-6d68-46e5-b30d-a1e191b2b21f
+      -> 200 67181 https://metadados.inde.gov.br/geonetwork/srv/api/records/b228d007-6d68-46e5-b30d-a1e191b2b21f
+404    https://metadados.inde.gov.br/files/b228d007-6d68-46e5-b30d-a1e191b2b21f/geoft_bho_2017_trecho_drenagem.gpkg
+      -> 404 830 https://metadados.inde.gov.br/files/b228d007-6d68-46e5-b30d-a1e191b2b21f/geoft_bho_2017_trecho_drenagem.gpkg
+206    https://portal1.snirh.gov.br/
+      -> 206 703 https://portal1.snirh.gov.br/
+206    https://www.ana.gov.br/
+      -> 206 2001 https://www.gov.br/ana/pt-br
+206    https://dados.gov.br/
+      -> 206 2001 https://dados.gov.br/
+206    https://www.sema.rs.gov.br/
+      -> 206 2001 https://www.sema.rs.gov.br/inicial
+200    https://www.ibge.gov.br/
+      -> 200 104610 https://www.ibge.gov.br/
+200    https://overpass-api.de/api/status
+      -> 200 209 https://overpass-api.de/api/status
+206    https://download.geofabrik.de/south-america/brazil/sul.html
+      -> 206 2001 https://download.geofabrik.de/south-america/brazil/sul.html
+404    https://raw.githubusercontent.com/osmbr/geojson-municipios/master/README.md
+      -> 404 14 https://raw.githubusercontent.com/osmbr/geojson-municipios/master/README.md
+404    https://cdn.jsdelivr.net/npm/@geo-maps/geography-brazil@1.0.0/README.md
+      -> 404 60 https://cdn.jsdelivr.net/npm/@geo-maps/geography-brazil@1.0.0/README.md
+200    https://servicodados.ibge.gov.br/api/v1/localidades/municipios/430?view=level
+      -> 200 2 https://servicodados.ibge.gov.br/api/v1/localidades/municipios/430?view=level
+--- geoft_bho_2017_trecho_drenagem.gpkg
+HTTP/2 403 
+content-type: text/html
+content-length: 118
+--- geoft_bho_2017_curso_dagua.gpkg
+HTTP/2 403 
+content-type: text/html
+content-length: 118
+--- geoft_bho_2017_area_drenagem.gpkg
+HTTP/2 403 
+content-type: text/html
+content-length: 118
+--- geoft_bho_ach_otto_nivel_01.gpkg
+HTTP/2 403 
+content-type: text/html
+content-length: 118
+--- SNIRH_RHI.zip
+HTTP/2 403 
+content-type: text/html
+content-length: 118
+--- SNIRH_UPH.zip
+HTTP/2 403 
+content-type: text/html
+content-length: 118
