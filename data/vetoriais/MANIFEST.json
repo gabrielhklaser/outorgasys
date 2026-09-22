@@ -10,6 +10,1005 @@
     },
     "geologia_rs": {
       "arquivo": "data/vetoriais/geologia_rs.gpkg",
+      "camadas_kml": [
+        {
+          "camada": "Rio Grande do Sul",
+          "colunas": [
+            "id",
+            "Name",
+            "description",
+            "timestamp",
+            "begin",
+            "end",
+            "altitudeMode",
+            "tessellate",
+            "extrude",
+            "visibility",
+            "drawOrder",
+            "icon",
+            "NOME_UNIDA",
+            "LITOTIPO1",
+            "GEOBANK"
+          ],
+          "driver": "LIBKML",
+          "feicoes": 1,
+          "tipos": [
+            "Point"
+          ]
+        },
+        {
+          "camada": "Litologia",
+          "driver": "LIBKML",
+          "feicoes": 0
+        },
+        {
+          "camada": "Litologia",
+          "driver": "KML",
+          "feicoes": 0
+        },
+        {
+          "camada": "A4smc",
+          "colunas": [
+            "id",
+            "Name",
+            "description",
+            "timestamp",
+            "begin",
+            "end",
+            "altitudeMode",
+            "tessellate",
+            "extrude",
+            "visibility",
+            "drawOrder",
+            "icon",
+            "NOME_UNIDA",
+            "LITOTIPO1",
+            "GEOBANK",
+            "snippet"
+          ],
+          "driver": "LIBKML",
+          "feicoes": 8,
+          "tipos": [
+            "Polygon"
+          ]
+        },
+        {
+          "camada": "C2P1t",
+          "colunas": [
+            "id",
+            "Name",
+            "description",
+            "timestamp",
+            "begin",
+            "end",
+            "altitudeMode",
+            "tessellate",
+            "extrude",
+            "visibility",
+            "drawOrder",
+            "icon",
+            "NOME_UNIDA",
+            "LITOTIPO1",
+            "GEOBANK",
+            "snippet"
+          ],
+          "driver": "LIBKML",
+          "feicoes": 38,
+          "tipos": [
+            "Polygon"
+          ]
+        },
+        {
+          "camada": "ENst",
+          "colunas": [
+            "id",
+            "Name",
+            "description",
+            "timestamp",
+            "begin",
+            "end",
+            "altitudeMode",
+            "tessellate",
+            "extrude",
+            "visibility",
+            "drawOrder",
+            "icon",
+            "NOME_UNIDA",
+            "LITOTIPO1",
+            "GEOBANK",
+            "snippet"
+          ],
+          "driver": "LIBKML",
+          "feicoes": 7,
+          "tipos": [
+            "Polygon"
+          ]
+        },
+        {
+          "camada": "ENtp",
+          "colunas": [
+            "id",
+            "Name",
+            "description",
+            "timestamp",
+            "begin",
+            "end",
+            "altitudeMode",
+            "tessellate",
+            "extrude",
+            "visibility",
+            "drawOrder",
+            "icon",
+            "NOME_UNIDA",
+            "LITOTIPO1",
+            "GEOBANK",
+            "snippet"
+          ],
+          "driver": "LIBKML",
+          "feicoes": 34,
+          "tipos": [
+            "Polygon"
+          ]
+        },
+        {
+          "camada": "J3K1bt",
+          "colunas": [
+            "id",
+            "Name",
+            "description",
+            "timestamp",
+            "begin",
+            "end",
+            "altitudeMode",
+            "tessellate",
+            "extrude",
+            "visibility",
+            "drawOrder",
+            "icon",
+            "NOME_UNIDA",
+            "LITOTIPO1",
+            "GEOBANK",
+            "snippet"
+          ],
+          "driver": "LIBKML",
+          "feicoes": 321,
+          "tipos": [
+            "Polygon"
+          ]
+        },
+        {
+          "camada": "J3K1g",
+          "colunas": [
+            "id",
+            "Name",
+            "description",
+            "timestamp",
+            "begin",
+            "end",
+            "altitudeMode",
+            "tessellate",
+            "extrude",
+            "visibility",
+            "drawOrder",
+            "icon",
+            "NOME_UNIDA",
+            "LITOTIPO1",
+            "GEOBANK",
+            "snippet"
+          ],
+          "driver": "LIBKML",
+          "feicoes": 37,
+          "tipos": [
+            "Polygon"
+          ]
+        },
+        {
+          "camada": "K1_alfa_al",
+          "colunas": [
+            "id",
+            "Name",
+            "description",
+            "timestamp",
+            "begin",
+            "end",
+            "altitudeMode",
+            "tessellate",
+            "extrude",
+            "visibility",
+            "drawOrder",
+            "icon",
+            "NOME_UNIDA",
+            "LITOTIPO1",
+            "GEOBANK",
+            "snippet"
+          ],
+          "driver": "LIBKML",
+          "feicoes": 60,
+          "tipos": [
+            "Polygon"
+          ]
+        },
+        {
+          "camada": "K1_alfa_ch",
+          "colunas": [
+            "id",
+            "Name",
+            "description",
+            "timestamp",
+            "begin",
+            "end",
+            "altitudeMode",
+            "tessellate",
+            "extrude",
+            "visibility",
+            "drawOrder",
+            "icon",
+            "NOME_UNIDA",
+            "LITOTIPO1",
+            "GEOBANK",
+            "snippet"
+          ],
+          "driver": "LIBKML",
+          "feicoes": 17,
+          "tipos": [
+            "Polygon"
+          ]
+        },
+        {
+          "camada": "K1_alfa_cx",
+          "colunas": [
+            "id",
+            "Name",
+            "description",
+            "timestamp",
+            "begin",
+            "end",
+            "altitudeMode",
+            "tessellate",
+            "extrude",
+            "visibility",
+            "drawOrder",
+            "icon",
+            "NOME_UNIDA",
+            "LITOTIPO1",
+            "GEOBANK",
+            "snippet"
+          ],
+          "driver": "LIBKML",
+          "feicoes": 252,
+          "tipos": [
+            "Polygon"
+          ]
+        },
+        {
+          "camada": "K1_alfa_vc",
+          "colunas": [
+            "id",
+            "Name",
+            "description",
+            "timestamp",
+            "begin",
+            "end",
+            "altitudeMode",
+            "tessellate",
+            "extrude",
+            "visibility",
+            "drawOrder",
+            "icon",
+            "NOME_UNIDA",
+            "LITOTIPO1",
+            "GEOBANK",
+            "snippet"
+          ],
+          "driver": "LIBKML",
+          "feicoes": 12,
+          "tipos": [
+            "Polygon"
+          ]
+        },
+        {
+          "camada": "K1_beta_es",
+          "colunas": [
+            "id",
+            "Name",
+            "description",
+            "timestamp",
+            "begin",
+            "end",
+            "altitudeMode",
+            "tessellate",
+            "extrude",
+            "visibility",
+            "drawOrder",
+            "icon",
+            "NOME_UNIDA",
+            "LITOTIPO1",
+            "GEOBANK",
+            "snippet"
+          ],
+          "driver": "LIBKML",
+          "feicoes": 15,
+          "tipos": [
+            "Polygon"
+          ]
+        },
+        {
+          "camada": "K1_beta_gr",
+          "colunas": [
+            "id",
+            "Name",
+            "description",
+            "timestamp",
+            "begin",
+            "end",
+            "altitudeMode",
+            "tessellate",
+            "extrude",
+            "visibility",
+            "drawOrder",
+            "icon",
+            "NOME_UNIDA",
+            "LITOTIPO1",
+            "GEOBANK",
+            "snippet"
+          ],
+          "driver": "LIBKML",
+          "feicoes": 751,
+          "tipos": [
+            "Polygon"
+          ]
+        },
+        {
+          "camada": "K1_beta_jg",
+          "colunas": [
+            "id",
+            "Name",
+            "description",
+            "timestamp",
+            "begin",
+            "end",
+            "altitudeMode",
+            "tessellate",
+            "extrude",
+            "visibility",
+            "drawOrder",
+            "icon",
+            "NOME_UNIDA",
+            "LITOTIPO1",
+            "GEOBANK",
+            "snippet"
+          ],
+          "driver": "LIBKML",
+          "feicoes": 5,
+          "tipos": [
+            "Polygon"
+          ]
+        },
+        {
+          "camada": "K1_beta_pr",
+          "colunas": [
+            "id",
+            "Name",
+            "description",
+            "timestamp",
+            "begin",
+            "end",
+            "altitudeMode",
+            "tessellate",
+            "extrude",
+            "visibility",
+            "drawOrder",
+            "icon",
+            "NOME_UNIDA",
+            "LITOTIPO1",
+            "GEOBANK",
+            "snippet"
+          ],
+          "driver": "LIBKML",
+          "feicoes": 79,
+          "tipos": [
+            "Polygon"
+          ]
+        },
+        {
+          "camada": "K2_lambda_pc",
+          "colunas": [
+            "id",
+            "Name",
+            "description",
+            "timestamp",
+            "begin",
+            "end",
+            "altitudeMode",
+            "tessellate",
+            "extrude",
+            "visibility",
+            "drawOrder",
+            "icon",
+            "NOME_UNIDA",
+            "LITOTIPO1",
+            "GEOBANK",
+            "snippet"
+          ],
+          "driver": "LIBKML",
+          "feicoes": 2,
+          "tipos": [
+            "Polygon"
+          ]
+        },
+        {
+          "camada": "N34ec",
+          "colunas": [
+            "id",
+            "Name",
+            "description",
+            "timestamp",
+            "begin",
+            "end",
+            "altitudeMode",
+            "tessellate",
+            "extrude",
+            "visibility",
+            "drawOrder",
+            "icon",
+            "NOME_UNIDA",
+            "LITOTIPO1",
+            "GEOBANK",
+            "snippet"
+          ],
+          "driver": "LIBKML",
+          "feicoes": 131,
+          "tipos": [
+            "Polygon"
+          ]
+        },
+        {
+          "camada": "N3e1",
+          "colunas": [
+            "id",
+            "Name",
+            "description",
+            "timestamp",
+            "begin",
+            "end",
+            "altitudeMode",
+            "tessellate",
+            "extrude",
+            "visibility",
+            "drawOrder",
+            "icon",
+            "NOME_UNIDA",
+            "LITOTIPO1",
+            "GEOBANK",
+            "snippet"
+          ],
+          "driver": "LIBKML",
+          "feicoes": 14,
+          "tipos": [
+            "Polygon"
+          ]
+        },
+        {
+          "camada": "N3la",
+          "colunas": [
+            "id",
+            "Name",
+            "description",
+            "timestamp",
+            "begin",
+            "end",
+            "altitudeMode",
+            "tessellate",
+            "extrude",
+            "visibility",
+            "drawOrder",
+            "icon",
+            "NOME_UNIDA",
+            "LITOTIPO1",
+            "GEOBANK",
+            "snippet"
+          ],
+          "driver": "LIBKML",
+          "feicoes": 23,
+          "tipos": [
+            "Polygon"
+          ]
+        },
+        {
+          "camada": "N3pl1",
+          "colunas": [
+            "id",
+            "Name",
+            "description",
+            "timestamp",
+            "begin",
+            "end",
+            "altitudeMode",
+            "tessellate",
+            "extrude",
+            "visibility",
+            "drawOrder",
+            "icon",
+            "NOME_UNIDA",
+            "LITOTIPO1",
+            "GEOBANK",
+            "snippet"
+          ],
+          "driver": "LIBKML",
+          "feicoes": 11,
+          "tipos": [
+            "Polygon"
+          ]
+        },
+        {
+          "camada": "N3pl2",
+          "colunas": [
+            "id",
+            "Name",
+            "description",
+            "timestamp",
+            "begin",
+            "end",
+            "altitudeMode",
+            "tessellate",
+            "extrude",
+            "visibility",
+            "drawOrder",
+            "icon",
+            "NOME_UNIDA",
+            "LITOTIPO1",
+            "GEOBANK",
+            "snippet"
+          ],
+          "driver": "LIBKML",
+          "feicoes": 42,
+          "tipos": [
+            "Polygon"
+          ]
+        },
+        {
+          "camada": "N4ca",
+          "colunas": [
+            "id",
+            "Name",
+            "description",
+            "timestamp",
+            "begin",
+            "end",
+            "altitudeMode",
+            "tessellate",
+            "extrude",
+            "visibility",
+            "drawOrder",
+            "icon",
+            "NOME_UNIDA",
+            "LITOTIPO1",
+            "GEOBANK",
+            "snippet"
+          ],
+          "driver": "LIBKML",
+          "feicoes": 18,
+          "tipos": [
+            "Polygon"
+          ]
+        },
+        {
+          "camada": "N4pi",
+          "colunas": [
+            "id",
+            "Name",
+            "description",
+            "timestamp",
+            "begin",
+            "end",
+            "altitudeMode",
+            "tessellate",
+            "extrude",
+            "visibility",
+            "drawOrder",
+            "icon",
+            "NOME_UNIDA",
+            "LITOTIPO1",
+            "GEOBANK",
+            "snippet"
+          ],
+          "driver": "LIBKML",
+          "feicoes": 218,
+          "tipos": [
+            "Polygon"
+          ]
+        },
+        {
+          "camada": "N4tf",
+          "colunas": [
+            "id",
+            "Name",
+            "description",
+            "timestamp",
+            "begin",
+            "end",
+            "altitudeMode",
+            "tessellate",
+            "extrude",
+            "visibility",
+            "drawOrder",
+            "icon",
+            "NOME_UNIDA",
+            "LITOTIPO1",
+            "GEOBANK",
+            "snippet"
+          ],
+          "driver": "LIBKML",
+          "feicoes": 186,
+          "tipos": [
+            "Polygon"
+          ]
+        },
+        {
+          "camada": "NP2_beta_am",
+          "colunas": [
+            "id",
+            "Name",
+            "description",
+            "timestamp",
+            "begin",
+            "end",
+            "altitudeMode",
+            "tessellate",
+            "extrude",
+            "visibility",
+            "drawOrder",
+            "icon",
+            "NOME_UNIDA",
+            "LITOTIPO1",
+            "GEOBANK",
+            "snippet"
+          ],
+          "driver": "LIBKML",
+          "feicoes": 1,
+          "tipos": [
+            "Polygon"
+          ]
+        },
+        {
+          "camada": "NP2_delta_m",
+          "colunas": [
+            "id",
+            "Name",
+            "description",
+            "timestamp",
+            "begin",
+            "end",
+            "altitudeMode",
+            "tessellate",
+            "extrude",
+            "visibility",
+            "drawOrder",
+            "icon",
+            "NOME_UNIDA",
+            "LITOTIPO1",
+            "GEOBANK",
+            "snippet"
+          ],
+          "driver": "LIBKML",
+          "feicoes": 1,
+          "tipos": [
+            "Polygon"
+          ]
+        },
+        {
+          "camada": "NP2_delta_pp",
+          "colunas": [
+            "id",
+            "Name",
+            "description",
+            "timestamp",
+            "begin",
+            "end",
+            "altitudeMode",
+            "tessellate",
+            "extrude",
+            "visibility",
+            "drawOrder",
+            "icon",
+            "NOME_UNIDA",
+            "LITOTIPO1",
+            "GEOBANK",
+            "snippet"
+          ],
+          "driver": "LIBKML",
+          "feicoes": 1,
+          "tipos": [
+            "Polygon"
+          ]
+        },
+        {
+          "camada": "NP2_delta_sc",
+          "colunas": [
+            "id",
+            "Name",
+            "description",
+            "timestamp",
+            "begin",
+            "end",
+            "altitudeMode",
+            "tessellate",
+            "extrude",
+            "visibility",
+            "drawOrder",
+            "icon",
+            "NOME_UNIDA",
+            "LITOTIPO1",
+            "GEOBANK",
+            "snippet"
+          ],
+          "driver": "LIBKML",
+          "feicoes": 1,
+          "tipos": [
+            "Polygon"
+          ]
+        },
+        {
+          "camada": "NP2_gamma_1cgb",
+          "colunas": [
+            "id",
+            "Name",
+            "description",
+            "timestamp",
+            "begin",
+            "end",
+            "altitudeMode",
+            "tessellate",
+            "extrude",
+            "visibility",
+            "drawOrder",
+            "icon",
+            "NOME_UNIDA",
+            "LITOTIPO1",
+            "GEOBANK",
+            "snippet"
+          ],
+          "driver": "LIBKML",
+          "feicoes": 12,
+          "tipos": [
+            "Polygon"
+          ]
+        },
+        {
+          "camada": "NP2_gamma_1pm",
+          "colunas": [
+            "id",
+            "Name",
+            "description",
+            "timestamp",
+            "begin",
+            "end",
+            "altitudeMode",
+            "tessellate",
+            "extrude",
+            "visibility",
+            "drawOrder",
+            "icon",
+            "NOME_UNIDA",
+            "LITOTIPO1",
+            "GEOBANK",
+            "snippet"
+          ],
+          "driver": "LIBKML",
+          "feicoes": 20,
+          "tipos": [
+            "Polygon"
+          ]
+        },
+        {
+          "camada": "NP2_gamma_1pmg",
+          "colunas": [
+            "id",
+            "Name",
+            "description",
+            "timestamp",
+            "begin",
+            "end",
+            "altitudeMode",
+            "tessellate",
+            "extrude",
+            "visibility",
+            "drawOrder",
+            "icon",
+            "NOME_UNIDA",
+            "LITOTIPO1",
+            "GEOBANK",
+            "snippet"
+          ],
+          "driver": "LIBKML",
+          "feicoes": 2,
+          "tipos": [
+            "Polygon"
+          ]
+        },
+        {
+          "camada": "NP2_gamma_1pmm",
+          "colunas": [
+            "id",
+            "Name",
+            "description",
+            "timestamp",
+            "begin",
+            "end",
+            "altitudeMode",
+            "tessellate",
+            "extrude",
+            "visibility",
+            "drawOrder",
+            "icon",
+            "NOME_UNIDA",
+            "LITOTIPO1",
+            "GEOBANK",
+            "snippet"
+          ],
+          "driver": "LIBKML",
+          "feicoes": 6,
+          "tipos": [
+            "Polygon"
+          ]
+        },
+        {
+          "camada": "NP2_gamma_cbo",
+          "colunas": [
+            "id",
+            "Name",
+            "description",
+            "timestamp",
+            "begin",
+            "end",
+            "altitudeMode",
+            "tessellate",
+            "extrude",
+            "visibility",
+            "drawOrder",
+            "icon",
+            "NOME_UNIDA",
+            "LITOTIPO1",
+            "GEOBANK",
+            "snippet"
+          ],
+          "driver": "LIBKML",
+          "feicoes": 12,
+          "tipos": [
+            "Polygon"
+          ]
+        },
+        {
+          "camada": "NP2_gamma_cbp",
+          "colunas": [
+            "id",
+            "Name",
+            "description",
+            "timestamp",
+            "begin",
+            "end",
+            "altitudeMode",
+            "tessellate",
+            "extrude",
+            "visibility",
+            "drawOrder",
+            "icon",
+            "NOME_UNIDA",
+            "LITOTIPO1",
+            "GEOBANK",
+            "snippet"
+          ],
+          "driver": "LIBKML",
+          "feicoes": 5,
+          "tipos": [
+            "Polygon"
+          ]
+        },
+        {
+          "camada": "NP2_mu_cm",
+          "colunas": [
+            "id",
+            "Name",
+            "description",
+            "timestamp",
+            "begin",
+            "end",
+            "altitudeMode",
+            "tessellate",
+            "extrude",
+            "visibility",
+            "drawOrder",
+            "icon",
+            "NOME_UNIDA",
+            "LITOTIPO1",
+            "GEOBANK",
+            "snippet"
+          ],
+          "driver": "LIBKML",
+          "feicoes": 10,
+          "tipos": [
+            "Polygon"
+          ]
+        },
+        {
+          "camada": "NP2_mu_lm",
+          "colunas": [
+            "id",
+            "Name",
+            "description",
+            "timestamp",
+            "begin",
+            "end",
+            "altitudeMode",
+            "tessellate",
+            "extrude",
+            "visibility",
+            "drawOrder",
+            "icon",
+            "NOME_UNIDA",
+            "LITOTIPO1",
+            "GEOBANK",
+            "snippet"
+          ],
+          "driver": "LIBKML",
+          "feicoes": 4,
+          "tipos": [
+            "Polygon"
+          ]
+        },
+        {
+          "camada": "NP2ac",
+          "colunas": [
+            "id",
+            "Name",
+            "description",
+            "timestamp",
+            "begin",
+            "end",
+            "altitudeMode",
+            "tessellate",
+            "extrude",
+            "visibility",
+            "drawOrder",
+            "icon",
+            "NOME_UNIDA",
+            "LITOTIPO1",
+            "GEOBANK",
+            "snippet"
+          ],
+          "driver": "LIBKML",
+          "feicoes": 2,
+          "tipos": [
+            "Polygon"
+          ]
+        },
+        {
+          "camada": "NP2gar",
+          "colunas": [
+            "id",
+            "Name",
+            "description",
+            "timestamp",
+            "begin",
+            "end",
+            "altitudeMode",
+            "tessellate",
+            "extrude",
+            "visibility",
+            "drawOrder",
+            "icon",
+            "NOME_UNIDA",
+            "LITOTIPO1",
+            "GEOBANK",
+            "snippet"
+          ],
+          "driver": "LIBKML",
+          "feicoes": 2,
+          "tipos": [
+            "Polygon"
+          ]
+        }
+      ],
       "colunas": [
         "id",
         "Name",
@@ -20,11 +1019,36 @@
         "GEOBANK"
       ],
       "crs": "EPSG:4674",
-      "feicoes": 1,
+      "feicoes": 4801,
       "status": "ok"
     },
     "hidrogeologia_rs": {
       "arquivo": "data/vetoriais/hidrogeologia_rs.gpkg",
+      "camadas_kml": [
+        {
+          "camada": "Hidrogelogia",
+          "colunas": [
+            "id",
+            "Name",
+            "description",
+            "timestamp",
+            "begin",
+            "end",
+            "altitudeMode",
+            "tessellate",
+            "extrude",
+            "visibility",
+            "drawOrder",
+            "icon",
+            "snippet"
+          ],
+          "driver": "LIBKML",
+          "feicoes": 297,
+          "tipos": [
+            "MultiPolygon"
+          ]
+        }
+      ],
       "colunas": [
         "id",
         "Name",
@@ -81,6 +1105,31 @@
     },
     "solos_rs": {
       "arquivo": "data/vetoriais/solos_rs.gpkg",
+      "camadas_kml": [
+        {
+          "camada": "Mapa de solos",
+          "colunas": [
+            "id",
+            "Name",
+            "description",
+            "timestamp",
+            "begin",
+            "end",
+            "altitudeMode",
+            "tessellate",
+            "extrude",
+            "visibility",
+            "drawOrder",
+            "icon",
+            "snippet"
+          ],
+          "driver": "LIBKML",
+          "feicoes": 1232,
+          "tipos": [
+            "MultiPolygon"
+          ]
+        }
+      ],
       "colunas": [
         "id",
         "Name",
@@ -109,5 +1158,5 @@
       "status": "falhou"
     }
   },
-  "gerado_em": "2026-09-22T22:47:44"
+  "gerado_em": "2026-09-22T22:58:23"
 }
