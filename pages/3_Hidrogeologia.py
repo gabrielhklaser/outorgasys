@@ -72,7 +72,7 @@ if fonte_dados == opcoes[0]:
     if not salvo_ensaio:
         st.warning("Nenhum arquivo de ensaio foi enviado no Agente 1.")
     else:
-        arquivo = C.ROOT / salvo_ensaio
+        arquivo = C.caminho_absoluto(salvo_ensaio)
         st.success(f"Arquivo do processo: {docs['ensaio_bombeamento'].get('nome')}")
 
 elif fonte_dados == opcoes[1]:

@@ -80,7 +80,7 @@ def registrar_upload(proc, chave: str, arquivo, papel: str | None = None) -> dic
     caminho = proc.salvar_upload(chave, arquivo)
     registro = {
         "nome": getattr(arquivo, "name", str(caminho)),
-        "caminho": str(caminho.relative_to(C.ROOT)) if caminho else None,
+        "caminho": C.caminho_relativo(caminho) if caminho else None,
         "tamanho": caminho.stat().st_size if caminho else 0,
         "papel": papel,
     }
@@ -105,7 +105,7 @@ def registrar_upload_manual(proc, chave: str, caminho, nome: str | None = None,
         return {}
     registro = {
         "nome": nome or p.name,
-        "caminho": str(p.relative_to(C.ROOT)),
+        "caminho": C.caminho_relativo(p),
         "tamanho": p.stat().st_size,
         "origem": "gerado pela plataforma",
     }

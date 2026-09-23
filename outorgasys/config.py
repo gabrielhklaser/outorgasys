@@ -12,15 +12,49 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data"
+
+# Fontes somente-leitura, versionadas no repositorio.
 VETORIAIS = DATA / "vetoriais"
 CACHE_OSM = DATA / "cache" / "osm"
-PROCESSOS = DATA / "processos"
-SAIDA = DATA / "saida"
 EXEMPLOS = DATA / "exemplos"
+ASSETS = ROOT / "assets"
+
+# Dados mutaveis (processos enviados e artefatos gerados).
+# Em plataformas de hospedagem com sistema de arquivos efemero (Render, Heroku)
+# o conteudo gravado em runtime e perdido a cada deploy. Defina
+# OUTORGASYS_RUNTIME_DIR apontando para um disco persistente montado para que os
+# processos sobrevivam aos reinicios. Quando nao definido, usa data/ local.
+_RUNTIME_DIR = os.environ.get("OUTORGASYS_RUNTIME_DIR", "").strip()
+_RUNTIME = Path(_RUNTIME_DIR) if _RUNTIME_DIR else DATA
+PROCESSOS = _RUNTIME / "processos"
+SAIDA = _RUNTIME / "saida"
 
 # Identificador do processo de exemplo (gerado por scripts/semente_campo_bom.py)
 PROCESSO_EXEMPLO = "EX-CAMPOBOM-001"
-ASSETS = ROOT / "assets"
+
+
+def caminho_relativo(p) -> str:
+    """Caminho relativo ao ROOT quando possivel; absoluto caso contrario.
+
+    Em hospedagem os dados mutaveis ficam num disco montado FORA do repositorio
+    (ver OUTORGASYS_RUNTIME_DIR). Nesses casos ``Path.relative_to(ROOT)`` lanca
+    ValueError e derrubaria o fluxo. Guardar o absoluto mantem tudo funcional:
+    os consumidores resolvem com ``caminho_absoluto()``, e ``ROOT / <absoluto>``
+    tambem resulta no absoluto pela semantica do pathlib.
+    """
+    pp = Path(p)
+    try:
+        return str(pp.relative_to(ROOT))
+    except (ValueError, TypeError):
+        return str(pp)
+
+
+def caminho_absoluto(p):
+    """Inverso de caminho_relativo: aceita relativo ao ROOT ou absoluto."""
+    if p in (None, ""):
+        return None
+    pp = Path(p)
+    return pp if pp.is_absolute() else (ROOT / pp)
 
 for _p in (VETORIAIS, CACHE_OSM, PROCESSOS, SAIDA, EXEMPLOS, ASSETS):
     _p.mkdir(parents=True, exist_ok=True)

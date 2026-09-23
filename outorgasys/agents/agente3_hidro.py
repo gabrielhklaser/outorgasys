@@ -182,9 +182,9 @@ def calcular(proc, usar_q_manual: bool = False, q_manual: float | None = None,
                                            pontos_recuperacao=pontos_rec,
                                            nome_poco=str(nome_poco))
             saida["graficos"] = {
-                "painel": str(painel.relative_to(C.ROOT)),
-                "rebaixamento": str(g1.relative_to(C.ROOT)),
-                "recuperacao": str(g2.relative_to(C.ROOT)),
+                "painel": C.caminho_relativo(painel),
+                "rebaixamento": C.caminho_relativo(g1),
+                "recuperacao": C.caminho_relativo(g2),
             }
         except Exception as exc:  # noqa: BLE001
             saida["erros"].append(f"Falha ao gerar graficos: {type(exc).__name__}: {exc}")

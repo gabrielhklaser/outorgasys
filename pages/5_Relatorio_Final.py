@@ -171,7 +171,7 @@ with aba_laudo:
     if caminho:
         p = Path(caminho)
         if not p.is_absolute():
-            p = C.ROOT / p
+            p = C.caminho_absoluto(p)
         texto = p.read_text(encoding="utf-8")
         st.markdown(texto)
     else:
@@ -182,7 +182,7 @@ with aba_minuta:
     if caminho:
         p = Path(caminho)
         if not p.is_absolute():
-            p = C.ROOT / p
+            p = C.caminho_absoluto(p)
         st.markdown(p.read_text(encoding="utf-8"))
     else:
         st.info("Minuta nao gerada.")

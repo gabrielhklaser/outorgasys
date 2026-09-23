@@ -211,8 +211,7 @@ def detalhar(dados: dict, titulo: str = "Detalhes") -> None:
 def caminho_absoluto(relativo: str | None) -> Path | None:
     if not relativo:
         return None
-    p = Path(relativo)
-    return p if p.is_absolute() else (C.ROOT / p)
+    return C.caminho_absoluto(relativo)
 
 
 def mostrar_imagem(relativo: str | None, legenda: str = "") -> None:

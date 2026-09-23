@@ -452,7 +452,7 @@ def analisar(proc, lat: float, lon: float, raio_seguranca: float = C.RAIO_SEGURA
     usuario = proc.get("camadas_usuario") or {}
     pocos_vizinhos_gdf = None
     for chave, meta in (usuario or {}).items():
-        r = layers.carregar_usuario(Path(C.ROOT) / meta.get("caminho", ""))
+        r = layers.carregar_usuario(C.caminho_absoluto(meta.get("caminho")))
         prov[f"usuario:{chave}"] = {"status": r.status, "feicoes": r.feicoes,
                                     "origem": "arquivo enviado pelo usuario"}
         if not r.disponivel:
@@ -502,7 +502,7 @@ def analisar(proc, lat: float, lon: float, raio_seguranca: float = C.RAIO_SEGURA
     propriedade_gdf = None
     meta_prop = (proc.get("camadas_usuario") or {}).get("propriedade")
     if meta_prop:
-        r = layers.carregar_usuario(Path(C.ROOT) / meta_prop.get("caminho", ""))
+        r = layers.carregar_usuario(C.caminho_absoluto(meta_prop.get("caminho")))
         if r.disponivel:
             propriedade_gdf = r.gdf
         prov["usuario:propriedade"] = {"status": r.status, "feicoes": r.feicoes}
@@ -549,10 +549,10 @@ def analisar(proc, lat: float, lon: float, raio_seguranca: float = C.RAIO_SEGURA
             }
             mapas = cartografia.gerar_todos(dir_mapas, contexto)
             saida["caminho_mapas"] = [
-                str(Path(p).relative_to(C.ROOT)) for p in mapas.values()
+                C.caminho_relativo(p) for p in mapas.values()
             ]
             saida["detalhes"]["mapas"] = {
-                k: str(Path(v).relative_to(C.ROOT)) for k, v in mapas.items()
+                k: C.caminho_relativo(v) for k, v in mapas.items()
             }
         except Exception as exc:  # noqa: BLE001
             saida["erros"].append(f"Falha ao gerar mapas: {type(exc).__name__}: {exc}")

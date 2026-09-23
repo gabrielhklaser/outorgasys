@@ -199,7 +199,7 @@ with st.expander("➕ Registrar um defeito manualmente"):
 rel = proc.get("relatorio_dev") or {}
 caminho_md = rel.get("arquivo") or (
     f"out/defeitos_{proc.id}.md"
-    if (C.ROOT / "out" / f"defeitos_{proc.id}.md").exists() else None)
+    if (C.SAIDA / f"defeitos_{proc.id}.md").exists() else None)
 
 col_a, col_b = st.columns([1, 1])
 with col_a:

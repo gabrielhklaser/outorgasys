@@ -13,6 +13,51 @@ CEGM/CREA-RS n. 08/2022 · CNRH Res. 32/2003
 
 ---
 
+## Deploy no Render
+
+O repositório já está pronto: basta apontar o Render para ele.
+
+**Opção 1 — Blueprint (recomendada).** O ficheiro `render.yaml` descreve o
+serviço, o disco persistente e as variáveis de ambiente.
+
+1. Faça commit do `render.yaml` no branch que quer implantar.
+2. No Render: **Blueprints → New Blueprint Instance**, selecione o repositório.
+3. Confirme. O Render cria o serviço, o disco de 10 GB e roda o build.
+
+**Opção 2 — Web Service manual.** Use os valores abaixo:
+
+| Campo | Valor |
+|---|---|
+| Runtime | Python 3 |
+| Build command | `pip install --no-cache-dir -r requirements.txt` |
+| Start command | `streamlit run app.py --server.port $PORT --server.address 0.0.0.0 --server.headless true` |
+| Health check path | `/_stcore/health` |
+| Plano | **Standard** (ver nota abaixo) |
+| Disco | montar 10 GB em `/var/data/outorgasys` |
+
+Variáveis de ambiente:
+
+| Variável | Valor | Para que serve |
+|---|---|---|
+| `OUTORGASYS_RUNTIME_DIR` | `/var/data/outorgasys` | Onde ficam os processos e artefatos. **Obrigatório** para não perder tudo a cada deploy |
+| `MPLCONFIGDIR` | `/var/data/outorgasys/.mplconfig` | Cache do matplotlib num diretório gravável |
+| `MPLBACKEND` | `Agg` | Renderização de gráficos sem display |
+| `OMP_NUM_THREADS` | `1` | Evita sobrecarga de threads BLAS |
+
+### Notas importantes
+
+- **Plano e memória.** O Agente 2 lê a base de drenagem do IBGE
+  (`drenagem_rs.gpkg`, 28 MB em disco) com GeoPandas, o que pode ocupar algumas
+  centenas de MB em memória. Em planos de 512 MB o serviço é morto por OOM
+  exatamente no cruzamento espacial — por isso o `render.yaml` usa **standard**.
+- **Sem pacotes apt.** As wheels de `pyogrio`, `shapely`, `pyproj` e `rasterio`
+  já trazem GDAL, GEOS e PROJ embutidos, portanto **não** é preciso
+  `libgdal-dev` nem `packages.txt`.
+- **Processo de exemplo.** O build tenta gerá-lo automaticamente
+  (`scripts/semente_campo_bom.py`); se falhar por falta de rede, o build segue e
+  o próprio app oferece o botão **"🧪 Gerar exemplo"** na tela inicial.
+- **Branch.** O `render.yaml` aponta para `main`. Ajuste se publicar noutro.
+
 ## Início rápido
 
 ```bash
@@ -28,7 +73,9 @@ python -m venv .venv
 
 Na tela inicial, use **"▶️ Abrir exemplo"** para carregar o processo
 `EX-CAMPOBOM-001` (poço tubular de 6″ em Campo Bom/RS) com os seis agentes já
-executados.
+executados — ou **"🧪 Gerar exemplo"**, caso ainda não exista.
+
+Para publicar na nuvem, veja [Deploy no Render](#deploy-no-render).
 
 ---
 

@@ -554,7 +554,7 @@ def executar(proc, salvar: bool = True) -> dict:
         if salvar:
             destino = C.SAIDA / f"defeitos_{proc.id}.md"
             destino.write_text(relatorio_markdown(proc, achados), encoding="utf-8")
-            saida["arquivo"] = str(destino.relative_to(C.ROOT))
+            saida["arquivo"] = C.caminho_relativo(destino)
         proc.data["issues"] = achados
         proc.concluir_agente(6)
         proc.log(6, f"Triagem concluida: {saida['resumo'].get('total', 0)} achados.")

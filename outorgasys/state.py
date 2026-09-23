@@ -56,7 +56,7 @@ def _sanear_json(obj: Any, _profundidade: int = 0) -> Any:
 
     if isinstance(obj, Path):
         try:
-            return str(obj.relative_to(C.ROOT))
+            return C.caminho_relativo(obj)
         except Exception:  # noqa: BLE001
             return str(obj)
 
@@ -271,13 +271,13 @@ class Processo:
                 d for d in docs[chave] if d.get("nome") != uploaded.name
             ] + [{
                 "nome": uploaded.name,
-                "caminho": str(dest.relative_to(C.ROOT)),
+                "caminho": C.caminho_relativo(dest),
                 "tamanho": dest.stat().st_size,
             }]
         else:
             docs[chave] = {
                 "nome": uploaded.name,
-                "caminho": str(dest.relative_to(C.ROOT)),
+                "caminho": C.caminho_relativo(dest),
                 "tamanho": dest.stat().st_size,
             }
         return dest

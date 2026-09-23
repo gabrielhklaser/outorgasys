@@ -49,7 +49,7 @@ def gerar(proc, resp_tecnico: dict | None = None, art: str | None = None,
         md = laudo.para_markdown(estrutura)
         p_md = diretorio / "laudo_tecnico.md"
         p_md.write_text(md, encoding="utf-8")
-        saida["markdown"] = str(p_md.relative_to(C.ROOT))
+        saida["markdown"] = C.caminho_relativo(p_md)
     except Exception as exc:  # noqa: BLE001
         saida["erros"].append(f"Falha ao gerar o Markdown: {type(exc).__name__}: {exc}")
 
@@ -58,7 +58,7 @@ def gerar(proc, resp_tecnico: dict | None = None, art: str | None = None,
         minuta = gerar_minuta(proc, estrutura)
         p_min = diretorio / "minuta_siout.md"
         p_min.write_text(minuta, encoding="utf-8")
-        saida["minuta"] = str(p_min.relative_to(C.ROOT))
+        saida["minuta"] = C.caminho_relativo(p_min)
     except Exception as exc:  # noqa: BLE001
         saida["erros"].append(f"Falha ao gerar a minuta SIOUT: {type(exc).__name__}: {exc}")
 
@@ -66,7 +66,7 @@ def gerar(proc, resp_tecnico: dict | None = None, art: str | None = None,
     if gerar_pdf:
         try:
             p_pdf = pdf_mod.gerar_pdf(estrutura, diretorio / "laudo_tecnico.pdf")
-            saida["pdf"] = str(p_pdf.relative_to(C.ROOT))
+            saida["pdf"] = C.caminho_relativo(p_pdf)
         except Exception as exc:  # noqa: BLE001
             saida["erros"].append(f"Falha ao gerar o PDF: {type(exc).__name__}: {exc}")
             saida["erros"].append(traceback.format_exc(limit=8))

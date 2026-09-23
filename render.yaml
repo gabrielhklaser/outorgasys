@@ -1,0 +1,60 @@
+# Blueprint do Render para o OutorgaSys.
+#
+# Como usar:
+#   1. Faca commit deste ficheiro no repositorio.
+#   2. No Render: Blueprint  New + Blueprint instance, selecione o repositorio.
+#      O Render le este ficheiro e cria o servico sozinho.
+#   Tambem e possivel criar o Web Service manualmente com os mesmos valores.
+#
+# Sobre o plano: o Agente 2 carrega a base de drenagem do IBGE (drenagem_rs.gpkg,
+# 28 MB em disco, algumas centenas de MB em memoria ao ser lida com GeoPandas).
+# Por isso o padrao e "standard" (2 GB de RAM). Em "free"/"starter" (512 MB) o
+# servico pode ser morto por OOM exatamente no passo de cruzamento espacial.
+
+services:
+  - type: web
+    name: outorgasys
+    runtime: python
+    # Mesma regiao do disco persistente; nao e possivel misturar regioes.
+    region: oregon
+    plan: standard
+    branch: main
+
+    buildCommand: >-
+      pip install --no-cache-dir -r requirements.txt &&
+      (python scripts/semente_campo_bom.py || echo "[build] semente ignorada - o app gera o exemplo sob demanda")
+
+    # O Render injeta $PORT. O --server.address 0.0.0.0 e obrigatorio: sem ele o
+    # Streamlit escuta apenas em localhost e o health check nunca passa.
+    startCommand: >-
+      streamlit run app.py
+      --server.port $PORT
+      --server.address 0.0.0.0
+      --server.headless true
+
+    healthCheckPath: /_stcore/health
+
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.11.9"
+      # Pacotes pesados (geopandas/rasterio) e leitura de GeoPackage usam varios
+      # threads BLAS; limitar evita sobrecarga em containers pequenos.
+      - key: OMP_NUM_THREADS
+        value: "1"
+      - key: OPENBLAS_NUM_THREADS
+        value: "1"
+      - key: MPLBACKEND
+        value: "Agg"
+      # Diretorio dos dados mutaveis (processos e artefatos). Aponta para o disco
+      # persistente declarado abaixo, para que os processos sobrevivam a deploys.
+      - key: OUTORGASYS_RUNTIME_DIR
+        value: /var/data/outorgasys
+      # Diretorio de cache do matplotlib dentro do disco (o home do container nao
+      # e gravavel em alguns planos).
+      - key: MPLCONFIGDIR
+        value: /var/data/outorgasys/.mplconfig
+
+    disk:
+      name: outorgasys-data
+      mountPath: /var/data/outorgasys
+      sizeGB: 10

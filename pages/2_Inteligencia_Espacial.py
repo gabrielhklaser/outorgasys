@@ -84,7 +84,7 @@ with st.expander("Camadas vetoriais do utilizador (opcional — KML/KMZ/GPKG/Geo
             dest.write_bytes(up.getbuffer())
             proc.data.setdefault("camadas_usuario", {})[chave] = {
                 "nome": up.name,
-                "caminho": str(dest.relative_to(C.ROOT)),
+                "caminho": C.caminho_relativo(dest),
                 "papel": rotulo,
             }
             st.success(f"Camada registrada: {up.name}")
@@ -214,7 +214,7 @@ if mapas:
             mostrar_imagem(caminho, rotulo)
             p = Path(caminho)
             if not p.is_absolute():
-                p = C.ROOT / p
+                p = C.caminho_absoluto(p)
             if p.exists():
                 with open(p, "rb") as fh:
                     st.download_button("⬇️ Descarregar prancha", data=fh.read(),
