@@ -1189,6 +1189,6 @@
       "status": "falhou"
     }
   },
-  "gerado_em": "2026-09-23T12:08:35",
+  "gerado_em": "2026-09-23T17:49:47",
   "observacao": "rodovias_rs e nascentes_rs nao foram localizadas na BC250 2021 nesta execucao; o script passou a registar explicitamente a ausencia e a usar correspondencia por substring. Reexecute o workflow build-vetorial-data para nova tentativa."
 }
