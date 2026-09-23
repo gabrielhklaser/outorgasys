@@ -48,21 +48,20 @@ Content-Type: application/zip
 --- hybas_sa_lev01-12_v1c.zip
 HTTP/2 403 
 content-type: text/html; charset=UTF-8
-content-length: 5499
+content-length: 5477
 --- HydroRIVERS_v10_sa_shp.zip
 HTTP/2 403 
 content-type: text/html; charset=UTF-8
 content-length: 5453
 --- sul-latest-free.shp.zip
 HTTP/1.1 302 Found
-Content-Length: 258
 Content-Type: text/html; charset=iso-8859-1
 HTTP/1.1 200 OK
-Content-Length: 1044425072
+Content-Length: 1044633843
 Content-Type: application/zip
 --- sul-latest.osm.pbf
 HTTP/1.1 302 Found
 Content-Type: text/html; charset=iso-8859-1
 HTTP/1.1 200 OK
-Content-Length: 424900788
+Content-Length: 424978491
 Content-Type: application/octet-stream
