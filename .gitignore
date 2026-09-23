@@ -12,7 +12,9 @@ __pycache__/
 # --- dados brutos / temporarios (nao versionar: sao recompilados pelo workflow) ---
 data/raw/
 data/tmp/
-data/saida/
+# Excepcao: relatorio de defeitos do processo de exemplo (acompanha o exemplo versionado).
+data/saida/*
+!/data/saida/defeitos_EX-CAMPOBOM-001.md
 *.part
 
 # Processos: apenas o exemplo de Campo Bom e versionado, para que a aplicacao
