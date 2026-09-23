@@ -1088,6 +1088,13 @@
       "feicoes": 499,
       "status": "ok"
     },
+    "nascentes_rs": {
+      "erro": "nao localizada na BC250",
+      "prefixos_procurados": [
+        "hid_nascente"
+      ],
+      "status": "falhou"
+    },
     "osm_cache": {
       "arquivos": {
         "campo_bom": "data/cache/osm/osm_campo_bom_f1e49eba20bd.geojson",
@@ -1118,6 +1125,13 @@
     },
     "regioes_hidrograficas": {
       "erro": "download ANA falhou",
+      "status": "falhou"
+    },
+    "rodovias_rs": {
+      "erro": "nao localizada na BC250",
+      "prefixos_procurados": [
+        "rod_rodovia"
+      ],
       "status": "falhou"
     },
     "solos_rs": {
@@ -1173,22 +1187,8 @@
     "uph": {
       "erro": "download ANA falhou",
       "status": "falhou"
-    },
-    "rodovias_rs": {
-      "status": "falhou",
-      "erro": "nao localizada na BC250 2021 (camada ausente no geopackage)",
-      "prefixos_procurados": [
-        "rod_rodovia"
-      ]
-    },
-    "nascentes_rs": {
-      "status": "falhou",
-      "erro": "nao localizada na BC250 2021 (camada ausente no geopackage)",
-      "prefixos_procurados": [
-        "hid_nascente"
-      ]
     }
   },
-  "gerado_em": "2026-09-22T23:20:55",
+  "gerado_em": "2026-09-23T12:08:35",
   "observacao": "rodovias_rs e nascentes_rs nao foram localizadas na BC250 2021 nesta execucao; o script passou a registar explicitamente a ausencia e a usar correspondencia por substring. Reexecute o workflow build-vetorial-data para nova tentativa."
 }
