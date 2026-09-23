@@ -90,6 +90,31 @@ def registrar_upload(proc, chave: str, arquivo, papel: str | None = None) -> dic
     return registro
 
 
+def registrar_upload_manual(proc, chave: str, caminho, nome: str | None = None,
+                            meta: dict | None = None) -> dict:
+    """Registra um arquivo JA existente em disco (gerado pela plataforma) como
+    se fosse um envio do usuario. Usado pelo conjunto sintetico do Agente 3.
+
+    O metadado ``sintetico`` fica explicito no registro para que o laudo e o
+    Agente 6 declarem a origem nao-oficial do dado.
+    """
+    from pathlib import Path  # noqa: PLC0415
+
+    p = Path(caminho)
+    if not p.exists():
+        return {}
+    registro = {
+        "nome": nome or p.name,
+        "caminho": str(p.relative_to(C.ROOT)),
+        "tamanho": p.stat().st_size,
+        "origem": "gerado pela plataforma",
+    }
+    registro.update(meta or {})
+    proc.data.setdefault("documentos", {})[chave] = registro
+    proc.log(1, f"Arquivo registrado em '{chave}': {registro['nome']}")
+    return registro
+
+
 def arquivos_enviados(proc) -> dict:
     docs = proc.get("documentos") or {}
     return {

@@ -194,13 +194,17 @@ ALIASES = {
     "s_m": {"s", "sm", "rebaixamento", "rebaixamentom", "sm", "abaixamento"},
     "q_m3h": {"q", "qm3h", "vazao", "vazaom3h", "vazaoinstantanea", "qm3/h",
               "vazao_m3/h", "q_m3/h", "vazao_m3h", "qinst", "vazaomedida"},
+    # "t' (min)" normaliza para "tmin" -> conflita com t_min; a preferencia por
+    # aba (ver _mapear_colunas) desempata a favor da fase de recuperacao.
     "t_linha_min": {"tlinha", "tlinhamin", "t", "temporecuperacao",
                     "temporecuperacaomin", "tlinha", "t", "tempominrecuperacao",
-                    "tempodesdeodesligamentomin"},
+                    "tempodesdeodesligamentomin",
+                    "tmin", "tprima", "tprimamin", "tempodesligamento",
+                    "tempodesdeodesligamento", "tminrec"},
     "na_m": {"na", "nam", "nivelagua", "nivelresidual", "nivelmedido", "nam",
              "niveldaguam"},
     "s_linha_m": {"slinha", "slinham", "rebaixamentoresidual", "rebaixamentoresidualm",
-                  "s", "slinha(m)"},
+                  "s", "slinha(m)", "sm", "sprima", "rebaixamentoresidual(m)"},
     "observacoes": {"observacoes", "observacao", "obs", "notas"},
 }
 
@@ -208,19 +212,34 @@ ALIASES_CADASTRO = {chave: {_norm(rotulo), _norm(chave)}
                     for chave, rotulo, _ in CAMPOS_CADASTRO}
 
 
-def _mapear_colunas(df: pd.DataFrame) -> dict[str, str]:
-    """Associa colunas do arquivo aos nomes internos conhecidos."""
+def _mapear_colunas(df: pd.DataFrame,
+                    preferir: tuple[str, ...] = ()) -> dict[str, str]:
+    """Associa colunas do arquivo aos nomes internos conhecidos.
+
+    ``preferir`` resolve ambiguidades entre abas: o rotulo "t' (min)" normaliza
+    para "tmin", que casa tanto com ``t_min`` quanto (por aproximacao) com
+    ``t_linha_min``. Na aba de recuperacao os internos da propria fase tem de
+    ser testados primeiro.
+    """
     mapa: dict[str, str] = {}
     usadas: set[str] = set()
-    for col in df.columns:
-        n = _norm(col)
-        for interno, aliases in ALIASES.items():
-            if interno in mapa:
+
+    def passe(internos: tuple[str, ...]) -> None:
+        for col in df.columns:
+            n = _norm(col)
+            if col in usadas:
                 continue
-            if n in aliases or n.replace("m3h", "m3h") in aliases:
-                mapa[interno] = col
-                usadas.add(col)
-                break
+            for interno in internos:
+                if interno in mapa:
+                    continue
+                if n in ALIASES.get(interno, set()):
+                    mapa[interno] = col
+                    usadas.add(col)
+                    break
+
+    if preferir:
+        passe(tuple(preferir))
+    passe(tuple(a for a in ALIASES if a not in (preferir or ())))
     return mapa
 
 
@@ -328,7 +347,7 @@ def ler_planilha(caminho: Path | bytes | Any) -> dict:
 
     bombeamento = pd.DataFrame(columns=["t_min", "nd_m", "s_m", "q_m3h"])
     if df_bom is not None and len(df_bom):
-        mapa = _mapear_colunas(df_bom)
+        mapa = _mapear_colunas(df_bom, preferir=("t_min", "nd_m", "s_m", "q_m3h"))
         out = pd.DataFrame()
         for interno in ("t_min", "nd_m", "s_m", "q_m3h"):
             col = mapa.get(interno)
@@ -342,7 +361,8 @@ def ler_planilha(caminho: Path | bytes | Any) -> dict:
 
     recuperacao = pd.DataFrame(columns=["t_linha_min", "na_m", "s_linha_m"])
     if df_rec is not None and len(df_rec):
-        mapa_r = _mapear_colunas(df_rec)
+        mapa_r = _mapear_colunas(
+            df_rec, preferir=("t_linha_min", "na_m", "s_linha_m"))
         out = pd.DataFrame()
         for interno in ("t_linha_min", "na_m", "s_linha_m"):
             col = mapa_r.get(interno)

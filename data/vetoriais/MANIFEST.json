@@ -1173,7 +1173,22 @@
     "uph": {
       "erro": "download ANA falhou",
       "status": "falhou"
+    },
+    "rodovias_rs": {
+      "status": "falhou",
+      "erro": "nao localizada na BC250 2021 (camada ausente no geopackage)",
+      "prefixos_procurados": [
+        "rod_rodovia"
+      ]
+    },
+    "nascentes_rs": {
+      "status": "falhou",
+      "erro": "nao localizada na BC250 2021 (camada ausente no geopackage)",
+      "prefixos_procurados": [
+        "hid_nascente"
+      ]
     }
   },
-  "gerado_em": "2026-09-22T23:20:55"
+  "gerado_em": "2026-09-22T23:20:55",
+  "observacao": "rodovias_rs e nascentes_rs nao foram localizadas na BC250 2021 nesta execucao; o script passou a registar explicitamente a ausencia e a usar correspondencia por substring. Reexecute o workflow build-vetorial-data para nova tentativa."
 }

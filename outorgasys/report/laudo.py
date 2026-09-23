@@ -81,7 +81,7 @@ def montar_estrutura(proc, resp_tecnico: dict | None = None,
     enf = proc.get("enquadramento") or {}
     geo = proc.get("geoespacial") or {}
     coord = geo.get("coordenadas") or {}
-    hid = proc.get("hidraulica") or {}
+    hid = proc.get("hidraulica") or proc.get("hidrogeologia") or {}
     hp = hid.get("parametros") or {}
     bal = proc.get("balanco") or {}
     req = proc.get("requerente") or {}
@@ -321,7 +321,7 @@ def tabela_parametros(proc) -> list[dict]:
     """Tabela de parametros hidraulicos (secao 3 do relatorio)."""
     from ..agents import agente3_hidro
 
-    hid = proc.get("hidraulica") or {}
+    hid = proc.get("hidraulica") or proc.get("hidrogeologia") or {}
     if not hid:
         return []
     return agente3_hidro.tabela_memoria(hid)
@@ -335,7 +335,7 @@ def montar_parecer(proc, estrutura: dict) -> dict:
 
     enf = proc.get("enquadramento") or {}
     geo = proc.get("geoespacial") or {}
-    hid = proc.get("hidraulica") or {}
+    hid = proc.get("hidraulica") or proc.get("hidrogeologia") or {}
     hp = hid.get("parametros") or {}
     bal = proc.get("balanco") or {}
     pe = proc.get("padrao_explotacao") or {}

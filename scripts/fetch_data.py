@@ -555,7 +555,10 @@ def importar_bc250(zip_path: Path) -> dict:
             for nome, _tipo in list_layers(gp):
                 baixo = (nome or "").lower()
                 for chave, (prefixos, _tol, _geo) in BC250_LAYERS.items():
-                    if any(baixo.startswith(p.lower()) for p in prefixos):
+                    # Correspondencia por SUBSTRING (e nao apenas prefixo): a BC250
+                    # costuma sufixar o nome com o tipo geometrico, p.ex.
+                    # "rod_rodovia_l" e "hid_nascente_p".
+                    if any(p.lower() in baixo for p in prefixos):
                         # Prefere a primeira ocorrencia por camada.
                         indice.setdefault(chave, (gp, nome))
         except Exception as exc:  # noqa: BLE001
@@ -564,7 +567,20 @@ def importar_bc250(zip_path: Path) -> dict:
     if not indice:
         raise RuntimeError("nenhuma camada de interesse localizada na BC250")
 
+    # Toda camada pedida entra no resumo, mesmo quando nao localizada na BC250.
+    # Sem isto a ausencia fica invisivel no manifesto.
     resumo: dict[str, Any] = {}
+    for chave in BC250_LAYERS:
+        if chave not in indice:
+            resumo[chave] = {
+                "arquivo": str((VET / f"{chave}.gpkg").relative_to(ROOT)),
+                "feicoes": 0,
+                "origem": "IBGE - Base Cartografica Continua 1:250.000 (2021)",
+                "status": "nao localizada na BC250",
+                "prefixos_procurados": list(BC250_LAYERS[chave][0]),
+            }
+            log(f"  [{chave}] !! camada nao localizada na BC250 "
+                f"(procurado: {', '.join(BC250_LAYERS[chave][0])})")
     tiles = _tiles_rs()
 
     for chave, (gp, nome_camada) in indice.items():
@@ -935,7 +951,10 @@ def main() -> int:
                     }
                 else:
                     manifest["camadas"][chave] = {
-                        "status": "falhou", "erro": "nenhuma feicao no recorte do RS"}
+                        "status": "falhou",
+                        "erro": info.get("status") or "nenhuma feicao no recorte do RS",
+                        "prefixos_procurados": info.get("prefixos_procurados", []),
+                    }
             manifest["camadas"].pop("bc250", None)
 
     # ---------------- OSM ----------------

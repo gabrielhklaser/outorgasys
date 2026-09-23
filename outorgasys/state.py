@@ -9,6 +9,7 @@ permitir auditoria posterior.
 
 from __future__ import annotations
 
+import datetime
 import json
 import shutil
 import tempfile
@@ -19,6 +20,86 @@ from pathlib import Path
 from typing import Any
 
 from . import config as C
+
+
+# --------------------------------------------------------------------------------------
+# Persistencia tolerante
+# --------------------------------------------------------------------------------------
+
+def _sanear_json(obj: Any, _profundidade: int = 0) -> Any:
+    """Converte objetos nao serializaveis em estruturas JSON validas.
+
+    O processo circula por agentes que guardam DataFrames (ensaio de bombeamento),
+    escalares numpy e datas. Sem este saneamento o ``salvar()`` quebraria no meio
+    do fluxo e o operador perderia o trabalho ja feito.
+    """
+    if _profundidade > 12:
+        return "<limite de profundidade>"
+
+    if obj is None or isinstance(obj, (str, bool, int)):
+        return obj
+
+    if isinstance(obj, float):
+        # NaN/Infinity produzem JSON invalido para leitores estritos.
+        return obj if obj == obj and obj not in (float("inf"), float("-inf")) else None
+
+    if isinstance(obj, dict):
+        return {str(k): _sanear_json(v, _profundidade + 1) for k, v in obj.items()}
+
+    if isinstance(obj, (list, tuple)):
+        return [_sanear_json(v, _profundidade + 1)
+                for v in (obj[:2000] if len(obj) > 2000 else obj)]
+
+    if isinstance(obj, (set, frozenset)):
+        return [_sanear_json(v, _profundidade + 1)
+                for v in sorted(obj, key=lambda x: str(x))[:2000]]
+
+    if isinstance(obj, Path):
+        try:
+            return str(obj.relative_to(C.ROOT))
+        except Exception:  # noqa: BLE001
+            return str(obj)
+
+    if isinstance(obj, (datetime.date, datetime.datetime)):
+        return obj.isoformat()
+
+    nome_tipo = type(obj).__name__
+    modulo = type(obj).__module__ or ""
+
+    if modulo.startswith("pandas") or nome_tipo in ("DataFrame", "Series"):
+        try:
+            if nome_tipo == "Series":
+                return {"__tipo__": "serie", "valores": _sanear_json(
+                    obj.tolist(), _profundidade + 1)}
+            return {"__tipo__": "dataframe",
+                    "colunas": [str(c) for c in obj.columns],
+                    "linhas": _sanear_json(
+                        obj.head(5000).to_dict("records"), _profundidade + 1)}
+        except Exception:  # noqa: BLE001
+            return f"<{nome_tipo}>"
+
+    if modulo.startswith("numpy") or nome_tipo.startswith(("int", "float", "bool_",
+                                                            "ndarray")):
+        try:
+            if nome_tipo == "ndarray":
+                return _sanear_json(obj.tolist(), _profundidade + 1)
+            return _sanear_json(obj.item(), _profundidade + 1)
+        except Exception:  # noqa: BLE001
+            return None
+
+    if hasattr(obj, "to_dict") and callable(obj.to_dict):
+        try:
+            return _sanear_json(obj.to_dict(), _profundidade + 1)
+        except Exception:  # noqa: BLE001
+            pass
+
+    if hasattr(obj, "__dict__"):
+        try:
+            return _sanear_json(vars(obj), _profundidade + 1)
+        except Exception:  # noqa: BLE001
+            pass
+
+    return f"<{nome_tipo} nao serializavel>"
 
 
 def novo_id() -> str:
@@ -76,9 +157,38 @@ def _vazio_processo(pid: str) -> dict:
 class Processo:
     """Wrapper fino em torno do dicionario de estado, com persistencia em JSON."""
 
-    def __init__(self, data: dict | None = None, pid: str | None = None):
+    def __init__(self, data: dict | None = None, pid: str | None = None,
+                 carregar: bool = True):
+        """Abre um processo.
+
+        Com ``pid`` e sem ``data``, tenta carregar do disco antes de criar um
+        processo novo — evita que ``Processo(pid=...)`` substitua silenciosamente
+        um trabalho ja salvo. Passe ``carregar=False`` para forcar um novo.
+        """
+        if data is None and pid and carregar:
+            existente = self._ler(pid)
+            if existente is not None:
+                data = existente
         self.data: dict = data if data is not None else _vazio_processo(pid or novo_id())
         self.id: str = self.data["id"]
+
+    @staticmethod
+    def _json_de(pid: str) -> Path:
+        return C.PROCESSOS / f"{pid}.json"
+
+    @staticmethod
+    def _diretorio_de(pid: str) -> Path:
+        return C.PROCESSOS / pid
+
+    @staticmethod
+    def _ler(pid: str) -> dict | None:
+        p = Processo._json_de(pid)
+        if not p.exists():
+            return None
+        try:
+            return json.loads(p.read_text(encoding="utf-8"))
+        except Exception:  # noqa: BLE001
+            return None
 
     # ------------------------------------------------------------------ caminhos
     @property
@@ -113,7 +223,7 @@ class Processo:
 
     @property
     def caminho_json(self) -> Path:
-        return C.PROCESSOS / f"{self.id}.json"
+        return self._json_de(self.id)
 
     # ------------------------------------------------------------------ acesso
     def __getitem__(self, key: str) -> Any:
@@ -188,16 +298,15 @@ class Processo:
         self.data["atualizado_em"] = time.strftime("%Y-%m-%dT%H:%M:%S")
         self.caminho_json.parent.mkdir(parents=True, exist_ok=True)
         tmp = self.caminho_json.with_suffix(".json.tmp")
-        tmp.write_text(json.dumps(self.data, ensure_ascii=False, indent=2), encoding="utf-8")
+        tmp.write_text(json.dumps(_sanear_json(self.data), ensure_ascii=False,
+                                  indent=2), encoding="utf-8")
         tmp.replace(self.caminho_json)
         return self.caminho_json
 
     @classmethod
     def carregar(cls, pid: str) -> "Processo | None":
-        p = C.PROCESSOS / f"{pid}.json"
-        if not p.exists():
-            return None
-        return cls(json.loads(p.read_text(encoding="utf-8")))
+        dados = cls._ler(pid)
+        return cls(dados) if dados is not None else None
 
     @classmethod
     def listar(cls) -> list[dict]:

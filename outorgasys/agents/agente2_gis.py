@@ -14,6 +14,8 @@ ausencia e reportada.
 
 from __future__ import annotations
 
+import functools
+import json
 import traceback
 from pathlib import Path
 from typing import Any
@@ -51,27 +53,88 @@ def _linha_da_feicao(gdf) -> dict | None:
     return {k: (None if pd.isna(v) else v) for k, v in row.items() if k != "geometry"}
 
 
-def ponto_em_poligono(gdf, ponto_geo) -> Any | None:
-    """Devolve o subconjunto de ``gdf`` que contem o ponto (ou o mais proximo)."""
+def ponto_em_poligono(gdf, ponto_geo, tolerancia_graus: float = 0.05) -> Any | None:
+    """Devolve o subconjunto de ``gdf`` que contem o ponto (ou o mais proximo).
+
+    O fallback por proximidade cobre dois casos frequentes em bases tematicas
+    estaduais: ponto situado em area sem cobertura (mancha urbana, massa d'agua)
+    ou ligeiramente alem do limite do poligono por diferenca de escala.
+    """
     if gdf is None or not len(gdf):
         return None
     try:
         mask = gdf.geometry.contains(ponto_geo)
         if mask.any():
-            return gdf[mask]
+            sub = gdf[mask]
+            sub.attrs["metodo"] = "contem"
+            return sub
     except Exception:  # noqa: BLE001
         pass
     try:
-        # Ponto na fronteira / geometria invalida: usa o poligono mais proximo
-        # dentro de uma tolerancia de ~1,5 km.
-        idx = gdf.sindex.nearest(ponto_geo, max_distance=0)[0]
-        cand = gdf.iloc[list(idx)]
-        d = cand.distance(ponto_geo)
-        if len(d) and float(d.min()) < 0.02:   # ~2 km em graus
-            return cand.iloc[[int(d.idxmin())]]
+        idx = gdf.sindex.nearest(ponto_geo)
+        # shapely >= 2 devolve (2, n): linha 0 = indice da entrada, linha 1 = da arvore
+        if hasattr(idx, "ndim") and getattr(idx, "ndim", 1) == 2:
+            idx = idx[1]
+        elif isinstance(idx, tuple):
+            idx = idx[1] if len(idx) > 1 else idx[0]
+        cand = gdf.iloc[[int(i) for i in list(idx)]]
+        # Distancia em metros (projetada) para evitar o aviso de CRS geografico.
+        try:
+            crs_m = cand.estimate_utm_crs()
+            cand_m = cand.to_crs(crs_m)
+            pt_m = (gpd.GeoSeries([ponto_geo], crs=C.CRS_GEOGRAFICO)
+                    .to_crs(crs_m).iloc[0])
+            d = (cand_m.distance(pt_m) / 111_320.0).reset_index(drop=True)
+        except Exception:  # noqa: BLE001
+            import warnings as _w  # noqa: PLC0415
+
+            with _w.catch_warnings():
+                _w.simplefilter("ignore")
+                d = cand.distance(ponto_geo).reset_index(drop=True)
+        if len(d) and float(d.min()) <= tolerancia_graus:
+            pos = int(d.values.argmin())
+            sub = cand.reset_index(drop=True).iloc[[pos]]
+            sub.attrs["metodo"] = f"poligono mais proximo ({float(d.min()):.5f} graus)"
+            return sub
     except Exception:  # noqa: BLE001
         pass
     return None
+
+
+def _metodo_hit(hit) -> str:
+    return (getattr(hit, "attrs", {}) or {}).get("metodo", "contem")
+
+
+def feicao_nomeada_mais_proxima(gdf, ponto_geo, epsg_utm: str,
+                                campos_nome: Sequence[str],
+                                dist_max_m: float = 5000.0) -> dict | None:
+    """Devolve a feicao mais proxima que tenha nome, dentro de ``dist_max_m``."""
+    if gdf is None or not len(gdf):
+        return None
+    try:
+        a = gdf.to_crs(epsg_utm)
+        from shapely.geometry import Point as _P  # noqa: PLC0415
+
+        p = gpd.GeoSeries([ponto_geo], crs=C.CRS_GEOGRAFICO).to_crs(epsg_utm).iloc[0]
+        campos = [c for c in campos_nome if c in a.columns]
+        if not campos:
+            return None
+        nomeados = a[a[campos].apply(
+            lambda r: any(str(v).strip() not in ("", "nan", "None")
+                          for v in r), axis=1)]
+        if not len(nomeados):
+            return None
+        dist = nomeados.geometry.distance(p).reset_index(drop=True)
+        i = int(dist.values.argmin())
+        dist_m = float(dist.iloc[i])
+        if dist_m > dist_max_m:
+            return None
+        linha = nomeados.reset_index(drop=True).iloc[[i]]
+        return {"nome": _primeiro(linha, tuple(campos)),
+                "distancia_m": round(dist_m, 2),
+                "gdf": gdf.iloc[[i]]}
+    except Exception:  # noqa: BLE001
+        return None
 
 
 # --------------------------------------------------------------------------------------
@@ -191,8 +254,17 @@ def analisar(proc, lat: float, lon: float, raio_seguranca: float = C.RAIO_SEGURA
             codigo = linha.get("Name") or linha.get("NOME") or linha.get("SIGLA")
             saida["sistema_aquifero"] = codigo
             saida["detalhes"]["sistema_aquifero_codigo"] = codigo
-            saida["detalhes"]["sistema_aquifero_nome"] = (
-                AQUIFEROS_RS.get(str(codigo).strip().upper()) if codigo else None)
+            sigla = str(codigo).strip().upper() if codigo else ""
+            nome_aq = AQUIFEROS_RS.get(sigla)
+            if nome_aq is None and sigla in SIGLAS_SEM_LEGENDA:
+                # A base estadual traz apenas a sigla da unidade, sem legenda.
+                # Nao se inventa interpretacao - declara-se a ausencia do nome.
+                saida["detalhes"]["sistema_aquifero_sem_legenda"] = True
+                saida["detalhes"]["sistema_aquifero_observacao"] = (
+                    f"A base hidrogeologica estadual identifica apenas a sigla "
+                    f"'{sigla}' da unidade; o nome do sistema aquifero nao consta "
+                    "do arquivo e nao foi interpretado pela plataforma.")
+            saida["detalhes"]["sistema_aquifero_nome"] = nome_aq
 
     # ---------------------------------------------------------------- 5) solos
     res = layers.carregar("solos_rs", bbox=bbox_ctx)
@@ -200,8 +272,15 @@ def analisar(proc, lat: float, lon: float, raio_seguranca: float = C.RAIO_SEGURA
     if res.disponivel:
         hit = ponto_em_poligono(res.gdf, ponto_geo)
         if hit is not None and len(hit):
+            metodo = _metodo_hit(hit)
             saida["detalhes"]["classe_solo"] = (
                 _primeiro(hit, ("Name", "NOME", "SOLO", "CLASSE")))
+            if metodo != "contem":
+                saida["detalhes"]["classe_solo_aproximada"] = True
+                saida["detalhes"]["classe_solo_observacao"] = (
+                    "Ponto fora da mancha de solos da base (area urbana ou "
+                    "massa d'agua); adotada a unidade de solo mais proxima "
+                    f"({metodo}).")
 
     # ---------------------------------------------------------------- 6) regiao hidrografica
     res = layers.carregar("regioes_hidrograficas")
@@ -242,6 +321,8 @@ def analisar(proc, lat: float, lon: float, raio_seguranca: float = C.RAIO_SEGURA
     saida["bacia_hidrografica"] = _rotular_bacia(saida["bacia_hidrografica"],
                                                  detalhes.get("ottobacia"))
 
+
+
     # ---------------------------------------------------------------- 9) drenagem + distancia
     corpo_hidrico = {"nome": None, "distancia_m": None}
     drenagem_gdf = None
@@ -261,16 +342,33 @@ def analisar(proc, lat: float, lon: float, raio_seguranca: float = C.RAIO_SEGURA
     alvo = drenagem_gdf if drenagem_gdf is not None and len(drenagem_gdf) else cursos_gdf
     if alvo is not None and len(alvo):
         try:
+            alvo = alvo.reset_index(drop=True)
             a = alvo.to_crs(coord["epsg"])
             p = g_ponto.to_crs(coord["epsg"]).iloc[0]
-            dist = a.geometry.distance(p)
-            i = int(dist.idxmin())
+            dist = a.geometry.distance(p).reset_index(drop=True)
+            i = int(dist.values.argmin())
             d = float(dist.iloc[i])
             linha_proxima = alvo.iloc[[i]].copy()
             corpo_hidrico["distancia_m"] = round(d, 2)
-            corpo_hidrico["nome"] = _primeiro(
-                linha_proxima, ("no_rio_pri", "no_rio", "nome", "Name", "NOME")) \
-                or "Corpo hidrico sem denominacao na base"
+            # A distancia reportada e sempre a do trecho de drenagem mais proximo,
+            # mesmo que sem denominacao (e o que conta para a regra de seguranca).
+            # O nome, porem, e tomado da feicao NOMEADA mais proxima, para que o
+            # laudo cite um corpo hidrico identificavel.
+            nome_prox = _primeiro(
+                linha_proxima, ("no_rio_pri", "no_rio", "nome", "Name", "NOME"))
+            corpo_hidrico["nome"] = nome_prox
+            if not nome_prox:
+                nomeado = feicao_nomeada_mais_proxima(
+                    alvo, ponto_geo, coord["epsg"],
+                    ("no_rio_pri", "no_rio", "nome", "Name", "NOME", "NOME_RIO", "DESCRICAO"),
+                    dist_max_m=max(5000.0, float(raio_contexto)))
+                if nomeado:
+                    corpo_hidrico["nome"] = nomeado["nome"]
+                    detalhes["corpo_hidrico_nome_distancia_m"] = nomeado["distancia_m"]
+                    detalhes["corpo_hidrico_nome_origem"] = (
+                        "trecho de drenagem denominado mais proximo")
+                else:
+                    corpo_hidrico["nome"] = "Corpo hidrico sem denominacao na base"
             linha_proxima_gdf = linha_proxima
             detalhes["corpo_hidrico_fonte"] = "ANA - BHO 2017"
         except Exception as exc:  # noqa: BLE001
@@ -282,14 +380,14 @@ def analisar(proc, lat: float, lon: float, raio_seguranca: float = C.RAIO_SEGURA
         temas = overpass.separar_temas(osm.gdf) if (osm and osm.disponivel) else {}
         if temas.get("drenagem") is not None and len(temas["drenagem"]):
             try:
-                a = temas["drenagem"].to_crs(coord["epsg"])
+                a = temas["drenagem"].reset_index(drop=True).to_crs(coord["epsg"])
                 p = g_ponto.to_crs(coord["epsg"]).iloc[0]
-                dist = a.geometry.distance(p)
-                i = int(dist.idxmin())
+                dist = a.geometry.distance(p).reset_index(drop=True)
+                i = int(dist.values.argmin())
                 corpo_hidrico["distancia_m"] = round(float(dist.iloc[i]), 2)
                 corpo_hidrico["nome"] = _primeiro(
                     a.iloc[[i]], ("name", "waterway")) or "Corpo hidrico (OSM)"
-                linha_proxima_gdf = temas["drenagem"].iloc[[i]]
+                linha_proxima_gdf = a.iloc[[i]]
                 detalhes["corpo_hidrico_fonte"] = "OpenStreetMap (Overpass)"
                 drenagem_gdf = temas["drenagem"]
                 prov["osm"] = osm.to_dict()
@@ -297,6 +395,26 @@ def analisar(proc, lat: float, lon: float, raio_seguranca: float = C.RAIO_SEGURA
                 pass
 
     saida["corpo_hidrico_proximo"] = corpo_hidrico
+
+    # Fallback documentado: as camadas poligonais de ottobacias/regioes da ANA
+    # nao estao disponiveis neste ambiente (metadados.snirh.gov.br bloqueado).
+    # Nesse caso classificamos a bacia a partir do nome do corpo hidrico mais
+    # proximo e, em ultimo caso, do municipio - e declaramos a origem.
+    if not saida["bacia_hidrografica"]:
+        classif = classificar_bacia((corpo_hidrico or {}).get("nome"), saida["municipio"])
+        if classif:
+            saida["bacia_hidrografica"] = classif["bacia"]
+            saida["regiao_hidrografica"] = (
+                saida["regiao_hidrografica"] or classif["regiao_hidrografica"])
+            detalhes["ugrh"] = classif.get("ugrh")
+            detalhes["classificacao_bacia"] = {
+                "metodo": classif["metodo"],
+                "correspondencia": classif.get("correspondencia"),
+                "origem": "tabela de referencia do outorgasys (curada)",
+                "observacao": (
+                    "Classificacao obtida por tabela de referencia, nao por "
+                    "interseccao com a base poligonal de ottobacias da ANA."),
+            }
 
     # ---------------------------------------------------------------- 10) raio de seguranca
     ocorrencias: dict[str, Any] = {}
@@ -454,16 +572,28 @@ def analisar(proc, lat: float, lon: float, raio_seguranca: float = C.RAIO_SEGURA
 #: corrente do sistema aquifer. A base 'Hidrogelogia_RS.kmz' traz apenas a
 #: sigla da unidade; a tabela traduz para a denominacao usada em SIOUT/CPRM.
 AQUIFEROS_RS: dict[str, str] = {
+    # --- siglas efetivamente presentes na base hidrogeologica do RS --------------
+    "BAS": "Sistema Aquifero Serra Geral (basaltos fraturados)",
+    "BAS2": "Sistema Aquifero Serra Geral (basaltos fraturados)",
+    "BAS3": "Sistema Aquifero Serra Geral (basaltos fraturados)",
+    "BOT1": "Sistema Aquifero Botucatu (arenitos eolicos)",
+    "BOT2": "Sistema Aquifero Botucatu (arenitos eolicos)",
+    "BOT3": "Sistema Aquifero Botucatu (arenitos eolicos)",
+    "GR1": "Sistema Aquifero Guarani (arenitos da Bacia do Parana)",
+    "GR2": "Sistema Aquifero Guarani (arenitos da Bacia do Parana)",
+    "GR3": "Sistema Aquifero Guarani (arenitos da Bacia do Parana)",
+    "PIR": "Sistema Aquifero Piramboia (arenitos fluviais)",
+    "RB": "Aquifero Rio Bonito (arenitos e siltitos)",
+    "SM": "Aquifero Santa Maria (arenitos e argilitos)",
+    # --- aliases literais ---------------------------------------------------------
     "SG": "Sistema Aquifero Serra Geral",
     "SERG": "Sistema Aquifero Serra Geral",
     "BOT": "Sistema Aquifero Botucatu",
     "BOTUCATU": "Sistema Aquifero Botucatu",
     "GUARANI": "Sistema Aquifero Guarani",
     "GUA": "Sistema Aquifero Guarani",
-    "PIR": "Sistema Aquifero Piramboia",
     "PIRAMBOIA": "Sistema Aquifero Piramboia",
     "RIO_BONITO": "Aquifero Rio Bonito",
-    "RB": "Aquifero Rio Bonito",
     "PAL": "Aquifero Palermo",
     "RIO_DO_RASTRO": "Aquifero Rio do Rastro",
     "ESTRADA_NOVA": "Aquifero Estrada Nova",
@@ -477,6 +607,11 @@ AQUIFEROS_RS: dict[str, str] = {
     "VULCANICA": "Sistema Aquifero Serra Geral (rochas vulcanicas)",
     "BASALTO": "Sistema Aquifero Serra Geral (basaltos fraturados)",
 }
+
+# Siglas da base hidrogeologica estadual cuja legenda nao acompanha o arquivo.
+# Nesses casos a plataforma reporta a sigla literal e declara que o nome do
+# sistema aquifero nao foi obtido da base - nao inventa interpretacao.
+SIGLAS_SEM_LEGENDA = {"L1", "L2", "L3", "L4", "L5", "AQP", "P", "Q"}
 
 #: Prefixos Otto Pfafstetter -> bacia/Regiao hidrografica no RS.
 BACIAS_RS: list[tuple[str, str]] = [
@@ -508,6 +643,68 @@ BACIAS_RS: list[tuple[str, str]] = [
     ("77", "Bacia Hidrografica do Rio Camaqua"),
     ("78", "Bacia Hidrografica do Rio Jacare",),
 ]
+
+
+def classificar_bacia(nome_corpo_hidrico: str | None,
+                      municipio: str | None) -> dict | None:
+    """Classifica bacia/regiao hidrografica por tabela de referencia curada.
+
+    Usada quando as camadas poligonais de ottobacias/regioes hidrograficas da
+    ANA nao estao disponiveis. A correspondencia e por substring normalizada; a
+    entrada mais especifica (chave mais longa) tem prioridade.
+    """
+    tabela = _carregar_tabela_bacias()
+    if not tabela:
+        return None
+
+    def norm(s: Any) -> str:
+        import re
+        import unicodedata
+
+        s = str(s or "").lower().strip()
+        s = unicodedata.normalize("NFKD", s)
+        s = "".join(c for c in s if not unicodedata.combining(c))
+        s = re.sub(r"\s+", " ", s)
+        return s
+
+    def buscar(valor: str | None, entradas: list[dict], metodo: str) -> dict | None:
+        if not valor:
+            return None
+        v = norm(valor)
+        if not v:
+            return None
+        candidatos = []
+        for e in entradas:
+            chave = norm(e.get("chave"))
+            if chave and (chave in v or v in chave):
+                candidatos.append((len(chave), e))
+        if not candidatos:
+            return None
+        candidatos.sort(key=lambda t: -t[0])
+        _, e = candidatos[0]
+        regiao_chave = e.get("regiao")
+        return {
+            "bacia": e.get("bacia"),
+            "regiao_hidrografica": tabela.get("regioes_hidrograficas", {}).get(
+                regiao_chave, regiao_chave),
+            "ugrh": e.get("ugrh"),
+            "metodo": metodo,
+            "correspondencia": e.get("chave"),
+        }
+
+    return (buscar(nome_corpo_hidrico, tabela.get("por_rio") or [],
+                   "nome do corpo hidrico mais proximo")
+            or buscar(municipio, tabela.get("por_municipio") or [],
+                      "municipio do ponto"))
+
+
+@functools.lru_cache(maxsize=1)
+def _carregar_tabela_bacias() -> dict:
+    p = Path(__file__).resolve().parent.parent / "gis" / "data" / "bacias_rs.json"
+    try:
+        return json.loads(p.read_text(encoding="utf-8"))
+    except Exception:  # noqa: BLE001
+        return {}
 
 
 def _rotular_bacia(atual: str | None, codigo_otto: str | None) -> str | None:

@@ -192,7 +192,9 @@ def executar(proc, ano: int | None = None, preferencia_vazao: str = "auto") -> d
     horas_dia = _num(pe.get("horas_dia"))
     dias_semana = _num(pe.get("dias_semana"))
 
-    hidraulica = proc.get("hidraulica") or {}
+    # O Agente 3 grava em "hidrogeologia"; "hidraulica" e aceito como alias para
+    # compatibilidade com cargas de processos mais antigas.
+    hidraulica = proc.get("hidraulica") or proc.get("hidrogeologia") or {}
     escolha = escolher_vazao_adotada(hidraulica, preferencia_vazao)
     vazao = escolha["vazao"]
 

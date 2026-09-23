@@ -1,0 +1,92 @@
+{
+  "_meta": {
+    "descricao": "Tabela de referencia para classificacao de bacia e regiao hidrografica no Rio Grande do Sul.",
+    "uso": "Usada pelo Agente 2 como fallback documentado quando as camadas poligonais de ottobacias (ANA/BHO) nao estao disponiveis no ambiente de processamento.",
+    "regras": [
+      "A correspondencia e feita por substring normalizada (sem acentos, minusculas) sobre o nome do corpo hidrico mais proximo.",
+      "Entradas mais especificas (mais longas) tem prioridade sobre as mais curtas.",
+      "Se nao houver correspondencia, o campo e deixado nulo e a ausencia e declarada no relatorio - nenhum valor e inferido."
+    ],
+    "fontes": [
+      "Conselho Nacional de Recursos Hidricos (CNRH), Resolucao n. 32/2003 - doze Regioes Hidrograficas",
+      "Conselho de Recursos Hidricos do Rio Grande do Sul (CRH-RS) - Regioes Hidrograficas e Unidades de Gerenciamento de Recursos Hidricos (UGRH)",
+      "ANA - Base Hidrografica Ottocodificada (BHO), codificacao de Otto Pfafstetter"
+    ],
+    "atencao": "Tabela curada para apoio a triagem. A confirmacao oficial da bacia/UPH para fins de instrucao processual deve ser feita no SIOUT RS."
+  },
+
+  "regioes_hidrograficas": {
+    "Guaiba": "Regiao Hidrografica do Guaiba",
+    "Uruguai": "Regiao Hidrografica do Uruguai",
+    "Litoranea": "Regiao Hidrografica Litoranea"
+  },
+
+  "por_rio": [
+    { "chave": "rio dos sinos", "bacia": "Bacia Hidrografica do Rio dos Sinos", "regiao": "Guaiba", "ugrh": "Rio Sinos" },
+    { "chave": "arroio da bica", "bacia": "Bacia Hidrografica do Rio dos Sinos", "regiao": "Guaiba", "ugrh": "Rio Sinos" },
+    { "chave": "rio cai", "bacia": "Bacia Hidrografica do Rio Cai", "regiao": "Guaiba", "ugrh": "Rio Cai" },
+    { "chave": "rio gravatai", "bacia": "Bacia Hidrografica do Rio Gravatai", "regiao": "Guaiba", "ugrh": "Rio Gravatai" },
+    { "chave": "rio gravatahy", "bacia": "Bacia Hidrografica do Rio Gravatai", "regiao": "Guaiba", "ugrh": "Rio Gravatai" },
+    { "chave": "rio jacui", "bacia": "Bacia Hidrografica do Rio Jacui", "regiao": "Guaiba", "ugrh": "Medio Jacui" },
+    { "chave": "rio taquari", "bacia": "Bacia Hidrografica do Rio Taquari-Antas", "regiao": "Guaiba", "ugrh": "Taquari-Antas" },
+    { "chave": "rio das antas", "bacia": "Bacia Hidrografica do Rio Taquari-Antas", "regiao": "Guaiba", "ugrh": "Taquari-Antas" },
+    { "chave": "rio vacacai", "bacia": "Bacia Hidrografica do Rio Vacacai-Vacacai Mirim", "regiao": "Guaiba", "ugrh": "Vacacai-Vacacai Mirim" },
+    { "chave": "rio guaiba", "bacia": "Bacia Hidrografica do Lago Guaiba", "regiao": "Guaiba", "ugrh": "Baixo Jacui" },
+    { "chave": "lago guaiba", "bacia": "Bacia Hidrografica do Lago Guaiba", "regiao": "Guaiba", "ugrh": "Baixo Jacui" },
+    { "chave": "arroio diluvio", "bacia": "Bacia Hidrografica do Lago Guaiba", "regiao": "Guaiba", "ugrh": "Baixo Jacui" },
+    { "chave": "arroio cascata", "bacia": "Bacia Hidrografica do Rio Jacui", "regiao": "Guaiba", "ugrh": "Alto Jacui" },
+
+    { "chave": "rio uruguai", "bacia": "Bacia Hidrografica do Rio Uruguai", "regiao": "Uruguai", "ugrh": "Medio Uruguai" },
+    { "chave": "rio ibicui", "bacia": "Bacia Hidrografica do Rio Ibicui", "regiao": "Uruguai", "ugrh": "Ibicui" },
+    { "chave": "rio ijui", "bacia": "Bacia Hidrografica do Rio Ijui", "regiao": "Uruguai", "ugrh": "Ijui" },
+    { "chave": "rio passo fundo", "bacia": "Bacia Hidrografica do Rio Passo Fundo", "regiao": "Uruguai", "ugrh": "Passo Fundo" },
+    { "chave": "rio da varzea", "bacia": "Bacia Hidrografica do Rio da Varzea", "regiao": "Uruguai", "ugrh": "Varzea" },
+    { "chave": "rio apuae", "bacia": "Bacia Hidrografica do Rio Apuae-Inhandava", "regiao": "Uruguai", "ugrh": "Apuae-Inhandava" },
+    { "chave": "rio inhandava", "bacia": "Bacia Hidrografica do Rio Apuae-Inhandava", "regiao": "Uruguai", "ugrh": "Apuae-Inhandava" },
+    { "chave": "rio piratini", "bacia": "Bacia Hidrografica do Rio Piratini", "regiao": "Uruguai", "ugrh": "Piratini" },
+    { "chave": "rio santa rosa", "bacia": "Bacia Hidrografica do Rio Santa Rosa", "regiao": "Uruguai", "ugrh": "Santa Rosa" },
+    { "chave": "rio turvo", "bacia": "Bacia Hidrografica do Rio Turvo", "regiao": "Uruguai", "ugrh": "Turvo" },
+    { "chave": "rio butui", "bacia": "Bacia Hidrografica do Butui-Icamaqua", "regiao": "Uruguai", "ugrh": "Butui-Icamaqua" },
+    { "chave": "rio icamaqua", "bacia": "Bacia Hidrografica do Butui-Icamaqua", "regiao": "Uruguai", "ugrh": "Butui-Icamaqua" },
+    { "chave": "rio camaqua", "bacia": "Bacia Hidrografica do Rio Camaqua", "regiao": "Litoranea", "ugrh": "Rio Camaqua" },
+    { "chave": "rio camacua", "bacia": "Bacia Hidrografica do Rio Camaqua", "regiao": "Litoranea", "ugrh": "Rio Camaqua" },
+    { "chave": "rio pelotas", "bacia": "Bacia Hidrografica do Rio Pelotas", "regiao": "Uruguai", "ugrh": "Alto Uruguai" },
+
+    { "chave": "lagoa dos patos", "bacia": "Bacia Hidrografica da Lagoa dos Patos", "regiao": "Litoranea", "ugrh": "Lagoa dos Patos" },
+    { "chave": "lagoa mirim", "bacia": "Bacia Hidrografica das Lagoas Mirim e Mangueira", "regiao": "Litoranea", "ugrh": "Lagoa Mirim" },
+    { "chave": "rio sao goncalo", "bacia": "Bacia Hidrografica do Rio Sao Goncalo", "regiao": "Litoranea", "ugrh": "Rio Sao Goncalo" },
+    { "chave": "rio tramandai", "bacia": "Bacia Hidrografica do Rio Tramandai", "regiao": "Litoranea", "ugrh": "Tramandai" },
+    { "chave": "rio mampituba", "bacia": "Bacia Hidrografica do Rio Mampituba", "regiao": "Litoranea", "ugrh": "Litoral Medio" },
+    { "chave": "arroio teixeira", "bacia": "Bacia Hidrografica do Rio Camaqua", "regiao": "Litoranea", "ugrh": "Rio Camaqua" }
+  ],
+
+  "por_municipio": [
+    { "chave": "campo bom", "bacia": "Bacia Hidrografica do Rio dos Sinos", "regiao": "Guaiba", "ugrh": "Rio Sinos" },
+    { "chave": "novo hamburgo", "bacia": "Bacia Hidrografica do Rio dos Sinos", "regiao": "Guaiba", "ugrh": "Rio Sinos" },
+    { "chave": "sao leopoldo", "bacia": "Bacia Hidrografica do Rio dos Sinos", "regiao": "Guaiba", "ugrh": "Rio Sinos" },
+    { "chave": "estancia velha", "bacia": "Bacia Hidrografica do Rio dos Sinos", "regiao": "Guaiba", "ugrh": "Rio Sinos" },
+    { "chave": "sapucaia do sul", "bacia": "Bacia Hidrografica do Rio dos Sinos", "regiao": "Guaiba", "ugrh": "Rio Sinos" },
+    { "chave": "canoas", "bacia": "Bacia Hidrografica do Rio dos Sinos", "regiao": "Guaiba", "ugrh": "Rio Sinos" },
+    { "chave": "porto alegre", "bacia": "Bacia Hidrografica do Lago Guaiba", "regiao": "Guaiba", "ugrh": "Baixo Jacui" },
+    { "chave": "cachoeirinha", "bacia": "Bacia Hidrografica do Rio Gravatai", "regiao": "Guaiba", "ugrh": "Rio Gravatai" },
+    { "chave": "gravatai", "bacia": "Bacia Hidrografica do Rio Gravatai", "regiao": "Guaiba", "ugrh": "Rio Gravatai" },
+    { "chave": "caxias do sul", "bacia": "Bacia Hidrografica do Rio Taquari-Antas", "regiao": "Guaiba", "ugrh": "Taquari-Antas" },
+    { "chave": "bento goncalves", "bacia": "Bacia Hidrografica do Rio Taquari-Antas", "regiao": "Guaiba", "ugrh": "Taquari-Antas" },
+    { "chave": "santa maria", "bacia": "Bacia Hidrografica do Rio Vacacai-Vacacai Mirim", "regiao": "Guaiba", "ugrh": "Vacacai-Vacacai Mirim" },
+    { "chave": "santa cruz do sul", "bacia": "Bacia Hidrografica do Rio Jacui", "regiao": "Guaiba", "ugrh": "Medio Jacui" },
+    { "chave": "cachoeira do sul", "bacia": "Bacia Hidrografica do Rio Jacui", "regiao": "Guaiba", "ugrh": "Baixo Jacui" },
+    { "chave": "passo fundo", "bacia": "Bacia Hidrografica do Rio Passo Fundo", "regiao": "Uruguai", "ugrh": "Passo Fundo" },
+    { "chave": "erechim", "bacia": "Bacia Hidrografica do Rio Passo Fundo", "regiao": "Uruguai", "ugrh": "Passo Fundo" },
+    { "chave": "ijui", "bacia": "Bacia Hidrografica do Rio Ijui", "regiao": "Uruguai", "ugrh": "Ijui" },
+    { "chave": "santa rosa", "bacia": "Bacia Hidrografica do Rio Santa Rosa", "regiao": "Uruguai", "ugrh": "Santa Rosa" },
+    { "chave": "uruguaiana", "bacia": "Bacia Hidrografica do Rio Uruguai", "regiao": "Uruguai", "ugrh": "Medio Uruguai" },
+    { "chave": "santana do livramento", "bacia": "Bacia Hidrografica do Rio Ibicui", "regiao": "Uruguai", "ugrh": "Ibicui" },
+    { "chave": "livramento", "bacia": "Bacia Hidrografica do Rio Ibicui", "regiao": "Uruguai", "ugrh": "Ibicui" },
+    { "chave": "pelotas", "bacia": "Bacia Hidrografica do Rio Sao Goncalo", "regiao": "Litoranea", "ugrh": "Rio Sao Goncalo" },
+    { "chave": "rio grande", "bacia": "Bacia Hidrografica da Lagoa dos Patos", "regiao": "Litoranea", "ugrh": "Lagoa dos Patos" },
+    { "chave": "camaqua", "bacia": "Bacia Hidrografica do Rio Camaqua", "regiao": "Litoranea", "ugrh": "Rio Camaqua" },
+    { "chave": "tramandai", "bacia": "Bacia Hidrografica do Rio Tramandai", "regiao": "Litoranea", "ugrh": "Tramandai" },
+    { "chave": "capao da canoa", "bacia": "Bacia Hidrografica do Rio Tramandai", "regiao": "Litoranea", "ugrh": "Tramandai" },
+    { "chave": "torres", "bacia": "Bacia Hidrografica do Rio Mampituba", "regiao": "Litoranea", "ugrh": "Litoral Medio" }
+  ]
+}

@@ -17,6 +17,9 @@ CACHE_OSM = DATA / "cache" / "osm"
 PROCESSOS = DATA / "processos"
 SAIDA = DATA / "saida"
 EXEMPLOS = DATA / "exemplos"
+
+# Identificador do processo de exemplo (gerado por scripts/semente_campo_bom.py)
+PROCESSO_EXEMPLO = "EX-CAMPOBOM-001"
 ASSETS = ROOT / "assets"
 
 for _p in (VETORIAIS, CACHE_OSM, PROCESSOS, SAIDA, EXEMPLOS, ASSETS):
