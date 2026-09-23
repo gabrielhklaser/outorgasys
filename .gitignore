@@ -12,10 +12,16 @@ __pycache__/
 # --- dados brutos / temporarios (nao versionar: sao recompilados pelo workflow) ---
 data/raw/
 data/tmp/
-data/processos/*
-!/data/processos/.gitkeep
 data/saida/
 *.part
+
+# Processos: apenas o exemplo de Campo Bom e versionado, para que a aplicacao
+# ja abra com um caso completo (no Render evita gerar no primeiro arranque).
+# Os processos criados pelos utilizadores ficam de fora.
+data/processos/*
+!/data/processos/.gitkeep
+!/data/processos/EX-CAMPOBOM-001/
+!/data/processos/EX-CAMPOBOM-001.json
 
 # --- artefatos gerados em runtime ---
 outorgasys/_runtime/
