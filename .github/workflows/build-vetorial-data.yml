@@ -1,0 +1,112 @@
+name: build-vetorial-data
+
+# Constroi/normaliza a base de dados vetoriais da plataforma (Agente 2).
+# Roda manualmente (workflow_dispatch) ou quando os scripts de dados mudam.
+# Os runners do GitHub tem rede irrestrita, o que permite alcançar o Google Drive,
+# o IBGE e a ANA mesmo quando o ambiente de desenvolvimento esta atras de proxy.
+
+on:
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "Rebuild everything (ignore manifest)"
+        type: boolean
+        default: false
+      only:
+        description: "Comma-separated step filter (drive,geologia_rs,bho,osm,...)"
+        type: string
+        default: ""
+  push:
+    paths:
+      - "scripts/fetch_data.py"
+      - ".github/workflows/build-vetorial-data.yml"
+      - "data/.build-request.json"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-vetorial-data
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    env:
+      FORCE_COLOR: "1"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install geo stack
+        run: |
+          python -m pip install --upgrade pip
+          pip install geopandas pyogrio shapely pyproj requests
+
+      - name: Show GDAL/OGR drivers
+        run: python -c "import pyogrio; d=set(pyogrio.list_drivers()); print('KML', 'KML' in d); print('LIBKML', 'LIBKML' in d); print('GPKG', 'GPKG' in d)"
+
+      - name: Build vector database
+        run: |
+          python scripts/fetch_data.py \
+            ${{ inputs.force && '--force' || '' }} \
+            ${{ inputs.only && format('--only {0}', inputs.only) || '' }}
+
+      - name: Consume build request
+        # O pedido e disparado por commit (o token do Actions nao pode chamar
+        # workflow_dispatch). Depois de atendido, o arquivo e removido para que
+        # os proximos pushes nao reconstruam tudo de novo.
+        run: |
+          if [ -f data/.build-request.json ]; then
+            echo "Pedido atendido:"; cat data/.build-request.json
+            rm -f data/.build-request.json
+            git config user.name  "outorgasys-bot"
+            git config user.email "bot@users.noreply.github.com"
+            git add -A -- data/.build-request.json
+            if git diff --cached --quiet; then
+              echo "nada a limpar"
+            else
+              git commit -m "data: consumir pedido de build [skip ci]" || true
+              git pull --rebase --autostash origin "${GITHUB_REF_NAME}" || true
+              git push origin "HEAD:${GITHUB_REF_NAME}" || true
+            fi
+          fi
+
+      - name: Report sizes
+        run: |
+          echo "--- data/vetoriais ---"
+          du -h -a data/vetoriais 2>/dev/null | sort -h | tail -40
+          echo "--- data/cache ---"
+          du -h -a data/cache 2>/dev/null | sort -h | tail -20
+          echo "--- total ---"
+          du -sh data/vetoriais data/cache data/raw 2>/dev/null
+
+      - name: Commit vector database
+        run: |
+          git config user.name  "outorgasys-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add -A -- data/vetoriais data/cache
+          if git diff --cached --quiet; then
+            echo "Nenhuma mudanca nos dados vetoriais."
+          else
+            git commit -m "data(vetoriais): reconstruir base vetorial [skip ci]"
+            # Rebase com pull para evitar conflitar com commits do agente.
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi
+
+      - name: Upload manifest artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: manifesto-vetorial
+          path: data/vetoriais/MANIFEST.json
+          if-no-files-found: warn

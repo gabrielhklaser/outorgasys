@@ -1,0 +1,93 @@
+name: probe-fontes
+
+# Diagnostico rapido de alcance de rede dos servidores institucionais.
+# Roda em grupo de concorrencia proprio para nao esperar o build de dados.
+# O resultado e gravado em data/.probe.log no proprio repositorio, porque o
+# ambiente do agente nao consegue baixar os logs do Actions.
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/probe-fontes.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: probe-fontes
+  cancel-in-progress: true
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Sondar fontes candidatas
+        run: |
+          set +e
+          exec > >(tee /tmp/probe.log) 2>&1
+          urls="
+          https://geoftp.ibge.gov.br/cartas_e_mapas/bases_cartograficas_continuas/bc250/versao2021/geopackage/bc250_2021_11_18.zip
+          https://data.hydrosheds.org/file/HydroBASINS/standard/hybas_sa_lev01-12_v1c.zip
+          https://data.hydrosheds.org/file/HydroRIVERS/HydroRIVERS_v10_sa_shp.zip
+          https://data.hydrosheds.org/file/HydroSHEDS/hydrosheds-tech-documentation-v10.pdf
+          https://download.geofabrik.de/south-america/brazil/sul-latest-free.shp.zip
+          https://download.geofabrik.de/south-america/brazil/sul-latest.osm.pbf
+          https://raw.githubusercontent.com/python/cpython/main/README.rst
+          https://github.com/python/cpython
+          https://servicodados.ibge.gov.br/api/v1/localidades/municipios
+          https://servicodados.ibge.gov.br/api/v3/agregados
+          https://www.ibge.gov.br/geociencias/downloads-geociencias.html
+          https://www.sema.rs.gov.br/
+          https://sistemas.dsr.rs.gov.br/
+          https://portal1.snirh.gov.br/ana/apps/webappviewer/index.html
+          https://metadados.inde.gov.br/geonetwork/srv/api/records/b228d007-6d68-46e5-b30d-a1e191b2b21f
+          https://ows.terrestris.de/osm/service
+          https://tile.openstreetmap.org/10/512/620.png
+          https://basemaps.arcgis.com/arcgis/rest/services/World_Basemap_v2/MapServer
+          https://elevation-tiles-prod.s3.amazonaws.com/skadi/S30/S30W052/S30W052.hgt.gz
+          https://s3.amazonaws.com/elevation-tiles-prod/v2/terrarium/10/512/620.png
+          https://copernicus-dem-30m.s3.amazonaws.com/Copernicus_DSM_COG_30_S30_00_W052_00_DEM/Copernicus_DSM_COG_30_S30_00_W052_00_DEM.tif
+          "
+          for u in $urls; do
+            out=$(curl -sS -o /dev/null -L --max-time 25 -w '%{http_code} %{size_download} %{content_type}' \
+                  -A 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120 Safari/537.36' \
+                  -r 0-2000 "$u" 2>&1)
+            printf '%-6s %s\n' "${out%% *}" "$u"
+            echo "      -> ${out}"
+          done
+
+      - name: Tamanhos (HEAD) das fontes pesadas
+        run: |
+          set +e
+          exec > >(tee -a /tmp/probe.log) 2>&1
+          for u in \
+            "https://geoftp.ibge.gov.br/cartas_e_mapas/bases_cartograficas_continuas/bc250/versao2021/geopackage/bc250_2021_11_18.zip" \
+            "https://data.hydrosheds.org/file/HydroBASINS/standard/hybas_sa_lev01-12_v1c.zip" \
+            "https://data.hydrosheds.org/file/HydroRIVERS/HydroRIVERS_v10_sa_shp.zip" \
+            "https://download.geofabrik.de/south-america/brazil/sul-latest-free.shp.zip" \
+            "https://download.geofabrik.de/south-america/brazil/sul-latest.osm.pbf" ; do
+            echo "--- $(basename "$u")"
+            curl -sSI -L --max-time 30 -A 'Mozilla/5.0' "$u" | grep -iE '^(HTTP/|content-length|content-type)' | head -6
+          done
+
+      - name: Publicar resultado no repositorio
+        run: |
+          git config user.name  "outorgasys-bot"
+          git config user.email "bot@users.noreply.github.com"
+          mkdir -p data
+          cp -f /tmp/probe.log data/.probe.log
+          git add -A -- data/.probe.log
+          if git diff --cached --quiet; then
+            echo "Sem mudancas no diagnostico."
+          else
+            git commit -m "ci: resultado da sondagem de fontes [skip ci]"
+            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" || true
+            git push origin "HEAD:${GITHUB_REF_NAME}" || true
+          fi

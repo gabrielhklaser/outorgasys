@@ -1,0 +1,39 @@
+# --- ambiente ---
+.venv/
+venv/
+.env
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.DS_Store
+
+# --- dados brutos / temporarios (nao versionar: sao recompilados pelo workflow) ---
+data/raw/
+data/tmp/
+# Excepcao: relatorio de defeitos do processo de exemplo (acompanha o exemplo versionado).
+data/saida/*
+!/data/saida/defeitos_EX-CAMPOBOM-001.md
+*.part
+
+# Processos: apenas o exemplo de Campo Bom e versionado, para que a aplicacao
+# ja abra com um caso completo (no Render evita gerar no primeiro arranque).
+# Os processos criados pelos utilizadores ficam de fora.
+data/processos/*
+!/data/processos/.gitkeep
+!/data/processos/EX-CAMPOBOM-001/
+!/data/processos/EX-CAMPOBOM-001.json
+
+# --- artefatos gerados em runtime ---
+outorgasys/_runtime/
+.streamlit/secrets.toml
+
+# --- skills baixadas temporariamente ---
+.tmp_skills/
+
+# --- notebooks / rascunhos ---
+*.ipynb_checkpoints
+
+# Pacotes de entrega gerados (ficam fora do git; o codigo e os dados ja la estao).
+*.zip

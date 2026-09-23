@@ -1,0 +1,68 @@
+206    https://geoftp.ibge.gov.br/cartas_e_mapas/bases_cartograficas_continuas/bc250/versao2021/geopackage/bc250_2021_11_18.zip
+      -> 206 2001 application/zip
+403    https://data.hydrosheds.org/file/HydroBASINS/standard/hybas_sa_lev01-12_v1c.zip
+      -> 403 5690 text/html; charset=UTF-8
+403    https://data.hydrosheds.org/file/HydroRIVERS/HydroRIVERS_v10_sa_shp.zip
+      -> 403 5645 text/html; charset=UTF-8
+404    https://data.hydrosheds.org/file/HydroSHEDS/hydrosheds-tech-documentation-v10.pdf
+      -> 404 94 application/json;charset=utf-8
+206    https://download.geofabrik.de/south-america/brazil/sul-latest-free.shp.zip
+      -> 206 2001 application/zip
+206    https://download.geofabrik.de/south-america/brazil/sul-latest.osm.pbf
+      -> 206 2001 application/octet-stream
+206    https://raw.githubusercontent.com/python/cpython/main/README.rst
+      -> 206 2001 text/plain; charset=utf-8
+206    https://github.com/python/cpython
+      -> 206 2001 text/html; charset=utf-8
+200    https://servicodados.ibge.gov.br/api/v1/localidades/municipios
+      -> 200 2470036 application/json; charset=utf-8
+200    https://servicodados.ibge.gov.br/api/v3/agregados
+      -> 200 1952618 application/json; charset=utf-8
+403    https://www.ibge.gov.br/geociencias/downloads-geociencias.html
+      -> 403 5711 text/html; charset=UTF-8
+206    https://www.sema.rs.gov.br/
+      -> 206 2001 text/html; charset=UTF-8
+curl:  https://sistemas.dsr.rs.gov.br/
+      -> curl: (6) Could not resolve host: sistemas.dsr.rs.gov.br
+000 0 
+206    https://portal1.snirh.gov.br/ana/apps/webappviewer/index.html
+      -> 206 2001 text/html
+200    https://metadados.inde.gov.br/geonetwork/srv/api/records/b228d007-6d68-46e5-b30d-a1e191b2b21f
+      -> 200 67181 text/html;charset=UTF-8
+400    https://ows.terrestris.de/osm/service
+      -> 400 486 text/xml; charset=utf-8
+206    https://tile.openstreetmap.org/10/512/620.png
+      -> 206 2001 image/png
+400    https://basemaps.arcgis.com/arcgis/rest/services/World_Basemap_v2/MapServer
+      -> 400 60 text/plain
+404    https://elevation-tiles-prod.s3.amazonaws.com/skadi/S30/S30W052/S30W052.hgt.gz
+      -> 404 323 application/xml
+206    https://s3.amazonaws.com/elevation-tiles-prod/v2/terrarium/10/512/620.png
+      -> 206 2001 image/png
+404    https://copernicus-dem-30m.s3.amazonaws.com/Copernicus_DSM_COG_30_S30_00_W052_00_DEM/Copernicus_DSM_COG_30_S30_00_W052_00_DEM.tif
+      -> 404 376 application/xml
+--- bc250_2021_11_18.zip
+HTTP/1.1 200 OK
+Content-Length: 867633597
+Content-Type: application/zip
+--- hybas_sa_lev01-12_v1c.zip
+HTTP/2 403 
+content-type: text/html; charset=UTF-8
+content-length: 5499
+--- HydroRIVERS_v10_sa_shp.zip
+HTTP/2 403 
+content-type: text/html; charset=UTF-8
+content-length: 5453
+--- sul-latest-free.shp.zip
+HTTP/1.1 302 Found
+Content-Length: 258
+Content-Type: text/html; charset=iso-8859-1
+HTTP/1.1 200 OK
+Content-Length: 1044425072
+Content-Type: application/zip
+--- sul-latest.osm.pbf
+HTTP/1.1 302 Found
+Content-Type: text/html; charset=iso-8859-1
+HTTP/1.1 200 OK
+Content-Length: 424900788
+Content-Type: application/octet-stream

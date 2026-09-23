@@ -1,0 +1,3566 @@
+{
+  "id": "EX-CAMPOBOM-001",
+  "versao": "1.0.0",
+  "criado_em": "2026-09-23T12:25:28",
+  "atualizado_em": "2026-09-23T12:26:16",
+  "status": "triagem",
+  "agentes_concluidos": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+  ],
+  "enquadramento": {
+    "definido": true,
+    "classe": "poco_tubular_profundo",
+    "rotulo": "Opcao B - Poco tubular profundo",
+    "exige_ensaio_24h": true,
+    "descricao": "Poco tubular profundo com diametro util de 6\" (>= 4\"). Exige ensaio de bombeamento continuo de 24 horas acompanhado do ensaio de recuperacao, alem de toda a documentacao legal e tecnica."
+  },
+  "requerente": {
+    "nome": "Metalurgica Sinos Ltda.",
+    "cpf_cnpj": "00.000.000/0001-00",
+    "rg_ie": "000/0000000",
+    "telefone": "(51) 3597-0000",
+    "email": "meioambiente@example.com.br"
+  },
+  "imovel": {
+    "denominacao": "Parque Industrial - Galpao 3",
+    "endereco": "Rua das Aguas, 1250",
+    "bairro": "Operaria",
+    "cep": "93700-000",
+    "municipio": "Campo Bom",
+    "uf": "RS",
+    "area_ha": 1.8
+  },
+  "poco": {
+    "nome": "PT-01",
+    "profundidade_total_m": 82.0,
+    "raio_m": 0.0762,
+    "diametro_util_pol": 6.0,
+    "nivel_estatico_m": 8.0
+  },
+  "documentos": {
+    "ensaio_bombeamento": {
+      "nome": "ensaio_bombeamento_PT-01.xlsx",
+      "caminho": "data/processos/EX-CAMPOBOM-001/arquivos/ensaio_bombeamento_PT-01.xlsx",
+      "tamanho": 10288,
+      "origem": "gerado pela plataforma",
+      "sintetico": true,
+      "parametros_geracao": {
+        "q_m3h": 12.0,
+        "T_m2h": 6.0,
+        "S": 0.001,
+        "raio_m": 0.0762,
+        "ne_m": 8.0,
+        "duracao_h": 24.0,
+        "ruido_m": 0.02
+      }
+    },
+    "matricula_imovel": {
+      "nome": "matricula_imovel_exemplo.pdf",
+      "caminho": "data/processos/EX-CAMPOBOM-001/arquivos/matricula_imovel_exemplo.pdf",
+      "tamanho": 2532,
+      "origem": "gerado pela plataforma",
+      "exemplo": true,
+      "nao_valido_para_protocolo": true
+    },
+    "analise_laboratorial": {
+      "nome": "analise_laboratorial_exemplo.pdf",
+      "caminho": "data/processos/EX-CAMPOBOM-001/arquivos/analise_laboratorial_exemplo.pdf",
+      "tamanho": 3702,
+      "origem": "gerado pela plataforma",
+      "exemplo": true,
+      "nao_valido_para_protocolo": true
+    },
+    "declaracao_separacao_redes": {
+      "nome": "declaracao_separacao_redes_exemplo.pdf",
+      "caminho": "data/processos/EX-CAMPOBOM-001/arquivos/declaracao_separacao_redes_exemplo.pdf",
+      "tamanho": 3013,
+      "origem": "gerado pela plataforma",
+      "exemplo": true,
+      "nao_valido_para_protocolo": true
+    },
+    "registro_fotografico": [
+      {
+        "nome": "foto_01_boca_poco.jpg",
+        "caminho": "data/processos/EX-CAMPOBOM-001/arquivos/foto_01_boca_poco.jpg",
+        "tamanho": 34657,
+        "origem": "gerado pela plataforma",
+        "exemplo": true,
+        "nao_valido_para_protocolo": true
+      },
+      {
+        "nome": "foto_02_laje_protecao.jpg",
+        "caminho": "data/processos/EX-CAMPOBOM-001/arquivos/foto_02_laje_protecao.jpg",
+        "tamanho": 39823,
+        "origem": "gerado pela plataforma",
+        "exemplo": true,
+        "nao_valido_para_protocolo": true
+      },
+      {
+        "nome": "foto_03_cercamento.jpg",
+        "caminho": "data/processos/EX-CAMPOBOM-001/arquivos/foto_03_cercamento.jpg",
+        "tamanho": 44399,
+        "origem": "gerado pela plataforma",
+        "exemplo": true,
+        "nao_valido_para_protocolo": true
+      },
+      {
+        "nome": "foto_04_cavalete_hidrometro.jpg",
+        "caminho": "data/processos/EX-CAMPOBOM-001/arquivos/foto_04_cavalete_hidrometro.jpg",
+        "tamanho": 38241,
+        "origem": "gerado pela plataforma",
+        "exemplo": true,
+        "nao_valido_para_protocolo": true
+      }
+    ]
+  },
+  "hidrometro": {
+    "fabricante": "Exemplo Hidrometros",
+    "modelo": "Volumetrico DN32",
+    "numero_serie": "H2024-001122",
+    "vazao_nominal_m3h": 2.5,
+    "diametro_nominal_mm": 32.0,
+    "classe_metrologica": "Classe B (horizontal)"
+  },
+  "motobomba": {
+    "fabricante": "Exemplo Bombas",
+    "modelo": "Submersa 4\" 5 estagios",
+    "numero_serie": "B2024-000345",
+    "diametro_pol": 4.0,
+    "potencia_hp": 3.0,
+    "num_estagios": 5,
+    "profundidade_instalacao_m": 36.0,
+    "vazao_nominal_m3h": 12.0,
+    "altura_manometrica_mca": 62.0
+  },
+  "reservacao": [
+    {
+      "capacidade_l": 5000.0,
+      "local": "Casa de maquinas"
+    },
+    {
+      "capacidade_l": 2000.0,
+      "local": "Reservatorio elevado"
+    }
+  ],
+  "padrao_explotacao": {
+    "horas_dia": 12.0,
+    "dias_semana": 5
+  },
+  "rede_publica": true,
+  "finalidades": [
+    "industrial",
+    "limpeza_geral_patio",
+    "irrigacao"
+  ],
+  "declaracao_separacao_redes": true,
+  "laje": {
+    "espessura_cm": 15.0,
+    "area_m2": 1.44,
+    "rebordo_cm": 35.0
+  },
+  "construtivo": {
+    "diametro_perfuracao_mm": 250.0,
+    "diametro_revestimento_mm": 152.0,
+    "profundidade_selo_m": 22.0,
+    "tipo_aquifero": "poroso livre (sedimentos aluviais)",
+    "crivo_de_m": 40.0,
+    "crivo_ate_m": 78.0
+  },
+  "analise_laboratorial": {},
+  "coordenadas": {},
+  "geoespacial": {
+    "ok": true,
+    "coordenadas": {
+      "lat": -29.6842,
+      "lon": -51.0531,
+      "utm_e": 494862.49,
+      "utm_n": 6716205.829,
+      "fuso": "22S",
+      "hemisferio": "S",
+      "epsg": "EPSG:31982",
+      "crs_geografico": "EPSG:4674"
+    },
+    "municipio": "Campo Bom",
+    "bacia_hidrografica": "Bacia Hidrografica do Rio dos Sinos",
+    "regiao_hidrografica": "Regiao Hidrografica do Guaiba",
+    "formacao_geologica": "Depósitos aluviais e coluviais",
+    "sistema_aquifero": "L2",
+    "corpo_hidrico_proximo": {
+      "nome": "Rio dos Sinos",
+      "distancia_m": 358.95
+    },
+    "caminho_mapas": [
+      "data/processos/EX-CAMPOBOM-001/mapas/mapa_situacao.jpg",
+      "data/processos/EX-CAMPOBOM-001/mapas/mapa_geologico.jpg",
+      "data/processos/EX-CAMPOBOM-001/mapas/mapa_hidrologico.jpg"
+    ],
+    "detalhes": {
+      "buffer": {
+        "raio_m": 500.0,
+        "area_m2": 784137.1226362893,
+        "metodo": "skill shapely-compute (buffer UTM)",
+        "valido": true,
+        "skill_usada": true
+      },
+      "codigo_municipio": "4303905",
+      "litologia": "Areia, Sedimento elúvio-coluvionar",
+      "codigo_geobank": "http://geobank.sa.cprm.gov.br/pls/publico/litoestratigrafia.litoestratigrafia.cadastro?p_cod_unidade_estrat=2790&p_webmap=N",
+      "sistema_aquifero_codigo": "L2",
+      "sistema_aquifero_sem_legenda": true,
+      "sistema_aquifero_observacao": "A base hidrogeologica estadual identifica apenas a sigla 'L2' da unidade; o nome do sistema aquifero nao consta do arquivo e nao foi interpretado pela plataforma.",
+      "sistema_aquifero_nome": null,
+      "classe_solo": "Podzólico Vermelho-Amarelo álico",
+      "classe_solo_aproximada": true,
+      "classe_solo_observacao": "Ponto fora da mancha de solos da base (area urbana ou massa d'agua); adotada a unidade de solo mais proxima (poligono mais proximo (0.00454 graus)).",
+      "corpo_hidrico_nome_distancia_m": 1073.0,
+      "corpo_hidrico_nome_origem": "trecho de drenagem denominado mais proximo",
+      "corpo_hidrico_fonte": "ANA - BHO 2017",
+      "ugrh": "Rio Sinos",
+      "classificacao_bacia": {
+        "metodo": "nome do corpo hidrico mais proximo",
+        "correspondencia": "rio dos sinos",
+        "origem": "tabela de referencia do outorgasys (curada)",
+        "observacao": "Classificacao obtida por tabela de referencia, nao por interseccao com a base poligonal de ottobacias da ANA."
+      },
+      "raio_seguranca": {
+        "raio_m": 500.0,
+        "ocorrencias": {},
+        "origem": "OpenStreetMap/Overpass + camadas do usuario"
+      },
+      "preflight_qualidade": {
+        "skill": "geopandas",
+        "resultados": {
+          "geologia_rs": {
+            "inventario": {
+              "coordinates_emitted": "False",
+              "identifiers_emitted": "False",
+              "network_accessed": "False",
+              "ok": "True",
+              "resource_limits": "{'declared_within_feature_limit': True, 'feature_data_loaded': False, 'max_features_for_downstream_load': 100000, 'max_input_bytes': 67108864}",
+              "source": "{'basename_sha256': 'ba4023f1b3630c3ba0a9c025e8ced422d01e6a5fbdbc2eb67c1c5a86985d5086', 'path_emitted': False, 'primary_file_bytes': 11067392, 'primary_file_...",
+              "stack": "{'matches_pinned_snapshot': {'geopandas': True, 'numpy': False, 'packaging': False, 'pandas': False, 'pyarrow': False, 'pyogrio': True, 'pyproj': True, 'shap...",
+              "technical_inventory": "{'bounds_available': True, 'bounds_redacted': True, 'crs': {'authority': 'EPSG:4674', 'axes': [{'abbreviation': 'Lat', 'direction': 'north', 'unit': 'degree'...",
+              "tool": "vector_inventory",
+              "warnings": "['No feature values, coordinates, bounds, paths, layer names, or field names were emitted.', 'GDAL/GEOS/PROJ and binary wheels are native-code trust boundari..."
+            },
+            "validade": {
+              "before": "{'coordinates_emitted': False, 'duplicate_index_rows': 0, 'empty': 0, 'features': 4801, 'geometry_type_counts': {'Polygon': 4801}, 'has_m': 0, 'has_z': 4801,...",
+              "coordinates_emitted": "False",
+              "crs": "{'authority': 'EPSG:4674', 'axes': [{'abbreviation': 'Lat', 'direction': 'north', 'unit': 'degree', 'unit_to_si': 0.017453292519943295}, {'abbreviation': 'Lo...",
+              "dry_run": "True",
+              "identifiers_emitted": "False",
+              "network_accessed": "False",
+              "ok": "True",
+              "output": "{'basename_sha256': None, 'path_emitted': False, 'requested': False, 'roundtrip_verified': False, 'sha256': None, 'written': False}",
+              "repair_contract": "{'keep_collapsed': True, 'method': 'linework', 'precision_grid': None, 'precision_grid_units': None, 'source_modified': False, 'type_transition_rows': 0}",
+              "simulated_after": "{'coordinates_emitted': False, 'duplicate_index_rows': 0, 'empty': 0, 'features': 4801, 'geometry_type_counts': {'Polygon': 4801}, 'has_m': 0, 'has_z': 4801,...",
+              "source": "{'path_emitted': False, 'primary_file_bytes': 11067392, 'primary_file_sha256': 'f9ec0d3ee3765e5fbd0b133f3cbf3f8997ae1196bbf651408e2c8fda21c1d359'}",
+              "stable_id_audit": "{'duplicate_rows': None, 'null_rows': None, 'provided': False}"
+            }
+          },
+          "hidrogeologia_rs": {
+            "inventario": {
+              "coordinates_emitted": "False",
+              "identifiers_emitted": "False",
+              "network_accessed": "False",
+              "ok": "True",
+              "resource_limits": "{'declared_within_feature_limit': True, 'feature_data_loaded': False, 'max_features_for_downstream_load': 100000, 'max_input_bytes': 67108864}",
+              "source": "{'basename_sha256': '58fa068b7894bd52d66207ff329531ac6e5aab0beb7f9a857adfe5d29a007c06', 'path_emitted': False, 'primary_file_bytes': 2011136, 'primary_file_s...",
+              "stack": "{'matches_pinned_snapshot': {'geopandas': True, 'numpy': False, 'packaging': False, 'pandas': False, 'pyarrow': False, 'pyogrio': True, 'pyproj': True, 'shap...",
+              "technical_inventory": "{'bounds_available': True, 'bounds_redacted': True, 'crs': {'authority': 'EPSG:4674', 'axes': [{'abbreviation': 'Lat', 'direction': 'north', 'unit': 'degree'...",
+              "tool": "vector_inventory",
+              "warnings": "['No feature values, coordinates, bounds, paths, layer names, or field names were emitted.', 'GDAL/GEOS/PROJ and binary wheels are native-code trust boundari..."
+            },
+            "validade": {
+              "before": "{'coordinates_emitted': False, 'duplicate_index_rows': 0, 'empty': 0, 'features': 297, 'geometry_type_counts': {'MultiPolygon': 297}, 'has_m': 0, 'has_z': 29...",
+              "coordinates_emitted": "False",
+              "crs": "{'authority': 'EPSG:4674', 'axes': [{'abbreviation': 'Lat', 'direction': 'north', 'unit': 'degree', 'unit_to_si': 0.017453292519943295}, {'abbreviation': 'Lo...",
+              "dry_run": "True",
+              "identifiers_emitted": "False",
+              "network_accessed": "False",
+              "ok": "True",
+              "output": "{'basename_sha256': None, 'path_emitted': False, 'requested': False, 'roundtrip_verified': False, 'sha256': None, 'written': False}",
+              "repair_contract": "{'keep_collapsed': True, 'method': 'linework', 'precision_grid': None, 'precision_grid_units': None, 'source_modified': False, 'type_transition_rows': 0}",
+              "simulated_after": "{'coordinates_emitted': False, 'duplicate_index_rows': 0, 'empty': 0, 'features': 297, 'geometry_type_counts': {'MultiPolygon': 297}, 'has_m': 0, 'has_z': 29...",
+              "source": "{'path_emitted': False, 'primary_file_bytes': 2011136, 'primary_file_sha256': 'd295093670b79cdc26581a5a0d3b4b6b3dd5e9123a2badce0b67379dfc315d31'}",
+              "stable_id_audit": "{'duplicate_rows': None, 'null_rows': None, 'provided': False}"
+            }
+          },
+          "municipios_rs": {
+            "inventario": {
+              "coordinates_emitted": "False",
+              "identifiers_emitted": "False",
+              "network_accessed": "False",
+              "ok": "True",
+              "resource_limits": "{'declared_within_feature_limit': True, 'feature_data_loaded': False, 'max_features_for_downstream_load': 100000, 'max_input_bytes': 67108864}",
+              "source": "{'basename_sha256': '51965a2a9670b1de5e0d3cceb02fb19d1f1277fcf874a99b75277579471e1d7a', 'path_emitted': False, 'primary_file_bytes': 10670080, 'primary_file_...",
+              "stack": "{'matches_pinned_snapshot': {'geopandas': True, 'numpy': False, 'packaging': False, 'pandas': False, 'pyarrow': False, 'pyogrio': True, 'pyproj': True, 'shap...",
+              "technical_inventory": "{'bounds_available': True, 'bounds_redacted': True, 'crs': {'authority': 'EPSG:4674', 'axes': [{'abbreviation': 'Lat', 'direction': 'north', 'unit': 'degree'...",
+              "tool": "vector_inventory",
+              "warnings": "['No feature values, coordinates, bounds, paths, layer names, or field names were emitted.', 'GDAL/GEOS/PROJ and binary wheels are native-code trust boundari..."
+            },
+            "validade": {
+              "before": "{'coordinates_emitted': False, 'duplicate_index_rows': 0, 'empty': 0, 'features': 499, 'geometry_type_counts': {'MultiPolygon': 499}, 'has_m': 0, 'has_z': 0,...",
+              "coordinates_emitted": "False",
+              "crs": "{'authority': 'EPSG:4674', 'axes': [{'abbreviation': 'Lat', 'direction': 'north', 'unit': 'degree', 'unit_to_si': 0.017453292519943295}, {'abbreviation': 'Lo...",
+              "dry_run": "True",
+              "identifiers_emitted": "False",
+              "network_accessed": "False",
+              "ok": "True",
+              "output": "{'basename_sha256': None, 'path_emitted': False, 'requested': False, 'roundtrip_verified': False, 'sha256': None, 'written': False}",
+              "repair_contract": "{'keep_collapsed': True, 'method': 'linework', 'precision_grid': None, 'precision_grid_units': None, 'source_modified': False, 'type_transition_rows': 0}",
+              "simulated_after": "{'coordinates_emitted': False, 'duplicate_index_rows': 0, 'empty': 0, 'features': 499, 'geometry_type_counts': {'MultiPolygon': 499}, 'has_m': 0, 'has_z': 0,...",
+              "source": "{'path_emitted': False, 'primary_file_bytes': 10670080, 'primary_file_sha256': '92806a865c9df5383c4abe89dde65a994652f802111775c3f416f48563514c56'}",
+              "stable_id_audit": "{'duplicate_rows': None, 'null_rows': None, 'provided': False}"
+            }
+          },
+          "drenagem_rs": {
+            "inventario": {
+              "coordinates_emitted": "False",
+              "identifiers_emitted": "False",
+              "network_accessed": "False",
+              "ok": "True",
+              "resource_limits": "{'declared_within_feature_limit': True, 'feature_data_loaded': False, 'max_features_for_downstream_load': 100000, 'max_input_bytes': 67108864}",
+              "source": "{'basename_sha256': 'f7f0276674ffaf1119b4b6fd8ab863910382a91baa22932786b257a30aecdd1e', 'path_emitted': False, 'primary_file_bytes': 27832320, 'primary_file_...",
+              "stack": "{'matches_pinned_snapshot': {'geopandas': True, 'numpy': False, 'packaging': False, 'pandas': False, 'pyarrow': False, 'pyogrio': True, 'pyproj': True, 'shap...",
+              "technical_inventory": "{'bounds_available': True, 'bounds_redacted': True, 'crs': {'authority': 'EPSG:4674', 'axes': [{'abbreviation': 'Lat', 'direction': 'north', 'unit': 'degree'...",
+              "tool": "vector_inventory",
+              "warnings": "['No feature values, coordinates, bounds, paths, layer names, or field names were emitted.', 'GDAL/GEOS/PROJ and binary wheels are native-code trust boundari..."
+            },
+            "validade": {
+              "before": "{'coordinates_emitted': False, 'duplicate_index_rows': 0, 'empty': 0, 'features': 67535, 'geometry_type_counts': {'LineString': 67535}, 'has_m': 0, 'has_z': ...",
+              "coordinates_emitted": "False",
+              "crs": "{'authority': 'EPSG:4674', 'axes': [{'abbreviation': 'Lat', 'direction': 'north', 'unit': 'degree', 'unit_to_si': 0.017453292519943295}, {'abbreviation': 'Lo...",
+              "dry_run": "True",
+              "identifiers_emitted": "False",
+              "network_accessed": "False",
+              "ok": "True",
+              "output": "{'basename_sha256': None, 'path_emitted': False, 'requested': False, 'roundtrip_verified': False, 'sha256': None, 'written': False}",
+              "repair_contract": "{'keep_collapsed': True, 'method': 'linework', 'precision_grid': None, 'precision_grid_units': None, 'source_modified': False, 'type_transition_rows': 0}",
+              "simulated_after": "{'coordinates_emitted': False, 'duplicate_index_rows': 0, 'empty': 0, 'features': 67535, 'geometry_type_counts': {'LineString': 67535}, 'has_m': 0, 'has_z': ...",
+              "source": "{'path_emitted': False, 'primary_file_bytes': 27832320, 'primary_file_sha256': '6c750d8c6868c251a416b66bcb51f5ef94f8d1d5b5efaa200e8a438ced199292'}",
+              "stable_id_audit": "{'duplicate_rows': None, 'null_rows': None, 'provided': False}"
+            }
+          }
+        },
+        "plano_crs": {
+          "bbox": "{'crosses_antimeridian': False, 'provided': False, 'used_as_area_of_interest': False, 'values_emitted': False}",
+          "best_available": "True",
+          "candidate_count": "1",
+          "candidate_summaries_first_five": "[{'accuracy_known': True, 'accuracy_metres': 0.0, 'area_of_use_name': 'World', 'description': 'axis order change (2D) + UTM zone 22S'}]",
+          "coordinate_array_order": "x_y_via_always_xy",
+          "coordinates_emitted": "False",
+          "coordinates_transformed": "False",
+          "identifiers_emitted": "False",
+          "network_accessed": "False",
+          "ok": "True",
+          "operation_policy": "{'allow_ballpark': False, 'metric_operation_ready': True, 'only_best_recommended_for_execution': True, 'proj_network_enabled': False}",
+          "purpose": "distance"
+        }
+      },
+      "mapas": {
+        "mapa_situacao": "data/processos/EX-CAMPOBOM-001/mapas/mapa_situacao.jpg",
+        "mapa_geologico": "data/processos/EX-CAMPOBOM-001/mapas/mapa_geologico.jpg",
+        "mapa_hidrologico": "data/processos/EX-CAMPOBOM-001/mapas/mapa_hidrologico.jpg"
+      }
+    },
+    "proveniencia": {
+      "municipios_rs": {
+        "chave": "municipios_rs",
+        "status": "ok",
+        "origem": "IBGE - Malha Municipal 2022",
+        "arquivo": "municipios_rs.gpkg",
+        "feicoes": 2,
+        "mensagem": ""
+      },
+      "geologia_rs": {
+        "chave": "geologia_rs",
+        "status": "ok",
+        "origem": "Google Drive do projeto - 'Geologico Rio Grande do Sul.kmz'",
+        "arquivo": "geologia_rs.gpkg",
+        "feicoes": 4,
+        "mensagem": ""
+      },
+      "hidrogeologia_rs": {
+        "chave": "hidrogeologia_rs",
+        "status": "ok",
+        "origem": "Google Drive do projeto - 'Hidrogelogia_RS.kmz'",
+        "arquivo": "hidrogeologia_rs.gpkg",
+        "feicoes": 1,
+        "mensagem": ""
+      },
+      "solos_rs": {
+        "chave": "solos_rs",
+        "status": "ok",
+        "origem": "Google Drive do projeto - 'Mapa de solos.kmz'",
+        "arquivo": "solos_rs.gpkg",
+        "feicoes": 2,
+        "mensagem": ""
+      },
+      "regioes_hidrograficas": {
+        "chave": "regioes_hidrograficas",
+        "status": "ausente",
+        "origem": "ANA/SNIRH - 12 Regioes Hidrograficas definidas pelo CNRH",
+        "arquivo": "",
+        "feicoes": 0,
+        "mensagem": "arquivo regioes_hidrograficas.gpkg nao encontrado em data/vetoriais. Execute o workflow 'build-vetorial-data' no GitHub Actions."
+      },
+      "uph": {
+        "chave": "uph",
+        "status": "ausente",
+        "origem": "ANA/SNIRH - Unidades de Planejamento Hidrico",
+        "arquivo": "",
+        "feicoes": 0,
+        "mensagem": "arquivo uph.gpkg nao encontrado em data/vetoriais. Execute o workflow 'build-vetorial-data' no GitHub Actions."
+      },
+      "ottobacias_rs": {
+        "chave": "ottobacias_rs",
+        "status": "ausente",
+        "origem": "ANA - BHO 2017 (areas de contribuicao hidrografica)",
+        "arquivo": "",
+        "feicoes": 0,
+        "mensagem": "arquivo ottobacias_rs.gpkg nao encontrado em data/vetoriais. Execute o workflow 'build-vetorial-data' no GitHub Actions."
+      },
+      "otto_nivel_3": {
+        "chave": "otto_nivel_3",
+        "status": "ausente",
+        "origem": "ANA - BHO 2017 Otto nivel 3",
+        "arquivo": "",
+        "feicoes": 0,
+        "mensagem": "arquivo otto_nivel_3.gpkg nao encontrado em data/vetoriais. Execute o workflow 'build-vetorial-data' no GitHub Actions."
+      },
+      "otto_nivel_2": {
+        "chave": "otto_nivel_2",
+        "status": "ausente",
+        "origem": "ANA - BHO 2017 Otto nivel 2",
+        "arquivo": "",
+        "feicoes": 0,
+        "mensagem": "arquivo otto_nivel_2.gpkg nao encontrado em data/vetoriais. Execute o workflow 'build-vetorial-data' no GitHub Actions."
+      },
+      "otto_nivel_1": {
+        "chave": "otto_nivel_1",
+        "status": "ausente",
+        "origem": "ANA - BHO 2017 Otto nivel 1",
+        "arquivo": "",
+        "feicoes": 0,
+        "mensagem": "arquivo otto_nivel_1.gpkg nao encontrado em data/vetoriais. Execute o workflow 'build-vetorial-data' no GitHub Actions."
+      },
+      "drenagem_rs": {
+        "chave": "drenagem_rs",
+        "status": "ok",
+        "origem": "IBGE - Base Cartografica Continua 1:250.000 (2021) / ANA BHO 2017",
+        "arquivo": "drenagem_rs.gpkg",
+        "feicoes": 8,
+        "mensagem": ""
+      },
+      "cursos_dagua_rs": {
+        "chave": "cursos_dagua_rs",
+        "status": "ausente",
+        "origem": "ANA - Base Hidrografica Ottocodificada 2017 (cursos d'agua)",
+        "arquivo": "",
+        "feicoes": 0,
+        "mensagem": "arquivo cursos_dagua_rs.gpkg nao encontrado em data/vetoriais. Execute o workflow 'build-vetorial-data' no GitHub Actions."
+      },
+      "osm": {
+        "chave": "osm",
+        "status": "ausente",
+        "origem": "OpenStreetMap (Overpass)",
+        "arquivo": "",
+        "feicoes": 0,
+        "mensagem": "Overpass indisponivel e sem cache local"
+      }
+    },
+    "pendencias": [],
+    "erros": []
+  },
+  "ensaio": {
+    "ok": true,
+    "cadastro": {
+      "nome_cliente": "Exemplo de validacao",
+      "municipio": "Campo Bom",
+      "uf": "RS",
+      "nome_poco": "Poco tubular 6\" - exemplo",
+      "profundidade_total_m": 82,
+      "altura_boca_tubo_m": 0.3,
+      "nivel_estatico_m": 8,
+      "nivel_dinamico_m": 10.872,
+      "posicao_crivo_de_m": 40,
+      "posicao_crivo_ate_m": 78,
+      "diametro_util_pol": 6,
+      "data_ensaio": "2024-09-17",
+      "responsavel_tecnico": "(a preencher)",
+      "registro_profissional": "(a preencher)"
+    },
+    "bombeamento": {
+      "__tipo__": "dataframe",
+      "colunas": [
+        "t_min",
+        "nd_m",
+        "s_m",
+        "q_m3h"
+      ],
+      "linhas": [
+        {
+          "t_min": 1.0,
+          "nd_m": 9.721,
+          "s_m": 1.721,
+          "q_m3h": 12.05
+        },
+        {
+          "t_min": 2.0,
+          "nd_m": 9.806,
+          "s_m": 1.806,
+          "q_m3h": 11.959
+        },
+        {
+          "t_min": 3.0,
+          "nd_m": 9.851,
+          "s_m": 1.851,
+          "q_m3h": 12.171
+        },
+        {
+          "t_min": 5.0,
+          "nd_m": 9.918,
+          "s_m": 1.918,
+          "q_m3h": 11.95
+        },
+        {
+          "t_min": 7.5,
+          "nd_m": 9.991,
+          "s_m": 1.991,
+          "q_m3h": 12.222
+        },
+        {
+          "t_min": 10.0,
+          "nd_m": 10.03,
+          "s_m": 2.03,
+          "q_m3h": 11.927
+        },
+        {
+          "t_min": 15.0,
+          "nd_m": 10.114,
+          "s_m": 2.114,
+          "q_m3h": 11.851
+        },
+        {
+          "t_min": 20.0,
+          "nd_m": 10.132,
+          "s_m": 2.132,
+          "q_m3h": 11.826
+        },
+        {
+          "t_min": 25.0,
+          "nd_m": 10.184,
+          "s_m": 2.184,
+          "q_m3h": 12.22
+        },
+        {
+          "t_min": 30.0,
+          "nd_m": 10.268,
+          "s_m": 2.268,
+          "q_m3h": 12.087
+        },
+        {
+          "t_min": 40.0,
+          "nd_m": 10.267,
+          "s_m": 2.267,
+          "q_m3h": 11.713
+        },
+        {
+          "t_min": 50.0,
+          "nd_m": 10.334,
+          "s_m": 2.334,
+          "q_m3h": 11.891
+        },
+        {
+          "t_min": 60.0,
+          "nd_m": 10.345,
+          "s_m": 2.345,
+          "q_m3h": 11.991
+        },
+        {
+          "t_min": 90.0,
+          "nd_m": 10.417,
+          "s_m": 2.417,
+          "q_m3h": 12.043
+        },
+        {
+          "t_min": 120.0,
+          "nd_m": 10.461,
+          "s_m": 2.461,
+          "q_m3h": 12.066
+        },
+        {
+          "t_min": 150.0,
+          "nd_m": 10.504,
+          "s_m": 2.504,
+          "q_m3h": 12.079
+        },
+        {
+          "t_min": 180.0,
+          "nd_m": 10.516,
+          "s_m": 2.516,
+          "q_m3h": 12.025
+        },
+        {
+          "t_min": 210.0,
+          "nd_m": 10.541,
+          "s_m": 2.541,
+          "q_m3h": 12.065
+        },
+        {
+          "t_min": 240.0,
+          "nd_m": 10.535,
+          "s_m": 2.535,
+          "q_m3h": 11.982
+        },
+        {
+          "t_min": 270.0,
+          "nd_m": 10.572,
+          "s_m": 2.572,
+          "q_m3h": 12.06
+        },
+        {
+          "t_min": 300.0,
+          "nd_m": 10.577,
+          "s_m": 2.577,
+          "q_m3h": 11.979
+        },
+        {
+          "t_min": 330.0,
+          "nd_m": 10.621,
+          "s_m": 2.621,
+          "q_m3h": 11.901
+        },
+        {
+          "t_min": 360.0,
+          "nd_m": 10.637,
+          "s_m": 2.637,
+          "q_m3h": 12.009
+        },
+        {
+          "t_min": 390.0,
+          "nd_m": 10.624,
+          "s_m": 2.624,
+          "q_m3h": 11.978
+        },
+        {
+          "t_min": 420.0,
+          "nd_m": 10.64,
+          "s_m": 2.64,
+          "q_m3h": 12.028
+        },
+        {
+          "t_min": 450.0,
+          "nd_m": 10.692,
+          "s_m": 2.692,
+          "q_m3h": 11.999
+        },
+        {
+          "t_min": 480.0,
+          "nd_m": 10.644,
+          "s_m": 2.644,
+          "q_m3h": 12.11
+        },
+        {
+          "t_min": 510.0,
+          "nd_m": 10.653,
+          "s_m": 2.653,
+          "q_m3h": 12.069
+        },
+        {
+          "t_min": 540.0,
+          "nd_m": 10.727,
+          "s_m": 2.727,
+          "q_m3h": 12.039
+        },
+        {
+          "t_min": 570.0,
+          "nd_m": 10.675,
+          "s_m": 2.675,
+          "q_m3h": 11.881
+        },
+        {
+          "t_min": 600.0,
+          "nd_m": 10.687,
+          "s_m": 2.687,
+          "q_m3h": 11.748
+        },
+        {
+          "t_min": 630.0,
+          "nd_m": 10.693,
+          "s_m": 2.693,
+          "q_m3h": 11.994
+        },
+        {
+          "t_min": 660.0,
+          "nd_m": 10.69,
+          "s_m": 2.69,
+          "q_m3h": 12.042
+        },
+        {
+          "t_min": 690.0,
+          "nd_m": 10.737,
+          "s_m": 2.737,
+          "q_m3h": 12.103
+        },
+        {
+          "t_min": 720.0,
+          "nd_m": 10.706,
+          "s_m": 2.706,
+          "q_m3h": 11.855
+        },
+        {
+          "t_min": 750.0,
+          "nd_m": 10.72,
+          "s_m": 2.72,
+          "q_m3h": 11.976
+        },
+        {
+          "t_min": 780.0,
+          "nd_m": 10.708,
+          "s_m": 2.708,
+          "q_m3h": 12.144
+        },
+        {
+          "t_min": 810.0,
+          "nd_m": 10.754,
+          "s_m": 2.754,
+          "q_m3h": 11.871
+        },
+        {
+          "t_min": 840.0,
+          "nd_m": 10.774,
+          "s_m": 2.774,
+          "q_m3h": 11.745
+        },
+        {
+          "t_min": 870.0,
+          "nd_m": 10.759,
+          "s_m": 2.759,
+          "q_m3h": 11.932
+        },
+        {
+          "t_min": 900.0,
+          "nd_m": 10.773,
+          "s_m": 2.773,
+          "q_m3h": 12.001
+        },
+        {
+          "t_min": 930.0,
+          "nd_m": 10.797,
+          "s_m": 2.797,
+          "q_m3h": 11.907
+        },
+        {
+          "t_min": 960.0,
+          "nd_m": 10.749,
+          "s_m": 2.749,
+          "q_m3h": 12.031
+        },
+        {
+          "t_min": 990.0,
+          "nd_m": 10.766,
+          "s_m": 2.766,
+          "q_m3h": 12.137
+        },
+        {
+          "t_min": 1020.0,
+          "nd_m": 10.757,
+          "s_m": 2.757,
+          "q_m3h": 11.978
+        },
+        {
+          "t_min": 1050.0,
+          "nd_m": 10.812,
+          "s_m": 2.812,
+          "q_m3h": 11.841
+        },
+        {
+          "t_min": 1080.0,
+          "nd_m": 10.782,
+          "s_m": 2.782,
+          "q_m3h": 11.885
+        },
+        {
+          "t_min": 1110.0,
+          "nd_m": 10.814,
+          "s_m": 2.814,
+          "q_m3h": 12.02
+        },
+        {
+          "t_min": 1140.0,
+          "nd_m": 10.78,
+          "s_m": 2.78,
+          "q_m3h": 12.103
+        },
+        {
+          "t_min": 1170.0,
+          "nd_m": 10.82,
+          "s_m": 2.82,
+          "q_m3h": 11.926
+        },
+        {
+          "t_min": 1200.0,
+          "nd_m": 10.773,
+          "s_m": 2.773,
+          "q_m3h": 12.001
+        },
+        {
+          "t_min": 1230.0,
+          "nd_m": 10.831,
+          "s_m": 2.831,
+          "q_m3h": 11.828
+        },
+        {
+          "t_min": 1260.0,
+          "nd_m": 10.804,
+          "s_m": 2.804,
+          "q_m3h": 11.847
+        },
+        {
+          "t_min": 1290.0,
+          "nd_m": 10.859,
+          "s_m": 2.859,
+          "q_m3h": 11.953
+        },
+        {
+          "t_min": 1320.0,
+          "nd_m": 10.814,
+          "s_m": 2.814,
+          "q_m3h": 12.066
+        },
+        {
+          "t_min": 1350.0,
+          "nd_m": 10.823,
+          "s_m": 2.823,
+          "q_m3h": 12.196
+        },
+        {
+          "t_min": 1380.0,
+          "nd_m": 10.828,
+          "s_m": 2.828,
+          "q_m3h": 12.105
+        },
+        {
+          "t_min": 1410.0,
+          "nd_m": 10.835,
+          "s_m": 2.835,
+          "q_m3h": 12.07
+        },
+        {
+          "t_min": 1440.0,
+          "nd_m": 10.872,
+          "s_m": 2.872,
+          "q_m3h": 12.167
+        }
+      ]
+    },
+    "recuperacao": {
+      "__tipo__": "dataframe",
+      "colunas": [
+        "t_linha_min",
+        "na_m",
+        "s_linha_m"
+      ],
+      "linhas": [
+        {
+          "t_linha_min": 1.0,
+          "na_m": 9.168,
+          "s_linha_m": 1.168
+        },
+        {
+          "t_linha_min": 2.0,
+          "na_m": 9.032,
+          "s_linha_m": 1.032
+        },
+        {
+          "t_linha_min": 3.0,
+          "na_m": 8.973,
+          "s_linha_m": 0.973
+        },
+        {
+          "t_linha_min": 5.0,
+          "na_m": 8.904,
+          "s_linha_m": 0.904
+        },
+        {
+          "t_linha_min": 7.5,
+          "na_m": 8.861,
+          "s_linha_m": 0.861
+        },
+        {
+          "t_linha_min": 10.0,
+          "na_m": 8.825,
+          "s_linha_m": 0.825
+        },
+        {
+          "t_linha_min": 15.0,
+          "na_m": 8.73,
+          "s_linha_m": 0.73
+        },
+        {
+          "t_linha_min": 20.0,
+          "na_m": 8.681,
+          "s_linha_m": 0.681
+        },
+        {
+          "t_linha_min": 25.0,
+          "na_m": 8.635,
+          "s_linha_m": 0.635
+        },
+        {
+          "t_linha_min": 30.0,
+          "na_m": 8.586,
+          "s_linha_m": 0.586
+        },
+        {
+          "t_linha_min": 40.0,
+          "na_m": 8.522,
+          "s_linha_m": 0.522
+        },
+        {
+          "t_linha_min": 50.0,
+          "na_m": 8.596,
+          "s_linha_m": 0.596
+        },
+        {
+          "t_linha_min": 60.0,
+          "na_m": 8.517,
+          "s_linha_m": 0.517
+        },
+        {
+          "t_linha_min": 90.0,
+          "na_m": 8.462,
+          "s_linha_m": 0.462
+        },
+        {
+          "t_linha_min": 120.0,
+          "na_m": 8.418,
+          "s_linha_m": 0.418
+        },
+        {
+          "t_linha_min": 150.0,
+          "na_m": 8.377,
+          "s_linha_m": 0.377
+        },
+        {
+          "t_linha_min": 180.0,
+          "na_m": 8.341,
+          "s_linha_m": 0.341
+        },
+        {
+          "t_linha_min": 210.0,
+          "na_m": 8.302,
+          "s_linha_m": 0.302
+        },
+        {
+          "t_linha_min": 240.0,
+          "na_m": 8.234,
+          "s_linha_m": 0.234
+        },
+        {
+          "t_linha_min": 270.0,
+          "na_m": 8.34,
+          "s_linha_m": 0.34
+        },
+        {
+          "t_linha_min": 300.0,
+          "na_m": 8.298,
+          "s_linha_m": 0.298
+        },
+        {
+          "t_linha_min": 330.0,
+          "na_m": 8.301,
+          "s_linha_m": 0.301
+        },
+        {
+          "t_linha_min": 360.0,
+          "na_m": 8.26,
+          "s_linha_m": 0.26
+        },
+        {
+          "t_linha_min": 390.0,
+          "na_m": 8.232,
+          "s_linha_m": 0.232
+        },
+        {
+          "t_linha_min": 420.0,
+          "na_m": 8.286,
+          "s_linha_m": 0.286
+        },
+        {
+          "t_linha_min": 450.0,
+          "na_m": 8.196,
+          "s_linha_m": 0.196
+        },
+        {
+          "t_linha_min": 480.0,
+          "na_m": 8.243,
+          "s_linha_m": 0.243
+        },
+        {
+          "t_linha_min": 510.0,
+          "na_m": 8.235,
+          "s_linha_m": 0.235
+        },
+        {
+          "t_linha_min": 540.0,
+          "na_m": 8.205,
+          "s_linha_m": 0.205
+        },
+        {
+          "t_linha_min": 570.0,
+          "na_m": 8.189,
+          "s_linha_m": 0.189
+        },
+        {
+          "t_linha_min": 600.0,
+          "na_m": 8.216,
+          "s_linha_m": 0.216
+        },
+        {
+          "t_linha_min": 630.0,
+          "na_m": 8.176,
+          "s_linha_m": 0.176
+        },
+        {
+          "t_linha_min": 660.0,
+          "na_m": 8.152,
+          "s_linha_m": 0.152
+        },
+        {
+          "t_linha_min": 690.0,
+          "na_m": 8.204,
+          "s_linha_m": 0.204
+        },
+        {
+          "t_linha_min": 720.0,
+          "na_m": 8.166,
+          "s_linha_m": 0.166
+        },
+        {
+          "t_linha_min": 750.0,
+          "na_m": 8.158,
+          "s_linha_m": 0.158
+        },
+        {
+          "t_linha_min": 780.0,
+          "na_m": 8.139,
+          "s_linha_m": 0.139
+        },
+        {
+          "t_linha_min": 810.0,
+          "na_m": 8.182,
+          "s_linha_m": 0.182
+        },
+        {
+          "t_linha_min": 840.0,
+          "na_m": 8.156,
+          "s_linha_m": 0.156
+        },
+        {
+          "t_linha_min": 870.0,
+          "na_m": 8.158,
+          "s_linha_m": 0.158
+        },
+        {
+          "t_linha_min": 900.0,
+          "na_m": 8.158,
+          "s_linha_m": 0.158
+        },
+        {
+          "t_linha_min": 930.0,
+          "na_m": 8.156,
+          "s_linha_m": 0.156
+        },
+        {
+          "t_linha_min": 960.0,
+          "na_m": 8.17,
+          "s_linha_m": 0.17
+        },
+        {
+          "t_linha_min": 990.0,
+          "na_m": 8.139,
+          "s_linha_m": 0.139
+        },
+        {
+          "t_linha_min": 1020.0,
+          "na_m": 8.175,
+          "s_linha_m": 0.175
+        },
+        {
+          "t_linha_min": 1050.0,
+          "na_m": 8.139,
+          "s_linha_m": 0.139
+        },
+        {
+          "t_linha_min": 1080.0,
+          "na_m": 8.158,
+          "s_linha_m": 0.158
+        },
+        {
+          "t_linha_min": 1110.0,
+          "na_m": 8.139,
+          "s_linha_m": 0.139
+        },
+        {
+          "t_linha_min": 1140.0,
+          "na_m": 8.092,
+          "s_linha_m": 0.092
+        },
+        {
+          "t_linha_min": 1170.0,
+          "na_m": 8.116,
+          "s_linha_m": 0.116
+        },
+        {
+          "t_linha_min": 1200.0,
+          "na_m": 8.116,
+          "s_linha_m": 0.116
+        },
+        {
+          "t_linha_min": 1230.0,
+          "na_m": 8.122,
+          "s_linha_m": 0.122
+        },
+        {
+          "t_linha_min": 1260.0,
+          "na_m": 8.133,
+          "s_linha_m": 0.133
+        },
+        {
+          "t_linha_min": 1290.0,
+          "na_m": 8.146,
+          "s_linha_m": 0.146
+        },
+        {
+          "t_linha_min": 1320.0,
+          "na_m": 8.14,
+          "s_linha_m": 0.14
+        },
+        {
+          "t_linha_min": 1350.0,
+          "na_m": 8.09,
+          "s_linha_m": 0.09
+        },
+        {
+          "t_linha_min": 1380.0,
+          "na_m": 8.094,
+          "s_linha_m": 0.094
+        },
+        {
+          "t_linha_min": 1410.0,
+          "na_m": 8.109,
+          "s_linha_m": 0.109
+        },
+        {
+          "t_linha_min": 1440.0,
+          "na_m": 8.101,
+          "s_linha_m": 0.101
+        }
+      ]
+    },
+    "avisos": [],
+    "erros": [],
+    "abas": [
+      "01_Cadastro",
+      "02_Bombeamento",
+      "03_Recuperacao",
+      "04_Orientacoes"
+    ]
+  },
+  "hidraulica": {
+    "ok": true,
+    "parametros": {
+      "ne_m": 8.0,
+      "nd_m": 10.872,
+      "s_max_m": 2.872,
+      "q_estavel_m3h": 11.993949152542374,
+      "delta_s_linha_m": 0.36709594944989754,
+      "T_m2h": 5.979070862003125,
+      "T_m2s": 0.0016608530172230903,
+      "q_capacidade_especifica_m3h_m": 4.176166139464615,
+      "q_longo_prazo_m3h_m": 4.7832566896025,
+      "Q_ot_m3h": 13.73751321253838,
+      "Q_jacob_lohman_m3h": 4.143994414790098,
+      "tempo_bombeamento_min": 1440.0,
+      "duracao_h": 24.0
+    },
+    "memoria": {
+      "ok": true,
+      "s_max": 2.872,
+      "ne": 8.0,
+      "nd_final": 10.872,
+      "q_estavel": 11.993949152542374,
+      "delta_s_linha": 0.36709594944989754,
+      "T_m2h": 5.979070862003125,
+      "T_m2s": 0.0016608530172230903,
+      "q_capacidade_especifica": 4.176166139464615,
+      "q_longo_prazo": 4.7832566896025,
+      "Q_ot": 13.73751321253838,
+      "Q_jacob_lohman": 4.143994414790098,
+      "tempo_bombeamento_min": 1440.0,
+      "vazao_estabilizada": {
+        "q_estavel": 11.993949152542374,
+        "indice_inicio": 0,
+        "n_pontos": 59,
+        "cv": 0.009627506923023698,
+        "metodo": "patamar terminal (CV <= 10%)",
+        "tempo_inicio_min": 1.0,
+        "observacao": "Patamar de 59 leituras a partir de t = 1 min (CV = 1.0%)."
+      },
+      "reta_recuperacao": {
+        "delta_s_linha": 0.36709594944989754,
+        "inclinacao": 0.36709594944989754,
+        "intercepto": 0.003080603790259928,
+        "r2": 0.9916591046225327,
+        "n_pontos": 59,
+        "metodo": "Theil-Sen (robusto)",
+        "equacao": "s' = +0.3671·log10(t/t') +0.0031   (R² = 0.9917)",
+        "observacao": "Coeficiente angular positivo: o rebaixamento residual deveria decair com t/t'. Confira a planilha de recuperacao."
+      },
+      "avisos": [],
+      "erros": [],
+      "detalhes": {
+        "observacao_vazao": "Patamar de 59 leituras a partir de t = 1 min (CV = 1.0%).",
+        "t_bombeamento_total_min": 1440.0,
+        "observacao_recuperacao": "Coeficiente angular positivo: o rebaixamento residual deveria decair com t/t'. Confira a planilha de recuperacao.",
+        "jacob_lohman": {
+          "raio_m": 0.0762,
+          "S_adotado": 0.0001,
+          "t_dias": 365.0,
+          "arg": 202959966330.6287
+        },
+        "q_estavel_origem": "identificada na planilha (patamar estabilizado)"
+      }
+    },
+    "graficos": {
+      "painel": "data/processos/EX-CAMPOBOM-001/graficos/graficos_ensaio.png",
+      "rebaixamento": "data/processos/EX-CAMPOBOM-001/graficos/grafico_rebaixamento.png",
+      "recuperacao": "data/processos/EX-CAMPOBOM-001/graficos/grafico_recuperacao.png"
+    },
+    "avisos": [],
+    "erros": [],
+    "series": {
+      "bombeamento": {
+        "n": 59,
+        "t_min": [
+          1.0,
+          2.0,
+          3.0,
+          5.0,
+          7.5,
+          10.0,
+          15.0,
+          20.0,
+          25.0,
+          30.0,
+          40.0,
+          50.0,
+          60.0,
+          90.0,
+          120.0,
+          150.0,
+          180.0,
+          210.0,
+          240.0,
+          270.0,
+          300.0,
+          330.0,
+          360.0,
+          390.0,
+          420.0,
+          450.0,
+          480.0,
+          510.0,
+          540.0,
+          570.0,
+          600.0,
+          630.0,
+          660.0,
+          690.0,
+          720.0,
+          750.0,
+          780.0,
+          810.0,
+          840.0,
+          870.0,
+          900.0,
+          930.0,
+          960.0,
+          990.0,
+          1020.0,
+          1050.0,
+          1080.0,
+          1110.0,
+          1140.0,
+          1170.0,
+          1200.0,
+          1230.0,
+          1260.0,
+          1290.0,
+          1320.0,
+          1350.0,
+          1380.0,
+          1410.0,
+          1440.0
+        ],
+        "nd_m": [
+          9.721,
+          9.806,
+          9.851,
+          9.918,
+          9.991,
+          10.03,
+          10.114,
+          10.132,
+          10.184,
+          10.268,
+          10.267,
+          10.334,
+          10.345,
+          10.417,
+          10.461,
+          10.504,
+          10.516,
+          10.541,
+          10.535,
+          10.572,
+          10.577,
+          10.621,
+          10.637,
+          10.624,
+          10.64,
+          10.692,
+          10.644,
+          10.653,
+          10.727,
+          10.675,
+          10.687,
+          10.693,
+          10.69,
+          10.737,
+          10.706,
+          10.72,
+          10.708,
+          10.754,
+          10.774,
+          10.759,
+          10.773,
+          10.797,
+          10.749,
+          10.766,
+          10.757,
+          10.812,
+          10.782,
+          10.814,
+          10.78,
+          10.82,
+          10.773,
+          10.831,
+          10.804,
+          10.859,
+          10.814,
+          10.823,
+          10.828,
+          10.835,
+          10.872
+        ],
+        "s_m": [
+          1.721,
+          1.806,
+          1.851,
+          1.918,
+          1.991,
+          2.03,
+          2.114,
+          2.132,
+          2.184,
+          2.268,
+          2.267,
+          2.334,
+          2.345,
+          2.417,
+          2.461,
+          2.504,
+          2.516,
+          2.541,
+          2.535,
+          2.572,
+          2.577,
+          2.621,
+          2.637,
+          2.624,
+          2.64,
+          2.692,
+          2.644,
+          2.653,
+          2.727,
+          2.675,
+          2.687,
+          2.693,
+          2.69,
+          2.737,
+          2.706,
+          2.72,
+          2.708,
+          2.754,
+          2.774,
+          2.759,
+          2.773,
+          2.797,
+          2.749,
+          2.766,
+          2.757,
+          2.812,
+          2.782,
+          2.814,
+          2.78,
+          2.82,
+          2.773,
+          2.831,
+          2.804,
+          2.859,
+          2.814,
+          2.823,
+          2.828,
+          2.835,
+          2.872
+        ],
+        "q_m3h": [
+          12.05,
+          11.959,
+          12.171,
+          11.95,
+          12.222,
+          11.927,
+          11.851,
+          11.826,
+          12.22,
+          12.087,
+          11.713,
+          11.891,
+          11.991,
+          12.043,
+          12.066,
+          12.079,
+          12.025,
+          12.065,
+          11.982,
+          12.06,
+          11.979,
+          11.901,
+          12.009,
+          11.978,
+          12.028,
+          11.999,
+          12.11,
+          12.069,
+          12.039,
+          11.881,
+          11.748,
+          11.994,
+          12.042,
+          12.103,
+          11.855,
+          11.976,
+          12.144,
+          11.871,
+          11.745,
+          11.932,
+          12.001,
+          11.907,
+          12.031,
+          12.137,
+          11.978,
+          11.841,
+          11.885,
+          12.02,
+          12.103,
+          11.926,
+          12.001,
+          11.828,
+          11.847,
+          11.953,
+          12.066,
+          12.196,
+          12.105,
+          12.07,
+          12.167
+        ]
+      },
+      "recuperacao": {
+        "n": 59,
+        "t_linha_min": [
+          1.0,
+          2.0,
+          3.0,
+          5.0,
+          7.5,
+          10.0,
+          15.0,
+          20.0,
+          25.0,
+          30.0,
+          40.0,
+          50.0,
+          60.0,
+          90.0,
+          120.0,
+          150.0,
+          180.0,
+          210.0,
+          240.0,
+          270.0,
+          300.0,
+          330.0,
+          360.0,
+          390.0,
+          420.0,
+          450.0,
+          480.0,
+          510.0,
+          540.0,
+          570.0,
+          600.0,
+          630.0,
+          660.0,
+          690.0,
+          720.0,
+          750.0,
+          780.0,
+          810.0,
+          840.0,
+          870.0,
+          900.0,
+          930.0,
+          960.0,
+          990.0,
+          1020.0,
+          1050.0,
+          1080.0,
+          1110.0,
+          1140.0,
+          1170.0,
+          1200.0,
+          1230.0,
+          1260.0,
+          1290.0,
+          1320.0,
+          1350.0,
+          1380.0,
+          1410.0,
+          1440.0
+        ],
+        "s_linha_m": [
+          1.168,
+          1.032,
+          0.973,
+          0.904,
+          0.861,
+          0.825,
+          0.73,
+          0.681,
+          0.635,
+          0.586,
+          0.522,
+          0.596,
+          0.517,
+          0.462,
+          0.418,
+          0.377,
+          0.341,
+          0.302,
+          0.234,
+          0.34,
+          0.298,
+          0.301,
+          0.26,
+          0.232,
+          0.286,
+          0.196,
+          0.243,
+          0.235,
+          0.205,
+          0.189,
+          0.216,
+          0.176,
+          0.152,
+          0.204,
+          0.166,
+          0.158,
+          0.139,
+          0.182,
+          0.156,
+          0.158,
+          0.158,
+          0.156,
+          0.17,
+          0.139,
+          0.175,
+          0.139,
+          0.158,
+          0.139,
+          0.092,
+          0.116,
+          0.116,
+          0.122,
+          0.133,
+          0.146,
+          0.14,
+          0.09,
+          0.094,
+          0.109,
+          0.101
+        ]
+      },
+      "tendencia": {
+        "a": 1.689661463007644,
+        "b": 0.3636157606255775,
+        "r2": 0.9950818387015555,
+        "equacao": "s = +0.3636·log10(t) +1.6897   (R² = 0.9951)"
+      }
+    }
+  },
+  "balanco": {
+    "ok": true,
+    "ano_referencia": 2026,
+    "vazao_adotada": {
+      "vazao": 11.993949152542374,
+      "origem": "Q_estavel",
+      "justificativa": "Adota-se o menor valor entre Q_ot (vazao otima de campo, que ja incorpora o fator de seguranca de longo prazo de 0.8) e Q_estavel, por criterio de seguranca hidrogeologica e preservacao do aquifero."
+    },
+    "quadro": {
+      "ano_referencia": 2026,
+      "linhas": [
+        {
+          "mes": "Janeiro",
+          "mes_num": 1,
+          "dias_mes": 31,
+          "dias_operacao": 22.14,
+          "horas_dia": 12.0,
+          "vazao_m3h": 11.994,
+          "volume_m3_mes": 3186.55
+        },
+        {
+          "mes": "Fevereiro",
+          "mes_num": 2,
+          "dias_mes": 28,
+          "dias_operacao": 20.0,
+          "horas_dia": 12.0,
+          "vazao_m3h": 11.994,
+          "volume_m3_mes": 2878.55
+        },
+        {
+          "mes": "Marco",
+          "mes_num": 3,
+          "dias_mes": 31,
+          "dias_operacao": 22.14,
+          "horas_dia": 12.0,
+          "vazao_m3h": 11.994,
+          "volume_m3_mes": 3186.55
+        },
+        {
+          "mes": "Abril",
+          "mes_num": 4,
+          "dias_mes": 30,
+          "dias_operacao": 21.43,
+          "horas_dia": 12.0,
+          "vazao_m3h": 11.994,
+          "volume_m3_mes": 3084.36
+        },
+        {
+          "mes": "Maio",
+          "mes_num": 5,
+          "dias_mes": 31,
+          "dias_operacao": 22.14,
+          "horas_dia": 12.0,
+          "vazao_m3h": 11.994,
+          "volume_m3_mes": 3186.55
+        },
+        {
+          "mes": "Junho",
+          "mes_num": 6,
+          "dias_mes": 30,
+          "dias_operacao": 21.43,
+          "horas_dia": 12.0,
+          "vazao_m3h": 11.994,
+          "volume_m3_mes": 3084.36
+        },
+        {
+          "mes": "Julho",
+          "mes_num": 7,
+          "dias_mes": 31,
+          "dias_operacao": 22.14,
+          "horas_dia": 12.0,
+          "vazao_m3h": 11.994,
+          "volume_m3_mes": 3186.55
+        },
+        {
+          "mes": "Agosto",
+          "mes_num": 8,
+          "dias_mes": 31,
+          "dias_operacao": 22.14,
+          "horas_dia": 12.0,
+          "vazao_m3h": 11.994,
+          "volume_m3_mes": 3186.55
+        },
+        {
+          "mes": "Setembro",
+          "mes_num": 9,
+          "dias_mes": 30,
+          "dias_operacao": 21.43,
+          "horas_dia": 12.0,
+          "vazao_m3h": 11.994,
+          "volume_m3_mes": 3084.36
+        },
+        {
+          "mes": "Outubro",
+          "mes_num": 10,
+          "dias_mes": 31,
+          "dias_operacao": 22.14,
+          "horas_dia": 12.0,
+          "vazao_m3h": 11.994,
+          "volume_m3_mes": 3186.55
+        },
+        {
+          "mes": "Novembro",
+          "mes_num": 11,
+          "dias_mes": 30,
+          "dias_operacao": 21.43,
+          "horas_dia": 12.0,
+          "vazao_m3h": 11.994,
+          "volume_m3_mes": 3084.36
+        },
+        {
+          "mes": "Dezembro",
+          "mes_num": 12,
+          "dias_mes": 31,
+          "dias_operacao": 22.14,
+          "horas_dia": 12.0,
+          "vazao_m3h": 11.994,
+          "volume_m3_mes": 3186.55
+        }
+      ],
+      "volume_anual_m3": 37521.87,
+      "vazao_media_diaria_m3_dia": 102.8,
+      "vazao_diaria_max_m3_dia": 143.927,
+      "horas_dia": 12.0,
+      "dias_semana": 5.0
+    },
+    "equipamentos": {
+      "motobomba": {
+        "declarado": {
+          "fabricante": "Exemplo Bombas",
+          "modelo": "Submersa 4\" 5 estagios",
+          "numero_serie": "B2024-000345",
+          "diametro_pol": 4.0,
+          "potencia_hp": 3.0,
+          "num_estagios": 5,
+          "profundidade_instalacao_m": 36.0,
+          "vazao_nominal_m3h": 12.0,
+          "altura_manometrica_mca": 62.0
+        },
+        "vazao_nominal_m3h": 12.0,
+        "profundidade_instalacao_m": 36.0,
+        "submergencia_m": 25.128,
+        "submergencia_recomendada_m": [
+          6.0,
+          10.0
+        ],
+        "faixa_vazao_recomendada_m3h": [
+          10.99,
+          15.11
+        ]
+      },
+      "hidrometro": {
+        "declarado": {
+          "fabricante": "Exemplo Hidrometros",
+          "modelo": "Volumetrico DN32",
+          "numero_serie": "H2024-001122",
+          "vazao_nominal_m3h": 2.5,
+          "diametro_nominal_mm": 32.0,
+          "classe_metrologica": "Classe B (horizontal)"
+        },
+        "vazao_nominal_m3h": 2.5,
+        "diametro_nominal_mm": 32.0,
+        "velocidade_media_m_s": 4.143
+      },
+      "reservacao": {
+        "itens": [
+          {
+            "capacidade_l": 5000.0,
+            "local": "Casa de maquinas"
+          },
+          {
+            "capacidade_l": 2000.0,
+            "local": "Reservatorio elevado"
+          }
+        ],
+        "capacidade_total_l": 7000.0,
+        "capacidade_total_m3": 7.0
+      },
+      "pendencias": [
+        {
+          "codigo": "MED-010",
+          "titulo": "Hidrometro abaixo da vazao de operacao",
+          "mensagem": "Vazao adotada de 11.9939 m3/h excede a vazao nominal do hidrometro (2.5 m3/h). O instrumento operara acima da faixa de trabalho, com perda de precisao metrologica e desgaste acelerado.",
+          "bloqueante": false,
+          "agente": 4,
+          "campo": "hidrometro.vazao_nominal_m3h",
+          "sugestao": "Substitua por hidrometro com vazao nominal >= 11.99 m3/h."
+        },
+        {
+          "codigo": "MED-020",
+          "titulo": "Velocidade excessiva no hidrometro",
+          "mensagem": "Velocidade media estimada de 4.14 m/s no hidrometro DN32. Recomenda-se ate 3 m/s para preservar a classe de precisao.",
+          "bloqueante": false,
+          "agente": 4,
+          "campo": "hidrometro.diametro_nominal_mm",
+          "sugestao": null
+        }
+      ],
+      "ok": true
+    },
+    "pendencias": [],
+    "avisos": [],
+    "erros": [],
+    "repouso_diario_h": 12.0,
+    "repouso_atende": true
+  },
+  "relatorio": {
+    "ok": true,
+    "estrutura": {
+      "cabecalho": {
+        "titulo": "LAUDO TECNICO DE CARACTERIZACAO HIDROGEOLOGICA",
+        "subtitulo": "MEMORIAL DESCRITIVO PARA OUTORGA DE AGUA SUBTERRANEA - SIOUT/RS",
+        "processo": "EX-CAMPOBOM-001",
+        "data_emissao": "23/09/2026",
+        "versao_sistema": "1.0.0"
+      },
+      "identificacao": {
+        "requerente": {
+          "Nome / Razao social": "Metalurgica Sinos Ltda.",
+          "CPF / CNPJ": "00.000.000/0001-00",
+          "RG / Inscricao estadual": "000/0000000",
+          "Telefone": "(51) 3597-0000",
+          "E-mail": "meioambiente@example.com.br"
+        },
+        "imovel": {
+          "Denominacao": "Parque Industrial - Galpao 3",
+          "Endereco": "Rua das Aguas, 1250",
+          "Bairro / Localidade": "Operaria",
+          "Municipio / UF": "Campo Bom / RS",
+          "CEP": "93700-000",
+          "Coordenadas (SIRGAS 2000)": "-29.6842, -51.0531",
+          "Coordenadas UTM": "E 494.862,5 m / N 6.716.205,8 m - fuso 22S (EPSG:31982)",
+          "Bacia hidrografica": "Bacia Hidrografica do Rio dos Sinos",
+          "Regiao hidrografica": "Regiao Hidrografica do Guaiba",
+          "Area do terreno (ha)": 1.8
+        },
+        "documentacao_posse": [
+          {
+            "documento": "Certidao de registro de imoveis / matricula atualizada",
+            "situacao": "Anexado"
+          }
+        ]
+      },
+      "caracterizacao": {
+        "poco": {
+          "Tipo de poco": "Opcao B - Poco tubular profundo",
+          "Classe SIOUT": "poco_tubular_profundo",
+          "Diametro util (pol)": "6,00",
+          "Profundidade total (m)": "82,00",
+          "Diametro da perfuracao (mm)": "250",
+          "Diametro do revestimento (mm)": "152",
+          "Espaco anular (mm)": "49,0",
+          "Profundidade do selo sanitario (m)": "22,00",
+          "Posicao do crivo (m)": "40,00 a 78,00",
+          "Formacao geologica": "Depósitos aluviais e coluviais",
+          "Litologia predominante": "Areia, Sedimento elúvio-coluvionar",
+          "Classe de solo": "Podzólico Vermelho-Amarelo álico",
+          "Sistema aquifer": "L2",
+          "Tipo de aquifer": "poroso livre (sedimentos aluviais)"
+        },
+        "laje_sanitaria": {
+          "Espessura (cm)": "15,0",
+          "Area (m2)": "1,44",
+          "Cota do rebordo (cm)": "35,0"
+        },
+        "corpo_hidrico": {
+          "Corpo hidrico mais proximo": "Rio dos Sinos",
+          "Distancia (m)": "358,9"
+        },
+        "raio_seguranca": {
+          "raio_m": 500.0,
+          "ocorrencias": {},
+          "origem": "OpenStreetMap/Overpass + camadas do usuario"
+        }
+      },
+      "hidraulica": {
+        "exige_ensaio": true,
+        "parametros": {
+          "ok": true,
+          "parametros": {
+            "ne_m": 8.0,
+            "nd_m": 10.872,
+            "s_max_m": 2.872,
+            "q_estavel_m3h": 11.993949152542374,
+            "delta_s_linha_m": 0.36709594944989754,
+            "T_m2h": 5.979070862003125,
+            "T_m2s": 0.0016608530172230903,
+            "q_capacidade_especifica_m3h_m": 4.176166139464615,
+            "q_longo_prazo_m3h_m": 4.7832566896025,
+            "Q_ot_m3h": 13.73751321253838,
+            "Q_jacob_lohman_m3h": 4.143994414790098,
+            "tempo_bombeamento_min": 1440.0,
+            "duracao_h": 24.0
+          },
+          "memoria": {
+            "ok": true,
+            "s_max": 2.872,
+            "ne": 8.0,
+            "nd_final": 10.872,
+            "q_estavel": 11.993949152542374,
+            "delta_s_linha": 0.36709594944989754,
+            "T_m2h": 5.979070862003125,
+            "T_m2s": 0.0016608530172230903,
+            "q_capacidade_especifica": 4.176166139464615,
+            "q_longo_prazo": 4.7832566896025,
+            "Q_ot": 13.73751321253838,
+            "Q_jacob_lohman": 4.143994414790098,
+            "tempo_bombeamento_min": 1440.0,
+            "vazao_estabilizada": {
+              "q_estavel": 11.993949152542374,
+              "indice_inicio": 0,
+              "n_pontos": 59,
+              "cv": 0.009627506923023698,
+              "metodo": "patamar terminal (CV <= 10%)",
+              "tempo_inicio_min": 1.0,
+              "observacao": "Patamar de 59 leituras a partir de t = 1 min (CV = 1.0%)."
+            },
+            "reta_recuperacao": {
+              "delta_s_linha": 0.36709594944989754,
+              "inclinacao": 0.36709594944989754,
+              "intercepto": 0.003080603790259928,
+              "r2": 0.9916591046225327,
+              "n_pontos": 59,
+              "metodo": "Theil-Sen (robusto)",
+              "equacao": "s' = +0.3671·log10(t/t') +0.0031   (R² = 0.9917)",
+              "observacao": "Coeficiente angular positivo: o rebaixamento residual deveria decair com t/t'. Confira a planilha de recuperacao."
+            },
+            "avisos": [],
+            "erros": [],
+            "detalhes": {
+              "observacao_vazao": "Patamar de 59 leituras a partir de t = 1 min (CV = 1.0%).",
+              "t_bombeamento_total_min": 1440.0,
+              "observacao_recuperacao": "Coeficiente angular positivo: o rebaixamento residual deveria decair com t/t'. Confira a planilha de recuperacao.",
+              "jacob_lohman": {
+                "raio_m": 0.0762,
+                "S_adotado": 0.0001,
+                "t_dias": 365.0,
+                "arg": 202959966330.6287
+              },
+              "q_estavel_origem": "identificada na planilha (patamar estabilizado)"
+            }
+          },
+          "graficos": {
+            "painel": "data/processos/EX-CAMPOBOM-001/graficos/graficos_ensaio.png",
+            "rebaixamento": "data/processos/EX-CAMPOBOM-001/graficos/grafico_rebaixamento.png",
+            "recuperacao": "data/processos/EX-CAMPOBOM-001/graficos/grafico_recuperacao.png"
+          },
+          "avisos": [],
+          "erros": [],
+          "series": {
+            "bombeamento": {
+              "n": 59,
+              "t_min": [
+                1.0,
+                2.0,
+                3.0,
+                5.0,
+                7.5,
+                10.0,
+                15.0,
+                20.0,
+                25.0,
+                30.0,
+                40.0,
+                50.0,
+                60.0,
+                90.0,
+                120.0,
+                150.0,
+                180.0,
+                210.0,
+                240.0,
+                270.0,
+                300.0,
+                330.0,
+                360.0,
+                390.0,
+                420.0,
+                450.0,
+                480.0,
+                510.0,
+                540.0,
+                570.0,
+                600.0,
+                630.0,
+                660.0,
+                690.0,
+                720.0,
+                750.0,
+                780.0,
+                810.0,
+                840.0,
+                870.0,
+                900.0,
+                930.0,
+                960.0,
+                990.0,
+                1020.0,
+                1050.0,
+                1080.0,
+                1110.0,
+                1140.0,
+                1170.0,
+                1200.0,
+                1230.0,
+                1260.0,
+                1290.0,
+                1320.0,
+                1350.0,
+                1380.0,
+                1410.0,
+                1440.0
+              ],
+              "nd_m": [
+                9.721,
+                9.806,
+                9.851,
+                9.918,
+                9.991,
+                10.03,
+                10.114,
+                10.132,
+                10.184,
+                10.268,
+                10.267,
+                10.334,
+                10.345,
+                10.417,
+                10.461,
+                10.504,
+                10.516,
+                10.541,
+                10.535,
+                10.572,
+                10.577,
+                10.621,
+                10.637,
+                10.624,
+                10.64,
+                10.692,
+                10.644,
+                10.653,
+                10.727,
+                10.675,
+                10.687,
+                10.693,
+                10.69,
+                10.737,
+                10.706,
+                10.72,
+                10.708,
+                10.754,
+                10.774,
+                10.759,
+                10.773,
+                10.797,
+                10.749,
+                10.766,
+                10.757,
+                10.812,
+                10.782,
+                10.814,
+                10.78,
+                10.82,
+                10.773,
+                10.831,
+                10.804,
+                10.859,
+                10.814,
+                10.823,
+                10.828,
+                10.835,
+                10.872
+              ],
+              "s_m": [
+                1.721,
+                1.806,
+                1.851,
+                1.918,
+                1.991,
+                2.03,
+                2.114,
+                2.132,
+                2.184,
+                2.268,
+                2.267,
+                2.334,
+                2.345,
+                2.417,
+                2.461,
+                2.504,
+                2.516,
+                2.541,
+                2.535,
+                2.572,
+                2.577,
+                2.621,
+                2.637,
+                2.624,
+                2.64,
+                2.692,
+                2.644,
+                2.653,
+                2.727,
+                2.675,
+                2.687,
+                2.693,
+                2.69,
+                2.737,
+                2.706,
+                2.72,
+                2.708,
+                2.754,
+                2.774,
+                2.759,
+                2.773,
+                2.797,
+                2.749,
+                2.766,
+                2.757,
+                2.812,
+                2.782,
+                2.814,
+                2.78,
+                2.82,
+                2.773,
+                2.831,
+                2.804,
+                2.859,
+                2.814,
+                2.823,
+                2.828,
+                2.835,
+                2.872
+              ],
+              "q_m3h": [
+                12.05,
+                11.959,
+                12.171,
+                11.95,
+                12.222,
+                11.927,
+                11.851,
+                11.826,
+                12.22,
+                12.087,
+                11.713,
+                11.891,
+                11.991,
+                12.043,
+                12.066,
+                12.079,
+                12.025,
+                12.065,
+                11.982,
+                12.06,
+                11.979,
+                11.901,
+                12.009,
+                11.978,
+                12.028,
+                11.999,
+                12.11,
+                12.069,
+                12.039,
+                11.881,
+                11.748,
+                11.994,
+                12.042,
+                12.103,
+                11.855,
+                11.976,
+                12.144,
+                11.871,
+                11.745,
+                11.932,
+                12.001,
+                11.907,
+                12.031,
+                12.137,
+                11.978,
+                11.841,
+                11.885,
+                12.02,
+                12.103,
+                11.926,
+                12.001,
+                11.828,
+                11.847,
+                11.953,
+                12.066,
+                12.196,
+                12.105,
+                12.07,
+                12.167
+              ]
+            },
+            "recuperacao": {
+              "n": 59,
+              "t_linha_min": [
+                1.0,
+                2.0,
+                3.0,
+                5.0,
+                7.5,
+                10.0,
+                15.0,
+                20.0,
+                25.0,
+                30.0,
+                40.0,
+                50.0,
+                60.0,
+                90.0,
+                120.0,
+                150.0,
+                180.0,
+                210.0,
+                240.0,
+                270.0,
+                300.0,
+                330.0,
+                360.0,
+                390.0,
+                420.0,
+                450.0,
+                480.0,
+                510.0,
+                540.0,
+                570.0,
+                600.0,
+                630.0,
+                660.0,
+                690.0,
+                720.0,
+                750.0,
+                780.0,
+                810.0,
+                840.0,
+                870.0,
+                900.0,
+                930.0,
+                960.0,
+                990.0,
+                1020.0,
+                1050.0,
+                1080.0,
+                1110.0,
+                1140.0,
+                1170.0,
+                1200.0,
+                1230.0,
+                1260.0,
+                1290.0,
+                1320.0,
+                1350.0,
+                1380.0,
+                1410.0,
+                1440.0
+              ],
+              "s_linha_m": [
+                1.168,
+                1.032,
+                0.973,
+                0.904,
+                0.861,
+                0.825,
+                0.73,
+                0.681,
+                0.635,
+                0.586,
+                0.522,
+                0.596,
+                0.517,
+                0.462,
+                0.418,
+                0.377,
+                0.341,
+                0.302,
+                0.234,
+                0.34,
+                0.298,
+                0.301,
+                0.26,
+                0.232,
+                0.286,
+                0.196,
+                0.243,
+                0.235,
+                0.205,
+                0.189,
+                0.216,
+                0.176,
+                0.152,
+                0.204,
+                0.166,
+                0.158,
+                0.139,
+                0.182,
+                0.156,
+                0.158,
+                0.158,
+                0.156,
+                0.17,
+                0.139,
+                0.175,
+                0.139,
+                0.158,
+                0.139,
+                0.092,
+                0.116,
+                0.116,
+                0.122,
+                0.133,
+                0.146,
+                0.14,
+                0.09,
+                0.094,
+                0.109,
+                0.101
+              ]
+            },
+            "tendencia": {
+              "a": 1.689661463007644,
+              "b": 0.3636157606255775,
+              "r2": 0.9950818387015555,
+              "equacao": "s = +0.3636·log10(t) +1.6897   (R² = 0.9951)"
+            }
+          }
+        },
+        "tabela": [
+          {
+            "parametro": "Nivel estatico (NE)",
+            "valor": "8,00 m",
+            "criterio": "Medido a partir da boca do tubo"
+          },
+          {
+            "parametro": "Nivel dinamico estabilizado (ND)",
+            "valor": "10,87 m",
+            "criterio": "Fim do bombeamento continuo"
+          },
+          {
+            "parametro": "Rebaixamento maximo (s_max = ND - NE)",
+            "valor": "2,87 m",
+            "criterio": "Rebaixamento maximo observado"
+          },
+          {
+            "parametro": "Vazao estabilizada (Q_estavel)",
+            "valor": "11,99 m3/h",
+            "criterio": "patamar terminal (CV <= 10%)"
+          },
+          {
+            "parametro": "Δs' (reta de recuperacao)",
+            "valor": "0,3671 m/ciclo",
+            "criterio": "s' = +0.3671·log10(t/t') +0.0031   (R² = 0.9917)"
+          },
+          {
+            "parametro": "Transmissividade (T)",
+            "valor": "5,979 m2/h",
+            "criterio": "T = 0,183 · Q_estavel / Δs'"
+          },
+          {
+            "parametro": "Transmissividade (T)",
+            "valor": "0,001661 m2/s",
+            "criterio": "T(m2/h) / 3600"
+          },
+          {
+            "parametro": "Capacidade especifica do poco (q)",
+            "valor": "4,176 m3/h/m",
+            "criterio": "q = Q_estavel / s_max"
+          },
+          {
+            "parametro": "Capacidade especifica de longo prazo (q(t))",
+            "valor": "4,783 m3/h/m",
+            "criterio": "q(t) = 0,8 · T  (fator 0.8)"
+          },
+          {
+            "parametro": "Vazao otima de explotacao (Q_ot)",
+            "valor": "13,74 m3/h",
+            "criterio": "Q_ot = q(t) · s_max"
+          },
+          {
+            "parametro": "Contraprova Jacob-Lohman",
+            "valor": "4,14 m3/h",
+            "criterio": "Estimativa independente de longo prazo"
+          },
+          {
+            "parametro": "Duracao do ensaio",
+            "valor": "24,0 h",
+            "criterio": "1.440 min"
+          }
+        ]
+      },
+      "equipamentos": {
+        "motobomba": {
+          "Fabricante": "Exemplo Bombas",
+          "Modelo": "Submersa 4\" 5 estagios",
+          "Numero de serie": "B2024-000345",
+          "Diametro (pol)": "4,00",
+          "Potencia (HP/CV)": "3,00",
+          "Numero de estagios": "5",
+          "Profundidade de instalacao (m)": "36,00",
+          "Vazao nominal (m3/h)": "12,00",
+          "Altura manometrica (m.c.a.)": "62,0"
+        },
+        "hidrometro": {
+          "Fabricante": "Exemplo Hidrometros",
+          "Modelo": "Volumetrico DN32",
+          "Numero de serie": "H2024-001122",
+          "Diametro nominal (DN)": "32",
+          "Vazao nominal (m3/h)": "2,50",
+          "Classe metrologica": "Classe B (horizontal)"
+        },
+        "reservacao": {
+          "Quantidade de reservatorios": 2,
+          "Capacidade total (L)": "7.000",
+          "Capacidade total (m3)": "7,000",
+          "Detalhamento": [
+            {
+              "reservatorio": "Reservatorio 1",
+              "capacidade_l": "5.000 L",
+              "local": "Casa de maquinas"
+            },
+            {
+              "reservatorio": "Reservatorio 2",
+              "capacidade_l": "2.000 L",
+              "local": "Reservatorio elevado"
+            }
+          ]
+        },
+        "auditoria": {
+          "motobomba": {
+            "declarado": {
+              "fabricante": "Exemplo Bombas",
+              "modelo": "Submersa 4\" 5 estagios",
+              "numero_serie": "B2024-000345",
+              "diametro_pol": 4.0,
+              "potencia_hp": 3.0,
+              "num_estagios": 5,
+              "profundidade_instalacao_m": 36.0,
+              "vazao_nominal_m3h": 12.0,
+              "altura_manometrica_mca": 62.0
+            },
+            "vazao_nominal_m3h": 12.0,
+            "profundidade_instalacao_m": 36.0,
+            "submergencia_m": 25.128,
+            "submergencia_recomendada_m": [
+              6.0,
+              10.0
+            ],
+            "faixa_vazao_recomendada_m3h": [
+              10.99,
+              15.11
+            ]
+          },
+          "hidrometro": {
+            "declarado": {
+              "fabricante": "Exemplo Hidrometros",
+              "modelo": "Volumetrico DN32",
+              "numero_serie": "H2024-001122",
+              "vazao_nominal_m3h": 2.5,
+              "diametro_nominal_mm": 32.0,
+              "classe_metrologica": "Classe B (horizontal)"
+            },
+            "vazao_nominal_m3h": 2.5,
+            "diametro_nominal_mm": 32.0,
+            "velocidade_media_m_s": 4.143
+          },
+          "reservacao": {
+            "itens": [
+              {
+                "capacidade_l": 5000.0,
+                "local": "Casa de maquinas"
+              },
+              {
+                "capacidade_l": 2000.0,
+                "local": "Reservatorio elevado"
+              }
+            ],
+            "capacidade_total_l": 7000.0,
+            "capacidade_total_m3": 7.0
+          },
+          "pendencias": [
+            {
+              "codigo": "MED-010",
+              "titulo": "Hidrometro abaixo da vazao de operacao",
+              "mensagem": "Vazao adotada de 11.9939 m3/h excede a vazao nominal do hidrometro (2.5 m3/h). O instrumento operara acima da faixa de trabalho, com perda de precisao metrologica e desgaste acelerado.",
+              "bloqueante": false,
+              "agente": 4,
+              "campo": "hidrometro.vazao_nominal_m3h",
+              "sugestao": "Substitua por hidrometro com vazao nominal >= 11.99 m3/h."
+            },
+            {
+              "codigo": "MED-020",
+              "titulo": "Velocidade excessiva no hidrometro",
+              "mensagem": "Velocidade media estimada de 4.14 m/s no hidrometro DN32. Recomenda-se ate 3 m/s para preservar a classe de precisao.",
+              "bloqueante": false,
+              "agente": 4,
+              "campo": "hidrometro.diametro_nominal_mm",
+              "sugestao": null
+            }
+          ],
+          "ok": true
+        }
+      },
+      "memorial": {
+        "etapas": [
+          {
+            "etapa": "1. Captacao",
+            "descricao": "Agua subterranea captada no poco tubular PT-01, perfurado na Depósitos aluviais e coluviais, sistema aquifer L2, a 82,0 m de profundidade."
+          },
+          {
+            "etapa": "2. Automacao / recalque",
+            "descricao": "Motobomba submersa Exemplo Bombas Submersa 4\" 5 estagios, 3,0 HP/CV, instalada a 36,0 m, com 5 estagio(s). Partida por quadro de comando com protecao termica e nivel."
+          },
+          {
+            "etapa": "3. Medicao",
+            "descricao": "Hidrometro Exemplo Hidrometros Volumetrico DN32, DN 32 mm, vazao nominal 2,50 m3/h, instalado em cavalete na saida do poco."
+          },
+          {
+            "etapa": "4. Reservacao superior",
+            "descricao": "Reservacao total de 7.000 L distribuida em 2 reservatorio(s), instalada em cota superior aos pontos de consumo."
+          },
+          {
+            "etapa": "5. Rede de distribuicao",
+            "descricao": "Rede interna de distribuicao por gravidade a partir da reservacao superior, atendendo exclusivamente as finalidades declaradas."
+          }
+        ],
+        "fluxograma_ascii": "  [ POCO TUBULAR ]\n        |\n        v\n  [ MOTOBOMBA SUBMERSA ] ---- [ QUADRO DE COMANDO / PROTECAO ]\n        |\n        v\n  [ CAVALETE + HIDROMETRO ]\n        |\n        v\n  [ RESERVATORIO SUPERIOR (caixa d'agua) ]\n        |\n        v\n  [ REDE DE DISTRIBUICAO INTERNA / EXTERNA ]\n        |\n        v\n  [ PONTOS DE CONSUMO (finalidades declaradas) ]"
+      },
+      "quadro_vazao": {
+        "ano_referencia": 2026,
+        "linhas": [
+          {
+            "mes": "Janeiro",
+            "mes_num": 1,
+            "dias_mes": 31,
+            "dias_operacao": 22.14,
+            "horas_dia": 12.0,
+            "vazao_m3h": 11.994,
+            "volume_m3_mes": 3186.55
+          },
+          {
+            "mes": "Fevereiro",
+            "mes_num": 2,
+            "dias_mes": 28,
+            "dias_operacao": 20.0,
+            "horas_dia": 12.0,
+            "vazao_m3h": 11.994,
+            "volume_m3_mes": 2878.55
+          },
+          {
+            "mes": "Marco",
+            "mes_num": 3,
+            "dias_mes": 31,
+            "dias_operacao": 22.14,
+            "horas_dia": 12.0,
+            "vazao_m3h": 11.994,
+            "volume_m3_mes": 3186.55
+          },
+          {
+            "mes": "Abril",
+            "mes_num": 4,
+            "dias_mes": 30,
+            "dias_operacao": 21.43,
+            "horas_dia": 12.0,
+            "vazao_m3h": 11.994,
+            "volume_m3_mes": 3084.36
+          },
+          {
+            "mes": "Maio",
+            "mes_num": 5,
+            "dias_mes": 31,
+            "dias_operacao": 22.14,
+            "horas_dia": 12.0,
+            "vazao_m3h": 11.994,
+            "volume_m3_mes": 3186.55
+          },
+          {
+            "mes": "Junho",
+            "mes_num": 6,
+            "dias_mes": 30,
+            "dias_operacao": 21.43,
+            "horas_dia": 12.0,
+            "vazao_m3h": 11.994,
+            "volume_m3_mes": 3084.36
+          },
+          {
+            "mes": "Julho",
+            "mes_num": 7,
+            "dias_mes": 31,
+            "dias_operacao": 22.14,
+            "horas_dia": 12.0,
+            "vazao_m3h": 11.994,
+            "volume_m3_mes": 3186.55
+          },
+          {
+            "mes": "Agosto",
+            "mes_num": 8,
+            "dias_mes": 31,
+            "dias_operacao": 22.14,
+            "horas_dia": 12.0,
+            "vazao_m3h": 11.994,
+            "volume_m3_mes": 3186.55
+          },
+          {
+            "mes": "Setembro",
+            "mes_num": 9,
+            "dias_mes": 30,
+            "dias_operacao": 21.43,
+            "horas_dia": 12.0,
+            "vazao_m3h": 11.994,
+            "volume_m3_mes": 3084.36
+          },
+          {
+            "mes": "Outubro",
+            "mes_num": 10,
+            "dias_mes": 31,
+            "dias_operacao": 22.14,
+            "horas_dia": 12.0,
+            "vazao_m3h": 11.994,
+            "volume_m3_mes": 3186.55
+          },
+          {
+            "mes": "Novembro",
+            "mes_num": 11,
+            "dias_mes": 30,
+            "dias_operacao": 21.43,
+            "horas_dia": 12.0,
+            "vazao_m3h": 11.994,
+            "volume_m3_mes": 3084.36
+          },
+          {
+            "mes": "Dezembro",
+            "mes_num": 12,
+            "dias_mes": 31,
+            "dias_operacao": 22.14,
+            "horas_dia": 12.0,
+            "vazao_m3h": 11.994,
+            "volume_m3_mes": 3186.55
+          }
+        ],
+        "volume_anual_m3": 37521.87,
+        "vazao_media_diaria_m3_dia": 102.8,
+        "vazao_diaria_max_m3_dia": 143.927,
+        "horas_dia": 12.0,
+        "dias_semana": 5.0
+      },
+      "regime": {
+        "Horas por dia": "12,00 h/dia",
+        "Dias por semana": "5 dias/semana",
+        "Vazao adotada": "11,994 m3/h",
+        "Origem da vazao": "Q_estavel",
+        "Justificativa": "Adota-se o menor valor entre Q_ot (vazao otima de campo, que ja incorpora o fator de seguranca de longo prazo de 0.8) e Q_estavel, por criterio de seguranca hidrogeologica e preservacao do aquifero.",
+        "Repouso diario": "12,00 h",
+        "Repouso minimo exigido": "4 h/dia (SIOUT RS)"
+      },
+      "parecer": {
+        "finalidades": "Uso industrial, Limpeza geral de patio e vias, Irrigacao",
+        "rede_publica": "Sim",
+        "separacao_redes": "Sim",
+        "repouso_atende": true,
+        "conclusoes": [
+          "O poco enquadra-se como Opcao B - Poco tubular profundo. Exige ensaio de bombeamento continuo de 24 horas acompanhado do ensaio de recuperacao, o qual foi apresentado e analisado.",
+          "O ponto de captacao localiza-se no municipio de Campo Bom/RS, na Bacia Hidrografica do Rio dos Sinos, integrando a Regiao Hidrografica do Guaiba.",
+          "A captacao ocorre na Depósitos aluviais e coluviais (Areia, Sedimento elúvio-coluvionar), integrando o L2.",
+          "A vazao otima de explotacao de campo calculada e de 13,74 m3/h, obtida a partir da vazao estabilizada de 11,99 m3/h e do rebaixamento maximo de 2,87 m, com transmissividade de 5,979 m2/h (0,001661 m2/s).",
+          "Recomenda-se a vazao de explotacao de 11,99 m3/h (Q_estavel), resultando em volume anual estimado de 37.522 m3/ano.",
+          "O regime operacional proposto reserva 12,0 h/dia de repouso ao aquifero, atendendo ao repouso minimo de 4 h/dia exigido pelo SIOUT RS.",
+          "O imovel e atendido por rede publica de abastecimento de agua. Declara-se a SEPARACAO FISICA DAS REDES HIDRAULICAS, sem qualquer interconexao, cross-connection ou by-pass entre a rede publica e a rede alimentada pelo poco, ficando a agua subterranea restrita as finalidades nao destinadas ao consumo humano direto.",
+          "A distancia ao corpo hidrico superficial mais proximo ('Rio dos Sinos') e de 358,9 m, acima do limiar de 50 m que exigiria estudo de interferencia especifico.",
+          "Nao foram identificadas fontes potenciais de poluicao mapeadas dentro do raio de seguranca de 500 m nas bases consultadas; a constatacao deve ser confirmada por vistoria de campo."
+        ],
+        "recomendacoes": [
+          "Manter sinalizacao permanente e distinta nas duas redes (padrao de cores diferenciado) e submeter o sistema a inspecao periodica, de modo a comprovar a ausencia de interconexao.",
+          "[MED-010] Vazao adotada de 11.9939 m3/h excede a vazao nominal do hidrometro (2.5 m3/h). O instrumento operara acima da faixa de trabalho, com perda de precisao metrologica e desgaste acelerado.",
+          "[MED-020] Velocidade media estimada de 4.14 m/s no hidrometro DN32. Recomenda-se ate 3 m/s para preservar a classe de precisao.",
+          "Instalar e manter lacre e/ou sinalizacao no hidrometro, com leitura mensal registrada em planilha propria para fins de fiscalizacao da outorga.",
+          "Manter a laje de protecao sanitaria integra, com tampa de acesso vedada e cercamento de protecao em bom estado de conservacao.",
+          "Repetir a analise fisico-quimica e bacteriologica da agua em periodicidade minima semestral, conforme os parametros da Portaria GM/MS n. 888/2021.",
+          "Em caso de rebaixamento anomalo, turbidez persistente ou reducao de vazao, suspender a operacao e comunicar o orgao gestor."
+        ]
+      },
+      "assinatura": {
+        "responsavel_tecnico": "Ana Paula Exemplo",
+        "titulo": "Geologo",
+        "registro": "CREA-RS 0000000000",
+        "art": "ART RS2024 0000000",
+        "local_data": "____________________, 23/09/2026",
+        "nota_normativa": "Conforme a norma CEGM/CREA-RS n. 08/2022, o presente laudo deve ser assinado por profissional habilitado (Geologo ou Engenheiro de Minas) com a respectiva Anotacao de Responsabilidade Tecnica (ART)."
+      },
+      "anexos": {
+        "mapas": [
+          "data/processos/EX-CAMPOBOM-001/mapas/mapa_situacao.jpg",
+          "data/processos/EX-CAMPOBOM-001/mapas/mapa_geologico.jpg",
+          "data/processos/EX-CAMPOBOM-001/mapas/mapa_hidrologico.jpg"
+        ],
+        "graficos": {
+          "painel": "data/processos/EX-CAMPOBOM-001/graficos/graficos_ensaio.png",
+          "rebaixamento": "data/processos/EX-CAMPOBOM-001/graficos/grafico_rebaixamento.png",
+          "recuperacao": "data/processos/EX-CAMPOBOM-001/graficos/grafico_recuperacao.png"
+        },
+        "proveniencia": {
+          "municipios_rs": {
+            "chave": "municipios_rs",
+            "status": "ok",
+            "origem": "IBGE - Malha Municipal 2022",
+            "arquivo": "municipios_rs.gpkg",
+            "feicoes": 2,
+            "mensagem": ""
+          },
+          "geologia_rs": {
+            "chave": "geologia_rs",
+            "status": "ok",
+            "origem": "Google Drive do projeto - 'Geologico Rio Grande do Sul.kmz'",
+            "arquivo": "geologia_rs.gpkg",
+            "feicoes": 4,
+            "mensagem": ""
+          },
+          "hidrogeologia_rs": {
+            "chave": "hidrogeologia_rs",
+            "status": "ok",
+            "origem": "Google Drive do projeto - 'Hidrogelogia_RS.kmz'",
+            "arquivo": "hidrogeologia_rs.gpkg",
+            "feicoes": 1,
+            "mensagem": ""
+          },
+          "solos_rs": {
+            "chave": "solos_rs",
+            "status": "ok",
+            "origem": "Google Drive do projeto - 'Mapa de solos.kmz'",
+            "arquivo": "solos_rs.gpkg",
+            "feicoes": 2,
+            "mensagem": ""
+          },
+          "regioes_hidrograficas": {
+            "chave": "regioes_hidrograficas",
+            "status": "ausente",
+            "origem": "ANA/SNIRH - 12 Regioes Hidrograficas definidas pelo CNRH",
+            "arquivo": "",
+            "feicoes": 0,
+            "mensagem": "arquivo regioes_hidrograficas.gpkg nao encontrado em data/vetoriais. Execute o workflow 'build-vetorial-data' no GitHub Actions."
+          },
+          "uph": {
+            "chave": "uph",
+            "status": "ausente",
+            "origem": "ANA/SNIRH - Unidades de Planejamento Hidrico",
+            "arquivo": "",
+            "feicoes": 0,
+            "mensagem": "arquivo uph.gpkg nao encontrado em data/vetoriais. Execute o workflow 'build-vetorial-data' no GitHub Actions."
+          },
+          "ottobacias_rs": {
+            "chave": "ottobacias_rs",
+            "status": "ausente",
+            "origem": "ANA - BHO 2017 (areas de contribuicao hidrografica)",
+            "arquivo": "",
+            "feicoes": 0,
+            "mensagem": "arquivo ottobacias_rs.gpkg nao encontrado em data/vetoriais. Execute o workflow 'build-vetorial-data' no GitHub Actions."
+          },
+          "otto_nivel_3": {
+            "chave": "otto_nivel_3",
+            "status": "ausente",
+            "origem": "ANA - BHO 2017 Otto nivel 3",
+            "arquivo": "",
+            "feicoes": 0,
+            "mensagem": "arquivo otto_nivel_3.gpkg nao encontrado em data/vetoriais. Execute o workflow 'build-vetorial-data' no GitHub Actions."
+          },
+          "otto_nivel_2": {
+            "chave": "otto_nivel_2",
+            "status": "ausente",
+            "origem": "ANA - BHO 2017 Otto nivel 2",
+            "arquivo": "",
+            "feicoes": 0,
+            "mensagem": "arquivo otto_nivel_2.gpkg nao encontrado em data/vetoriais. Execute o workflow 'build-vetorial-data' no GitHub Actions."
+          },
+          "otto_nivel_1": {
+            "chave": "otto_nivel_1",
+            "status": "ausente",
+            "origem": "ANA - BHO 2017 Otto nivel 1",
+            "arquivo": "",
+            "feicoes": 0,
+            "mensagem": "arquivo otto_nivel_1.gpkg nao encontrado em data/vetoriais. Execute o workflow 'build-vetorial-data' no GitHub Actions."
+          },
+          "drenagem_rs": {
+            "chave": "drenagem_rs",
+            "status": "ok",
+            "origem": "IBGE - Base Cartografica Continua 1:250.000 (2021) / ANA BHO 2017",
+            "arquivo": "drenagem_rs.gpkg",
+            "feicoes": 8,
+            "mensagem": ""
+          },
+          "cursos_dagua_rs": {
+            "chave": "cursos_dagua_rs",
+            "status": "ausente",
+            "origem": "ANA - Base Hidrografica Ottocodificada 2017 (cursos d'agua)",
+            "arquivo": "",
+            "feicoes": 0,
+            "mensagem": "arquivo cursos_dagua_rs.gpkg nao encontrado em data/vetoriais. Execute o workflow 'build-vetorial-data' no GitHub Actions."
+          },
+          "osm": {
+            "chave": "osm",
+            "status": "ausente",
+            "origem": "OpenStreetMap (Overpass)",
+            "arquivo": "",
+            "feicoes": 0,
+            "mensagem": "Overpass indisponivel e sem cache local"
+          }
+        }
+      }
+    },
+    "markdown": "data/processos/EX-CAMPOBOM-001/relatorio/laudo_tecnico.md",
+    "pdf": "data/processos/EX-CAMPOBOM-001/relatorio/laudo_tecnico.pdf",
+    "minuta": "data/processos/EX-CAMPOBOM-001/relatorio/minuta_siout.md",
+    "erros": [],
+    "avisos": []
+  },
+  "issues": [
+    {
+      "id": "D001",
+      "categoria": "geoespacial",
+      "categoria_rotulo": "Base geoespacial",
+      "severidade": "info",
+      "titulo": "Camada oficial ausente, com substituto declarado: regioes_hidrograficas",
+      "detalhe": "status=ausente; arquivo regioes_hidrograficas.gpkg nao encontrado em data/vetoriais. Execute o workflow 'build-vetorial-data' no GitHub Actions. | Substituto aplicado: tabela de referencia curada do outorgasys (outorgasys/gis/data/bacias_rs.json) - CNRH Res. 32/2003 e CRH-RS UGRH. A origem alternativa esta declarada no laudo, conforme a politica de fallback local adotada para este ambiente.",
+      "agente": 2,
+      "origem": "Agente 2 / registro de camadas",
+      "sugestao": "Se desejar a base oficial, deposite o arquivo em data/vetoriais/regioes_hidrograficas.gpkg.",
+      "correcao": [
+        "Confirmar se o arquivo da camada existe em data/vetoriais/.",
+        "Se ausente, executar o workflow 'build-vetorial-data' no GitHub Actions.",
+        "Se o servidor de origem estiver bloqueado, converter a base no ambiente do usuario e depositar o .gpkg em data/vetoriais/.",
+        "Reprocessar o Agente 2 para o ponto informado."
+      ]
+    },
+    {
+      "id": "D002",
+      "categoria": "geoespacial",
+      "categoria_rotulo": "Base geoespacial",
+      "severidade": "info",
+      "titulo": "Camada oficial ausente, com substituto declarado: uph",
+      "detalhe": "status=ausente; arquivo uph.gpkg nao encontrado em data/vetoriais. Execute o workflow 'build-vetorial-data' no GitHub Actions. | Substituto aplicado: nao ha substituto direto; a UPH nao e determinada quando a base da ANA esta indisponivel (campo fica em branco no laudo). A origem alternativa esta declarada no laudo, conforme a politica de fallback local adotada para este ambiente.",
+      "agente": 2,
+      "origem": "Agente 2 / registro de camadas",
+      "sugestao": "Se desejar a base oficial, deposite o arquivo em data/vetoriais/uph.gpkg.",
+      "correcao": [
+        "Confirmar se o arquivo da camada existe em data/vetoriais/.",
+        "Se ausente, executar o workflow 'build-vetorial-data' no GitHub Actions.",
+        "Se o servidor de origem estiver bloqueado, converter a base no ambiente do usuario e depositar o .gpkg em data/vetoriais/.",
+        "Reprocessar o Agente 2 para o ponto informado."
+      ]
+    },
+    {
+      "id": "D003",
+      "categoria": "geoespacial",
+      "categoria_rotulo": "Base geoespacial",
+      "severidade": "info",
+      "titulo": "Camada oficial ausente, com substituto declarado: ottobacias_rs",
+      "detalhe": "status=ausente; arquivo ottobacias_rs.gpkg nao encontrado em data/vetoriais. Execute o workflow 'build-vetorial-data' no GitHub Actions. | Substituto aplicado: tabela de referencia curada do outorgasys. A origem alternativa esta declarada no laudo, conforme a politica de fallback local adotada para este ambiente.",
+      "agente": 2,
+      "origem": "Agente 2 / registro de camadas",
+      "sugestao": "Se desejar a base oficial, deposite o arquivo em data/vetoriais/ottobacias_rs.gpkg.",
+      "correcao": [
+        "Confirmar se o arquivo da camada existe em data/vetoriais/.",
+        "Se ausente, executar o workflow 'build-vetorial-data' no GitHub Actions.",
+        "Se o servidor de origem estiver bloqueado, converter a base no ambiente do usuario e depositar o .gpkg em data/vetoriais/.",
+        "Reprocessar o Agente 2 para o ponto informado."
+      ]
+    },
+    {
+      "id": "D004",
+      "categoria": "geoespacial",
+      "categoria_rotulo": "Base geoespacial",
+      "severidade": "info",
+      "titulo": "Camada oficial ausente, com substituto declarado: otto_nivel_3",
+      "detalhe": "status=ausente; arquivo otto_nivel_3.gpkg nao encontrado em data/vetoriais. Execute o workflow 'build-vetorial-data' no GitHub Actions. | Substituto aplicado: tabela de referencia curada do outorgasys. A origem alternativa esta declarada no laudo, conforme a politica de fallback local adotada para este ambiente.",
+      "agente": 2,
+      "origem": "Agente 2 / registro de camadas",
+      "sugestao": "Se desejar a base oficial, deposite o arquivo em data/vetoriais/otto_nivel_3.gpkg.",
+      "correcao": [
+        "Confirmar se o arquivo da camada existe em data/vetoriais/.",
+        "Se ausente, executar o workflow 'build-vetorial-data' no GitHub Actions.",
+        "Se o servidor de origem estiver bloqueado, converter a base no ambiente do usuario e depositar o .gpkg em data/vetoriais/.",
+        "Reprocessar o Agente 2 para o ponto informado."
+      ]
+    },
+    {
+      "id": "D005",
+      "categoria": "geoespacial",
+      "categoria_rotulo": "Base geoespacial",
+      "severidade": "info",
+      "titulo": "Camada oficial ausente, com substituto declarado: otto_nivel_2",
+      "detalhe": "status=ausente; arquivo otto_nivel_2.gpkg nao encontrado em data/vetoriais. Execute o workflow 'build-vetorial-data' no GitHub Actions. | Substituto aplicado: tabela de referencia curada do outorgasys. A origem alternativa esta declarada no laudo, conforme a politica de fallback local adotada para este ambiente.",
+      "agente": 2,
+      "origem": "Agente 2 / registro de camadas",
+      "sugestao": "Se desejar a base oficial, deposite o arquivo em data/vetoriais/otto_nivel_2.gpkg.",
+      "correcao": [
+        "Confirmar se o arquivo da camada existe em data/vetoriais/.",
+        "Se ausente, executar o workflow 'build-vetorial-data' no GitHub Actions.",
+        "Se o servidor de origem estiver bloqueado, converter a base no ambiente do usuario e depositar o .gpkg em data/vetoriais/.",
+        "Reprocessar o Agente 2 para o ponto informado."
+      ]
+    },
+    {
+      "id": "D006",
+      "categoria": "geoespacial",
+      "categoria_rotulo": "Base geoespacial",
+      "severidade": "info",
+      "titulo": "Camada oficial ausente, com substituto declarado: otto_nivel_1",
+      "detalhe": "status=ausente; arquivo otto_nivel_1.gpkg nao encontrado em data/vetoriais. Execute o workflow 'build-vetorial-data' no GitHub Actions. | Substituto aplicado: tabela de referencia curada do outorgasys. A origem alternativa esta declarada no laudo, conforme a politica de fallback local adotada para este ambiente.",
+      "agente": 2,
+      "origem": "Agente 2 / registro de camadas",
+      "sugestao": "Se desejar a base oficial, deposite o arquivo em data/vetoriais/otto_nivel_1.gpkg.",
+      "correcao": [
+        "Confirmar se o arquivo da camada existe em data/vetoriais/.",
+        "Se ausente, executar o workflow 'build-vetorial-data' no GitHub Actions.",
+        "Se o servidor de origem estiver bloqueado, converter a base no ambiente do usuario e depositar o .gpkg em data/vetoriais/.",
+        "Reprocessar o Agente 2 para o ponto informado."
+      ]
+    },
+    {
+      "id": "D007",
+      "categoria": "geoespacial",
+      "categoria_rotulo": "Base geoespacial",
+      "severidade": "info",
+      "titulo": "Camada oficial ausente, com substituto declarado: cursos_dagua_rs",
+      "detalhe": "status=ausente; arquivo cursos_dagua_rs.gpkg nao encontrado em data/vetoriais. Execute o workflow 'build-vetorial-data' no GitHub Actions. | Substituto aplicado: drenagem_rs (IBGE BC250 2021) - mesma rede hidrografica, em formato de eixos, ja usada no calculo de distancia. A origem alternativa esta declarada no laudo, conforme a politica de fallback local adotada para este ambiente.",
+      "agente": 2,
+      "origem": "Agente 2 / registro de camadas",
+      "sugestao": "Se desejar a base oficial, deposite o arquivo em data/vetoriais/cursos_dagua_rs.gpkg.",
+      "correcao": [
+        "Confirmar se o arquivo da camada existe em data/vetoriais/.",
+        "Se ausente, executar o workflow 'build-vetorial-data' no GitHub Actions.",
+        "Se o servidor de origem estiver bloqueado, converter a base no ambiente do usuario e depositar o .gpkg em data/vetoriais/.",
+        "Reprocessar o Agente 2 para o ponto informado."
+      ]
+    },
+    {
+      "id": "D008",
+      "categoria": "geoespacial",
+      "categoria_rotulo": "Base geoespacial",
+      "severidade": "info",
+      "titulo": "Camada oficial ausente, com substituto declarado: osm",
+      "detalhe": "status=ausente; Overpass indisponivel e sem cache local | Substituto aplicado: cache local do Overpass; sem rede a plataforma segue apenas com as bases estatais e as camadas enviadas pelo usuario. A origem alternativa esta declarada no laudo, conforme a politica de fallback local adotada para este ambiente.",
+      "agente": 2,
+      "origem": "Agente 2 / registro de camadas",
+      "sugestao": "Forneca a camada via upload no Agente 2.",
+      "correcao": [
+        "Confirmar se o arquivo da camada existe em data/vetoriais/.",
+        "Se ausente, executar o workflow 'build-vetorial-data' no GitHub Actions.",
+        "Se o servidor de origem estiver bloqueado, converter a base no ambiente do usuario e depositar o .gpkg em data/vetoriais/.",
+        "Reprocessar o Agente 2 para o ponto informado."
+      ]
+    },
+    {
+      "id": "D009",
+      "categoria": "geoespacial",
+      "categoria_rotulo": "Base geoespacial",
+      "severidade": "info",
+      "titulo": "Camada do inventario ausente, com substituto declarado: nascentes_rs",
+      "detalhe": "status=ausente;  | Substituto aplicado: nascentes do OpenStreetMap (natural=spring) - ja usadas no Mapa 3 (hidrografico e hidrogeologico)",
+      "agente": 2,
+      "origem": "Agente 2 / inventario de bases",
+      "sugestao": "Deposite o arquivo em data/vetoriais/nascentes_rs.gpkg.",
+      "correcao": [
+        "Confirmar se o arquivo da camada existe em data/vetoriais/.",
+        "Se ausente, executar o workflow 'build-vetorial-data' no GitHub Actions.",
+        "Se o servidor de origem estiver bloqueado, converter a base no ambiente do usuario e depositar o .gpkg em data/vetoriais/.",
+        "Reprocessar o Agente 2 para o ponto informado."
+      ]
+    },
+    {
+      "id": "D010",
+      "categoria": "geoespacial",
+      "categoria_rotulo": "Base geoespacial",
+      "severidade": "info",
+      "titulo": "Camada do inventario ausente, com substituto declarado: rodovias_rs",
+      "detalhe": "status=ausente;  | Substituto aplicado: vias do OpenStreetMap (highway) - ja usadas no Mapa 1 (localizacao e situacao)",
+      "agente": 2,
+      "origem": "Agente 2 / inventario de bases",
+      "sugestao": "Deposite o arquivo em data/vetoriais/rodovias_rs.gpkg.",
+      "correcao": [
+        "Confirmar se o arquivo da camada existe em data/vetoriais/.",
+        "Se ausente, executar o workflow 'build-vetorial-data' no GitHub Actions.",
+        "Se o servidor de origem estiver bloqueado, converter a base no ambiente do usuario e depositar o .gpkg em data/vetoriais/.",
+        "Reprocessar o Agente 2 para o ponto informado."
+      ]
+    },
+    {
+      "id": "D011",
+      "categoria": "geoespacial",
+      "categoria_rotulo": "Base geoespacial",
+      "severidade": "info",
+      "titulo": "Camadas obrigatorias ausentes, porem com substituto declarado",
+      "detalhe": "regioes_hidrograficas. Mitigacao: regioes_hidrograficas -> tabela de referencia curada do outorgasys (outorgasys/gis/data/bacias_rs.json) - CNRH Res. 32/2003 e CRH-RS UGRH",
+      "agente": 2,
+      "origem": "diagnostico de ambiente",
+      "sugestao": "Nenhuma acao obrigatoria: a origem alternativa e declarada no laudo.",
+      "correcao": [
+        "Confirmar se o arquivo da camada existe em data/vetoriais/.",
+        "Se ausente, executar o workflow 'build-vetorial-data' no GitHub Actions.",
+        "Se o servidor de origem estiver bloqueado, converter a base no ambiente do usuario e depositar o .gpkg em data/vetoriais/.",
+        "Reprocessar o Agente 2 para o ponto informado."
+      ]
+    }
+  ],
+  "log": [
+    {
+      "ts": "2026-09-23T12:25:28",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Arquivo registrado em 'ensaio_bombeamento': ensaio_bombeamento_PT-01.xlsx"
+    },
+    {
+      "ts": "2026-09-23T12:25:28",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Arquivo registrado em 'matricula_imovel': matricula_imovel_exemplo.pdf"
+    },
+    {
+      "ts": "2026-09-23T12:25:28",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Arquivo registrado em 'analise_laboratorial': analise_laboratorial_exemplo.pdf"
+    },
+    {
+      "ts": "2026-09-23T12:25:28",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Arquivo registrado em 'declaracao_separacao_redes': declaracao_separacao_redes_exemplo.pdf"
+    },
+    {
+      "ts": "2026-09-23T12:25:28",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Arquivo registrado em 'registro_fotografico': foto_01_boca_poco.jpg"
+    },
+    {
+      "ts": "2026-09-23T12:25:28",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Arquivo registrado em 'registro_fotografico': foto_02_laje_protecao.jpg"
+    },
+    {
+      "ts": "2026-09-23T12:25:28",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Arquivo registrado em 'registro_fotografico': foto_03_cercamento.jpg"
+    },
+    {
+      "ts": "2026-09-23T12:25:28",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Arquivo registrado em 'registro_fotografico': foto_04_cavalete_hidrometro.jpg"
+    },
+    {
+      "ts": "2026-09-23T12:25:28",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Cadastro de exemplo carregado. Os anexos (matricula, analise laboratorial, declaracao de separacao de redes e registro fotografico) sao exemplos gerados pela plataforma e estao marcados como nao validos para protocolo."
+    },
+    {
+      "ts": "2026-09-23T12:25:55",
+      "agente": 5,
+      "nivel": "info",
+      "mensagem": "Relatorio tecnico emitido."
+    },
+    {
+      "ts": "2026-09-23T12:25:56",
+      "agente": 6,
+      "nivel": "info",
+      "mensagem": "Triagem concluida: 11 achados."
+    }
+  ],
+  "responsavel_tecnico": {
+    "nome": "Ana Paula Exemplo",
+    "titulo": "Geologo",
+    "registro": "CREA-RS 0000000000",
+    "empresa": "Consultoria Hidrogeologica Exemplo",
+    "email": "ana.exemplo@example.com.br",
+    "telefone": "(51) 90000-0000"
+  },
+  "art": "ART RS2024 0000000",
+  "hidrogeologia": {
+    "ok": true,
+    "parametros": {
+      "ne_m": 8.0,
+      "nd_m": 10.872,
+      "s_max_m": 2.872,
+      "q_estavel_m3h": 11.993949152542374,
+      "delta_s_linha_m": 0.36709594944989754,
+      "T_m2h": 5.979070862003125,
+      "T_m2s": 0.0016608530172230903,
+      "q_capacidade_especifica_m3h_m": 4.176166139464615,
+      "q_longo_prazo_m3h_m": 4.7832566896025,
+      "Q_ot_m3h": 13.73751321253838,
+      "Q_jacob_lohman_m3h": 4.143994414790098,
+      "tempo_bombeamento_min": 1440.0,
+      "duracao_h": 24.0
+    },
+    "memoria": {
+      "ok": true,
+      "s_max": 2.872,
+      "ne": 8.0,
+      "nd_final": 10.872,
+      "q_estavel": 11.993949152542374,
+      "delta_s_linha": 0.36709594944989754,
+      "T_m2h": 5.979070862003125,
+      "T_m2s": 0.0016608530172230903,
+      "q_capacidade_especifica": 4.176166139464615,
+      "q_longo_prazo": 4.7832566896025,
+      "Q_ot": 13.73751321253838,
+      "Q_jacob_lohman": 4.143994414790098,
+      "tempo_bombeamento_min": 1440.0,
+      "vazao_estabilizada": {
+        "q_estavel": 11.993949152542374,
+        "indice_inicio": 0,
+        "n_pontos": 59,
+        "cv": 0.009627506923023698,
+        "metodo": "patamar terminal (CV <= 10%)",
+        "tempo_inicio_min": 1.0,
+        "observacao": "Patamar de 59 leituras a partir de t = 1 min (CV = 1.0%)."
+      },
+      "reta_recuperacao": {
+        "delta_s_linha": 0.36709594944989754,
+        "inclinacao": 0.36709594944989754,
+        "intercepto": 0.003080603790259928,
+        "r2": 0.9916591046225327,
+        "n_pontos": 59,
+        "metodo": "Theil-Sen (robusto)",
+        "equacao": "s' = +0.3671·log10(t/t') +0.0031   (R² = 0.9917)",
+        "observacao": "Coeficiente angular positivo: o rebaixamento residual deveria decair com t/t'. Confira a planilha de recuperacao."
+      },
+      "avisos": [],
+      "erros": [],
+      "detalhes": {
+        "observacao_vazao": "Patamar de 59 leituras a partir de t = 1 min (CV = 1.0%).",
+        "t_bombeamento_total_min": 1440.0,
+        "observacao_recuperacao": "Coeficiente angular positivo: o rebaixamento residual deveria decair com t/t'. Confira a planilha de recuperacao.",
+        "jacob_lohman": {
+          "raio_m": 0.0762,
+          "S_adotado": 0.0001,
+          "t_dias": 365.0,
+          "arg": 202959966330.6287
+        },
+        "q_estavel_origem": "identificada na planilha (patamar estabilizado)"
+      }
+    },
+    "graficos": {
+      "painel": "data/processos/EX-CAMPOBOM-001/graficos/graficos_ensaio.png",
+      "rebaixamento": "data/processos/EX-CAMPOBOM-001/graficos/grafico_rebaixamento.png",
+      "recuperacao": "data/processos/EX-CAMPOBOM-001/graficos/grafico_recuperacao.png"
+    },
+    "avisos": [],
+    "erros": [],
+    "series": {
+      "bombeamento": {
+        "n": 59,
+        "t_min": [
+          1.0,
+          2.0,
+          3.0,
+          5.0,
+          7.5,
+          10.0,
+          15.0,
+          20.0,
+          25.0,
+          30.0,
+          40.0,
+          50.0,
+          60.0,
+          90.0,
+          120.0,
+          150.0,
+          180.0,
+          210.0,
+          240.0,
+          270.0,
+          300.0,
+          330.0,
+          360.0,
+          390.0,
+          420.0,
+          450.0,
+          480.0,
+          510.0,
+          540.0,
+          570.0,
+          600.0,
+          630.0,
+          660.0,
+          690.0,
+          720.0,
+          750.0,
+          780.0,
+          810.0,
+          840.0,
+          870.0,
+          900.0,
+          930.0,
+          960.0,
+          990.0,
+          1020.0,
+          1050.0,
+          1080.0,
+          1110.0,
+          1140.0,
+          1170.0,
+          1200.0,
+          1230.0,
+          1260.0,
+          1290.0,
+          1320.0,
+          1350.0,
+          1380.0,
+          1410.0,
+          1440.0
+        ],
+        "nd_m": [
+          9.721,
+          9.806,
+          9.851,
+          9.918,
+          9.991,
+          10.03,
+          10.114,
+          10.132,
+          10.184,
+          10.268,
+          10.267,
+          10.334,
+          10.345,
+          10.417,
+          10.461,
+          10.504,
+          10.516,
+          10.541,
+          10.535,
+          10.572,
+          10.577,
+          10.621,
+          10.637,
+          10.624,
+          10.64,
+          10.692,
+          10.644,
+          10.653,
+          10.727,
+          10.675,
+          10.687,
+          10.693,
+          10.69,
+          10.737,
+          10.706,
+          10.72,
+          10.708,
+          10.754,
+          10.774,
+          10.759,
+          10.773,
+          10.797,
+          10.749,
+          10.766,
+          10.757,
+          10.812,
+          10.782,
+          10.814,
+          10.78,
+          10.82,
+          10.773,
+          10.831,
+          10.804,
+          10.859,
+          10.814,
+          10.823,
+          10.828,
+          10.835,
+          10.872
+        ],
+        "s_m": [
+          1.721,
+          1.806,
+          1.851,
+          1.918,
+          1.991,
+          2.03,
+          2.114,
+          2.132,
+          2.184,
+          2.268,
+          2.267,
+          2.334,
+          2.345,
+          2.417,
+          2.461,
+          2.504,
+          2.516,
+          2.541,
+          2.535,
+          2.572,
+          2.577,
+          2.621,
+          2.637,
+          2.624,
+          2.64,
+          2.692,
+          2.644,
+          2.653,
+          2.727,
+          2.675,
+          2.687,
+          2.693,
+          2.69,
+          2.737,
+          2.706,
+          2.72,
+          2.708,
+          2.754,
+          2.774,
+          2.759,
+          2.773,
+          2.797,
+          2.749,
+          2.766,
+          2.757,
+          2.812,
+          2.782,
+          2.814,
+          2.78,
+          2.82,
+          2.773,
+          2.831,
+          2.804,
+          2.859,
+          2.814,
+          2.823,
+          2.828,
+          2.835,
+          2.872
+        ],
+        "q_m3h": [
+          12.05,
+          11.959,
+          12.171,
+          11.95,
+          12.222,
+          11.927,
+          11.851,
+          11.826,
+          12.22,
+          12.087,
+          11.713,
+          11.891,
+          11.991,
+          12.043,
+          12.066,
+          12.079,
+          12.025,
+          12.065,
+          11.982,
+          12.06,
+          11.979,
+          11.901,
+          12.009,
+          11.978,
+          12.028,
+          11.999,
+          12.11,
+          12.069,
+          12.039,
+          11.881,
+          11.748,
+          11.994,
+          12.042,
+          12.103,
+          11.855,
+          11.976,
+          12.144,
+          11.871,
+          11.745,
+          11.932,
+          12.001,
+          11.907,
+          12.031,
+          12.137,
+          11.978,
+          11.841,
+          11.885,
+          12.02,
+          12.103,
+          11.926,
+          12.001,
+          11.828,
+          11.847,
+          11.953,
+          12.066,
+          12.196,
+          12.105,
+          12.07,
+          12.167
+        ]
+      },
+      "recuperacao": {
+        "n": 59,
+        "t_linha_min": [
+          1.0,
+          2.0,
+          3.0,
+          5.0,
+          7.5,
+          10.0,
+          15.0,
+          20.0,
+          25.0,
+          30.0,
+          40.0,
+          50.0,
+          60.0,
+          90.0,
+          120.0,
+          150.0,
+          180.0,
+          210.0,
+          240.0,
+          270.0,
+          300.0,
+          330.0,
+          360.0,
+          390.0,
+          420.0,
+          450.0,
+          480.0,
+          510.0,
+          540.0,
+          570.0,
+          600.0,
+          630.0,
+          660.0,
+          690.0,
+          720.0,
+          750.0,
+          780.0,
+          810.0,
+          840.0,
+          870.0,
+          900.0,
+          930.0,
+          960.0,
+          990.0,
+          1020.0,
+          1050.0,
+          1080.0,
+          1110.0,
+          1140.0,
+          1170.0,
+          1200.0,
+          1230.0,
+          1260.0,
+          1290.0,
+          1320.0,
+          1350.0,
+          1380.0,
+          1410.0,
+          1440.0
+        ],
+        "s_linha_m": [
+          1.168,
+          1.032,
+          0.973,
+          0.904,
+          0.861,
+          0.825,
+          0.73,
+          0.681,
+          0.635,
+          0.586,
+          0.522,
+          0.596,
+          0.517,
+          0.462,
+          0.418,
+          0.377,
+          0.341,
+          0.302,
+          0.234,
+          0.34,
+          0.298,
+          0.301,
+          0.26,
+          0.232,
+          0.286,
+          0.196,
+          0.243,
+          0.235,
+          0.205,
+          0.189,
+          0.216,
+          0.176,
+          0.152,
+          0.204,
+          0.166,
+          0.158,
+          0.139,
+          0.182,
+          0.156,
+          0.158,
+          0.158,
+          0.156,
+          0.17,
+          0.139,
+          0.175,
+          0.139,
+          0.158,
+          0.139,
+          0.092,
+          0.116,
+          0.116,
+          0.122,
+          0.133,
+          0.146,
+          0.14,
+          0.09,
+          0.094,
+          0.109,
+          0.101
+        ]
+      },
+      "tendencia": {
+        "a": 1.689661463007644,
+        "b": 0.3636157606255775,
+        "r2": 0.9950818387015555,
+        "equacao": "s = +0.3636·log10(t) +1.6897   (R² = 0.9951)"
+      }
+    }
+  }
+}
