@@ -34,3 +34,6 @@ outorgasys/_runtime/
 
 # --- notebooks / rascunhos ---
 *.ipynb_checkpoints
+
+# Pacotes de entrega gerados (ficam fora do git; o codigo e os dados ja la estao).
+*.zip
