@@ -74,19 +74,19 @@ def gerar_nota_destilada(doc: DocumentoProcessado) -> str:
     if qualidade["parametros"]:
         achados_linhas.append(f"### Resultados Analiticos de Potabilidade (Portaria GM/MS 888/2021)")
         for p in qualidade["parametros"]:
-            status_emoji = "✅" if p["status"] == "conforme" else "❌"
+            status_tag = "[CONFORME]" if p["status"] == "conforme" else "[INCONFORME]"
             achados_linhas.append(
-                f"- {status_emoji} **{p['parametro']}:** `{p['resultado']}` (VMP: `{p['vmp']}`) — p. {p['pagina']} [{p['status'].upper()}]"
+                f"- {status_tag} **{p['parametro']}:** `{p['resultado']}` (VMP: `{p['vmp']}`) -- p. {p['pagina']}"
             )
 
     if meta.get("matricula"):
-        achados_linhas.append(f"- **Matricula Imobiliaria:** n. {meta['matricula']} — p. 1")
+        achados_linhas.append(f"- **Matricula Imobiliaria:** n. {meta['matricula']} -- p. 1")
     if meta.get("proprietario"):
-        achados_linhas.append(f"- **Titular / Proprietario Declarado:** {meta['proprietario']} — p. 1")
+        achados_linhas.append(f"- **Titular / Proprietario Declarado:** {meta['proprietario']} -- p. 1")
     if meta.get("area"):
-        achados_linhas.append(f"- **Area Superficial Registrada:** {meta['area']} — p. 1")
+        achados_linhas.append(f"- **Area Superficial Registrada:** {meta['area']} -- p. 1")
     if meta.get("art"):
-        achados_linhas.append(f"- **Anotacao de Responsabilidade Tecnica (ART):** {meta['art']} — p. 1")
+        achados_linhas.append(f"- **Anotacao de Responsabilidade Tecnica (ART):** {meta['art']} -- p. 1")
 
     achados_md = "\n".join(achados_linhas) if achados_linhas else "- Nenhum parametro quantitativo especifico identificado no texto, p. 1"
 
@@ -100,21 +100,21 @@ processado_em: {hoje}
 paginas: {doc.num_paginas}
 ---
 
-# Destilacao Documental GabeBrain · {doc.nome}
+# Destilacao Documental GabeBrain - {doc.nome}
 
-**Tipo Documental:** `{doc.tipo_estimado}` — {doc.rotulo_tipo}  
+**Tipo Documental:** `{doc.tipo_estimado}` -- {doc.rotulo_tipo}  
 **Nivel de Confianca da Fonte:** `{doc.confianca_fonte}` ({doc.justificativa_fonte})  
 **Extensao:** {doc.num_paginas} pagina(s) analisadas via Docling / PyMuPDF  
 
 ---
 
-## 📌 Escopo e Objeto do Documento
+## Escopo e Objeto do Documento
 O presente documento foi submetido ao processo de outorga do SIOUT RS e triado automaticamente pelo leitor estruturado GabeBrain.
 
-## 🔬 Principais Achados Tecnicos (com citacao de pagina)
+## Principais Achados Tecnicos (com citacao de pagina)
 {achados_md}
 
-## ⚖️ Conformidade Normativa e Evidencias
+## Conformidade Normativa e Evidencias
 - **Conformidade Geral de Potabilidade:** {'CONFORME' if qualidade['conforme_potabilidade'] else 'PENDENTE / INCONFORME'}
 - **Total de Parametros Avaliados:** {qualidade['total_parametros_lidos']}
 - **Citacao e Rastreabilidade:** Todos os dados foram extraidos diretamente do documento original anexado ao processo.
