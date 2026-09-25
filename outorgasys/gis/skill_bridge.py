@@ -31,6 +31,7 @@ SKILLS_DIR = C.ROOT / "skills"
 SHAPELY_CLI = SKILLS_DIR / "shapely-compute" / "shapely_compute.py"
 GEOPANDAS_CLI_DIR = SKILLS_DIR / "geopandas" / "scripts"
 GEOMASTER_DIR = SKILLS_DIR / "geomaster"
+GIS_MULTICAMADAS_DIR = SKILLS_DIR / "gis-multicamadas"
 
 
 class SkillError(RuntimeError):
@@ -42,6 +43,7 @@ def skills_disponiveis() -> dict[str, bool]:
         "shapely-compute": SHAPELY_CLI.exists(),
         "geopandas": (GEOPANDAS_CLI_DIR / "vector_inventory.py").exists(),
         "geomaster": (GEOMASTER_DIR / "SKILL.md").exists(),
+        "gis-multicamadas": (GIS_MULTICAMADAS_DIR / "SKILL.md").exists(),
         "python": shutil.which("python") or shutil.which("python3") or sys.executable,
     }
 
