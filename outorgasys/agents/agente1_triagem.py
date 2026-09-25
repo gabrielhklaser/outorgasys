@@ -183,3 +183,91 @@ def checklist_visual(proc) -> list[dict]:
         })
 
     return itens
+
+
+def triar_documentos_com_docling(proc) -> dict[str, Any]:
+    """Executa a triagem estruturada com Docling e os agentes do GabeBrain
+    para todos os documentos PDF anexados ao processo.
+
+    Aplica a metodologia 'uma leitura, quatro saidas':
+      1. Tipologia (A/L/T/N/M/S/R/C/D)
+      2. Autoria / Identificacao
+      3. Nivel de confianca (A-E)
+      4. Extracao analitica e nota destilada com citacao de pagina.
+    """
+    from ..docreader import (
+        extrair_metadados_gerais,
+        extrair_qualidade_agua,
+        gerar_nota_destilada,
+        processar_documento,
+    )
+
+    docs = proc.get("documentos") or {}
+    resultados: dict[str, Any] = {}
+    destilacoes: dict[str, Any] = {}
+
+    for chave, reg in docs.items():
+        if not reg or not isinstance(reg, dict):
+            continue
+        rel_path = reg.get("caminho")
+        if not rel_path:
+            continue
+        abs_path = C.caminho_absoluto(rel_path)
+        if not abs_path.exists() or abs_path.suffix.lower() != ".pdf":
+            continue
+
+        try:
+            doc = processar_documento(abs_path)
+            res_item: dict[str, Any] = {
+                "chave": chave,
+                "arquivo": reg.get("nome", abs_path.name),
+                "tipo": doc.tipo_estimado,
+                "rotulo_tipo": doc.rotulo_tipo,
+                "confianca": doc.confianca_fonte,
+                "justificativa": doc.justificativa_fonte,
+                "paginas": doc.num_paginas,
+            }
+
+            # Extracao especifica de analise laboratorial (Portaria 888/2021)
+            if "analise" in chave or "laboratorial" in chave or "qualidade" in chave:
+                qualidade = extrair_qualidade_agua(doc)
+                res_item["qualidade_agua"] = qualidade
+                proc.data["analise_laboratorial_dados"] = qualidade
+                # Mapeia para parametros_qualidade do processo
+                proc.data.setdefault("parametros_qualidade", {})
+                for p in qualidade.get("parametros", []):
+                    ch = p.get("chave")
+                    if ch:
+                        proc.data["parametros_qualidade"][ch] = p.get("resultado")
+
+            # Extracao de matricula e dados cadastrais
+            if "matricula" in chave or "posse" in chave:
+                meta = extrair_metadados_gerais(doc)
+                res_item["dados_cadastrais"] = meta
+                if meta.get("matricula"):
+                    proc.data.setdefault("imovel", {})["matricula"] = meta["matricula"]
+
+            # Gera a nota destilada GabeBrain
+            nota_md = gerar_nota_destilada(doc)
+            res_item["nota_destilada"] = nota_md
+            destilacoes[chave] = {
+                "tipo": doc.tipo_estimado,
+                "confianca": doc.confianca_fonte,
+                "nota": nota_md,
+            }
+
+            # Salva a nota em disco no diretorio de relatorio
+            proc.dir_relatorio.mkdir(parents=True, exist_ok=True)
+            arq_dest = proc.dir_relatorio / f"destilacao_{chave}.md"
+            arq_dest.write_text(nota_md, encoding="utf-8")
+
+            resultados[chave] = res_item
+            proc.log(1, f"Docling/GabeBrain: documento '{chave}' processado com confianca {doc.confianca_fonte}.")
+
+        except Exception as exc:  # noqa: BLE001
+            resultados[chave] = {"erro": str(exc)}
+            proc.log(1, f"Falha na triagem Docling de '{chave}': {exc}", nivel="erro")
+
+    proc.data["destilacao_documental"] = destilacoes
+    proc.salvar()
+    return resultados

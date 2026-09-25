@@ -1,7 +1,7 @@
 # RELATORIO DE DEFEITOS E PLANO DE CORRECAO
 
 **Processo:** EX-CAMPOBOM-001  
-**Gerado em:** 25/09/2026 17:44:28  
+**Gerado em:** 25/09/2026 17:54:05  
 **Sistema:** outorgasys v1.0.0
 
 ## 1. Resumo
@@ -34,6 +34,7 @@
     "shapely-compute": true,
     "geopandas": true,
     "geomaster": true,
+    "gis-multicamadas": true,
     "python": "C:\\Users\\Gabriel\\AppData\\Local\\Programs\\Python\\Python314\\python.EXE"
   }
 }

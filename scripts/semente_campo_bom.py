@@ -195,10 +195,16 @@ def construir(limpar: bool = False) -> Processo:
                 "fotografico) sao exemplos gerados pela plataforma e estao "
                 "marcados como nao validos para protocolo.")
 
+    # Triagem inteligente de documentos via Docling + GabeBrain
+    try:
+        a1.triar_documentos_com_docling(proc)
+    except Exception as e_docling:
+        proc.log(1, f"Aviso Docling semente: {e_docling}", nivel="aviso")
+
     validacao = a1.validar(proc)
     if validacao.ok:
         proc.concluir_agente(1)
-        _ok(1, "triagem sem pendencias bloqueantes")
+        _ok(1, "triagem sem pendencias bloqueantes (Docling + GabeBrain ativo)")
     else:
         _falha(1, "pendencias bloqueantes: " + ", ".join(
             f"{p.codigo} {p.titulo}" for p in validacao.bloqueios))

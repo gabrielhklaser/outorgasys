@@ -256,7 +256,7 @@ _Conforme a norma CEGM/CREA-RS n. 08/2022, o presente laudo deve ser assinado po
 | geologia_rs | ok | Google Drive do projeto - 'Geologico Rio Grande do Sul.kmz' | 4 |
 | hidrogeologia_rs | ok | Google Drive do projeto - 'Hidrogelogia_RS.kmz' | 1 |
 | municipios_rs | ok | IBGE - Malha Municipal 2022 | 2 |
-| osm | ok | OpenStreetMap (Overpass) - consulta ao vivo | 1722 |
+| osm | ok | OpenStreetMap (Overpass) - cache local | 1722 |
 | otto_nivel_1 | ausente | ANA - BHO 2017 Otto nivel 1 | 0 |
 | otto_nivel_2 | ausente | ANA - BHO 2017 Otto nivel 2 | 0 |
 | otto_nivel_3 | ausente | ANA - BHO 2017 Otto nivel 3 | 0 |

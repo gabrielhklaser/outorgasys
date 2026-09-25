@@ -267,9 +267,11 @@ def analisar(proc, lat: float, lon: float, raio_seguranca: float = C.RAIO_SEGURA
             saida["detalhes"]["sistema_aquifero_nome"] = nome_aq
 
     # ---------------------------------------------------------------- 5) solos
+    solos_gdf = None
     res = layers.carregar("solos_rs", bbox=bbox_ctx)
     prov["solos_rs"] = res.to_dict()
     if res.disponivel:
+        solos_gdf = res.gdf
         hit = ponto_em_poligono(res.gdf, ponto_geo)
         if hit is not None and len(hit):
             metodo = _metodo_hit(hit)
@@ -554,6 +556,32 @@ def analisar(proc, lat: float, lon: float, raio_seguranca: float = C.RAIO_SEGURA
             saida["detalhes"]["mapas"] = {
                 k: C.caminho_relativo(v) for k, v in mapas.items()
             }
+
+            # ------------------------------------------------------------
+            # Mapa Interativo Multicamadas (Skill gis-multicamadas)
+            # ------------------------------------------------------------
+            try:
+                from ..gis import multicamadas
+                caminho_html = dir_mapas / "mapa_interativo_camadas.html"
+                camadas_mapa = {
+                    "geologia": geologia_gdf,
+                    "hidrogeologia": aquifero_gdf,
+                    "solos": solos_gdf,
+                    "drenagem": drenagem_gdf,
+                    "propriedade": propriedade_gdf,
+                }
+                multicamadas.gerar_mapa_multicamadas(
+                    lat=lat,
+                    lon=lon,
+                    destino_html=caminho_html,
+                    raio_seguranca_m=raio_seguranca,
+                    camadas=camadas_mapa,
+                    dados_poco=proc.get("poco") or {},
+                )
+                saida["mapa_interativo_html"] = C.caminho_relativo(caminho_html)
+                saida["detalhes"]["mapas"]["interativo"] = C.caminho_relativo(caminho_html)
+            except Exception as e_folium:
+                saida["erros"].append(f"Aviso Mapa Interativo: {e_folium}")
         except Exception as exc:  # noqa: BLE001
             saida["erros"].append(f"Falha ao gerar mapas: {type(exc).__name__}: {exc}")
             saida["erros"].append(traceback.format_exc(limit=6))

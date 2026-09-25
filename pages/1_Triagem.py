@@ -181,6 +181,60 @@ if enviados["registro_fotografico"] or enviados["posse"]:
                  ", ".join(str(x.get("nome")) for x in (v or []))}
                 for k, v in enviados.items() if v])
 
+st.markdown("")
+
+# ======================================================================================
+# 2b. Triagem e Leitura Inteligente (Docling + GabeBrain)
+# ======================================================================================
+
+st.markdown("### 🧠 Triagem Documental Inteligente (Docling + GabeBrain)")
+st.caption(
+    "Motor treinado segundo a metodologia do GabeBrain (skill `biblioteca-triagem`: 'uma leitura, quatro saidas'). "
+    "Extrai tabelas de parametros fisico-quimicos e microbiologicos (Portaria GM/MS n. 888/2021), confere limites "
+    "legais, extrai dados notariais de matricula e gera notas destiladas com citacao exata de pagina."
+)
+
+col_t1, col_t2 = st.columns([1.2, 1])
+with col_t1:
+    if st.button("⚡ Executar Leitura Estruturada (Docling + GabeBrain)", type="primary", width="stretch"):
+        with st.spinner("A processar documentos com o motor IBM Docling e agentes GabeBrain..."):
+            res_triagem = a1.triar_documentos_com_docling(proc)
+            if res_triagem:
+                st.success(f"{len(res_triagem)} documento(s) lido(s) e destilado(s) com sucesso!")
+                st.rerun()
+            else:
+                st.warning("Nenhum documento PDF disponivel para processar.")
+
+qualidade_dados = proc.get("analise_laboratorial_dados")
+destilacoes = proc.get("destilacao_documental")
+
+if qualidade_dados or destilacoes:
+    if qualidade_dados and qualidade_dados.get("parametros"):
+        st.markdown("#### 💧 Parametros de Potabilidade Extraidos (Portaria GM/MS n. 888/2021)")
+        linhas_tab = []
+        for p in qualidade_dados["parametros"]:
+            status_chip = "ok" if p["status"] == "conforme" else "bloqueio"
+            linhas_tab.append({
+                "Parametro": p["parametro"],
+                "Resultado Obtido": p["resultado"],
+                "VMP (Portaria 888/2021)": f"{p['vmp']} {p.get('unidade', '')}".strip(),
+                "Situacao": "CONFORME" if p["status"] == "conforme" else "INCONFORME",
+                "Pagina": f"p. {p['pagina']}",
+            })
+        tabela(linhas_tab)
+
+        if qualidade_dados.get("conforme_potabilidade"):
+            st.success("✅ Todos os parametros laboratoriais estao em conformidade com o Padrao de Potabilidade.")
+        else:
+            st.error("⚠️ Foram identificadas inconformidades nos parametros laboratoriais segundo a Portaria 888/2021.")
+
+    if destilacoes:
+        with st.expander("📄 Notas Destiladas GabeBrain (Citacao exata de pagina e confianca da fonte)"):
+            for doc_ch, d_info in destilacoes.items():
+                st.markdown(f"**Documento: `{doc_ch}`** · Confianca da Fonte: `{d_info.get('confianca', 'A')}`")
+                st.markdown(d_info.get("nota", ""))
+                st.markdown("---")
+
 st.markdown("---")
 
 # ======================================================================================

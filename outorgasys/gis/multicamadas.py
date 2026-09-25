@@ -36,8 +36,22 @@ def gerar_mapa_multicamadas(
     if not _FOLIUM_AVAILABLE:
         raise RuntimeError("Biblioteca folium nao instalada para gerar mapa interativo.")
 
-    # Importa as rotinas da skill instalada gis-multicamadas
-    from ..skills.gis_multicamadas.scripts import multicamadas_map as mm
+    import sys
+    import importlib.util
+
+    script_path = C.ROOT / "skills" / "gis-multicamadas" / "scripts" / "multicamadas_map.py"
+    if not script_path.exists():
+        script_path = C.ROOT / "skills" / "gis_multicamadas" / "scripts" / "multicamadas_map.py"
+    if not script_path.exists():
+        raise FileNotFoundError(f"Script multicamadas_map.py nao encontrado em {script_path}")
+
+    parent_dir = str(script_path.parent)
+    if parent_dir not in sys.path:
+        sys.path.insert(0, parent_dir)
+
+    spec = importlib.util.spec_from_file_location("multicamadas_map", str(script_path))
+    mm = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(mm)
 
     mapa = mm.criar_mapa_multicamadas(
         lat=lat,

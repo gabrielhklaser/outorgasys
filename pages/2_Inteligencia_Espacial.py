@@ -200,17 +200,24 @@ st.markdown("---")
 # 4. Pranchas cartograficas
 # ======================================================================================
 
-passo(3, "Pranchas cartograficas geradas")
+passo(3, "Pranchas cartograficas e mapa interativo multicamadas")
 mapas = geo_out.get("caminho_mapas") or []
-if mapas:
-    abas = st.tabs(["Mapa 1 · Localizacao e Situacao",
-                    "Mapa 2 · Geologico Local",
-                    "Mapa 3 · Hidrografico e Hidrogeologico"])
+mapa_html_rel = geo_out.get("mapa_interativo_html") or (geo_out.get("detalhes", {}).get("mapas", {}).get("interativo"))
+
+if mapas or mapa_html_rel:
+    nomes_abas = ["Mapa 1 · Localizacao e Situacao",
+                  "Mapa 2 · Geologico Local",
+                  "Mapa 3 · Hidrografico e Hidrogeologico"]
+    if mapa_html_rel:
+        nomes_abas.append("🌐 Mapa Interativo Multicamadas")
+
+    abas = st.tabs(nomes_abas)
     rotulos = ["Mapa de Localizacao e Situacao",
                "Mapa Geologico Local",
                "Mapa Hidrografico e Hidrogeologico Local"]
-    for aba, caminho, rotulo in zip(abas, mapas, rotulos):
-        with aba:
+
+    for i, (caminho, rotulo) in enumerate(zip(mapas, rotulos)):
+        with abas[i]:
             mostrar_imagem(caminho, rotulo)
             p = Path(caminho)
             if not p.is_absolute():
@@ -219,7 +226,35 @@ if mapas:
                 with open(p, "rb") as fh:
                     st.download_button("⬇️ Descarregar prancha", data=fh.read(),
                                        file_name=p.name, mime="image/jpeg",
-                                       width="stretch")
+                                       key=f"dl_prancha_{i}", width="stretch")
+
+    if mapa_html_rel and len(abas) > len(mapas):
+        with abas[-1]:
+            st.markdown("#### 🗺️ Navegador Espacial em Camadas Distintas (Folium / Leaflet)")
+            st.caption(
+                "Controle de camadas (canto superior direito): alterne entre Satelite Esri, "
+                "OpenStreetMap e CartoDB, e ative/desative geologia, hidrogeologia, solos e drenagem. "
+                "Use a regua metrica (canto inferior esquerdo) para aferir distancias reais ao poco."
+            )
+            p_html = Path(mapa_html_rel)
+            if not p_html.is_absolute():
+                p_html = C.caminho_absoluto(p_html)
+            if p_html.exists():
+                html_code = p_html.read_text(encoding="utf-8", errors="replace")
+                import streamlit.components.v1 as components
+                components.html(html_code, height=620, scrolling=True)
+
+                st.download_button(
+                    "⬇️ Descarregar Mapa Interativo (HTML Standalone)",
+                    data=html_code,
+                    file_name="mapa_interativo_outorgasys.html",
+                    mime="text/html",
+                    width="stretch",
+                    key="dl_mapa_html",
+                )
+            else:
+                st.warning("Arquivo HTML do mapa interativo nao encontrado em disco.")
+
     st.caption("Todas as pranchas contem titulo padronizado, coordenadas do poco, "
                "norte geografico, escala grafica metrica e legenda.")
 else:

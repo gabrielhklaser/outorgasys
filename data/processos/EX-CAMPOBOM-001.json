@@ -2,7 +2,7 @@
   "id": "EX-CAMPOBOM-001",
   "versao": "1.0.0",
   "criado_em": "2026-09-23T12:25:28",
-  "atualizado_em": "2026-09-25T17:44:29",
+  "atualizado_em": "2026-09-25T17:54:40",
   "status": "triagem",
   "agentes_concluidos": [
     1,
@@ -46,7 +46,7 @@
     "ensaio_bombeamento": {
       "nome": "ensaio_bombeamento_PT-01.xlsx",
       "caminho": "data\\processos\\EX-CAMPOBOM-001\\arquivos\\ensaio_bombeamento_PT-01.xlsx",
-      "tamanho": 10383,
+      "tamanho": 10382,
       "origem": "gerado pela plataforma",
       "sintetico": true,
       "parametros_geracao": {
@@ -368,7 +368,8 @@
       "mapas": {
         "mapa_situacao": "data\\processos\\EX-CAMPOBOM-001\\mapas\\mapa_situacao.jpg",
         "mapa_geologico": "data\\processos\\EX-CAMPOBOM-001\\mapas\\mapa_geologico.jpg",
-        "mapa_hidrologico": "data\\processos\\EX-CAMPOBOM-001\\mapas\\mapa_hidrologico.jpg"
+        "mapa_hidrologico": "data\\processos\\EX-CAMPOBOM-001\\mapas\\mapa_hidrologico.jpg",
+        "interativo": "data\\processos\\EX-CAMPOBOM-001\\mapas\\mapa_interativo_camadas.html"
       }
     },
     "proveniencia": {
@@ -471,14 +472,15 @@
       "osm": {
         "chave": "osm",
         "status": "ok",
-        "origem": "OpenStreetMap (Overpass) - consulta ao vivo",
+        "origem": "OpenStreetMap (Overpass) - cache local",
         "arquivo": "osm_3f513e81716b.geojson",
         "feicoes": 1722,
         "mensagem": ""
       }
     },
     "pendencias": [],
-    "erros": []
+    "erros": [],
+    "mapa_interativo_html": "data\\processos\\EX-CAMPOBOM-001\\mapas\\mapa_interativo_camadas.html"
   },
   "ensaio": {
     "ok": true,
@@ -2834,7 +2836,7 @@
           "osm": {
             "chave": "osm",
             "status": "ok",
-            "origem": "OpenStreetMap (Overpass) - consulta ao vivo",
+            "origem": "OpenStreetMap (Overpass) - cache local",
             "arquivo": "osm_3f513e81716b.geojson",
             "feicoes": 1722,
             "mensagem": ""
@@ -3164,6 +3166,174 @@
     },
     {
       "ts": "2026-09-25T17:44:29",
+      "agente": 6,
+      "nivel": "info",
+      "mensagem": "Triagem concluida: 11 achados."
+    },
+    {
+      "ts": "2026-09-25T17:50:12",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Arquivo registrado em 'ensaio_bombeamento': ensaio_bombeamento_PT-01.xlsx"
+    },
+    {
+      "ts": "2026-09-25T17:50:12",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Arquivo registrado em 'matricula_imovel': matricula_imovel_exemplo.pdf"
+    },
+    {
+      "ts": "2026-09-25T17:50:12",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Arquivo registrado em 'analise_laboratorial': analise_laboratorial_exemplo.pdf"
+    },
+    {
+      "ts": "2026-09-25T17:50:12",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Arquivo registrado em 'declaracao_separacao_redes': declaracao_separacao_redes_exemplo.pdf"
+    },
+    {
+      "ts": "2026-09-25T17:50:12",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Arquivo registrado em 'registro_fotografico': foto_01_boca_poco.jpg"
+    },
+    {
+      "ts": "2026-09-25T17:50:12",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Arquivo registrado em 'registro_fotografico': foto_02_laje_protecao.jpg"
+    },
+    {
+      "ts": "2026-09-25T17:50:12",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Arquivo registrado em 'registro_fotografico': foto_03_cercamento.jpg"
+    },
+    {
+      "ts": "2026-09-25T17:50:12",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Arquivo registrado em 'registro_fotografico': foto_04_cavalete_hidrometro.jpg"
+    },
+    {
+      "ts": "2026-09-25T17:50:12",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Cadastro de exemplo carregado. Os anexos (matricula, analise laboratorial, declaracao de separacao de redes e registro fotografico) sao exemplos gerados pela plataforma e estao marcados como nao validos para protocolo."
+    },
+    {
+      "ts": "2026-09-25T17:50:21",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Docling/GabeBrain: documento 'matricula_imovel' processado com confianca A."
+    },
+    {
+      "ts": "2026-09-25T17:50:25",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Docling/GabeBrain: documento 'analise_laboratorial' processado com confianca A."
+    },
+    {
+      "ts": "2026-09-25T17:50:35",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Docling/GabeBrain: documento 'declaracao_separacao_redes' processado com confianca B."
+    },
+    {
+      "ts": "2026-09-25T17:50:51",
+      "agente": 5,
+      "nivel": "info",
+      "mensagem": "Relatorio tecnico emitido."
+    },
+    {
+      "ts": "2026-09-25T17:50:53",
+      "agente": 6,
+      "nivel": "info",
+      "mensagem": "Triagem concluida: 12 achados."
+    },
+    {
+      "ts": "2026-09-25T17:53:30",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Arquivo registrado em 'ensaio_bombeamento': ensaio_bombeamento_PT-01.xlsx"
+    },
+    {
+      "ts": "2026-09-25T17:53:30",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Arquivo registrado em 'matricula_imovel': matricula_imovel_exemplo.pdf"
+    },
+    {
+      "ts": "2026-09-25T17:53:30",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Arquivo registrado em 'analise_laboratorial': analise_laboratorial_exemplo.pdf"
+    },
+    {
+      "ts": "2026-09-25T17:53:30",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Arquivo registrado em 'declaracao_separacao_redes': declaracao_separacao_redes_exemplo.pdf"
+    },
+    {
+      "ts": "2026-09-25T17:53:30",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Arquivo registrado em 'registro_fotografico': foto_01_boca_poco.jpg"
+    },
+    {
+      "ts": "2026-09-25T17:53:30",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Arquivo registrado em 'registro_fotografico': foto_02_laje_protecao.jpg"
+    },
+    {
+      "ts": "2026-09-25T17:53:30",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Arquivo registrado em 'registro_fotografico': foto_03_cercamento.jpg"
+    },
+    {
+      "ts": "2026-09-25T17:53:30",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Arquivo registrado em 'registro_fotografico': foto_04_cavalete_hidrometro.jpg"
+    },
+    {
+      "ts": "2026-09-25T17:53:30",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Cadastro de exemplo carregado. Os anexos (matricula, analise laboratorial, declaracao de separacao de redes e registro fotografico) sao exemplos gerados pela plataforma e estao marcados como nao validos para protocolo."
+    },
+    {
+      "ts": "2026-09-25T17:53:39",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Docling/GabeBrain: documento 'matricula_imovel' processado com confianca A."
+    },
+    {
+      "ts": "2026-09-25T17:53:46",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Docling/GabeBrain: documento 'analise_laboratorial' processado com confianca A."
+    },
+    {
+      "ts": "2026-09-25T17:53:48",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Docling/GabeBrain: documento 'declaracao_separacao_redes' processado com confianca B."
+    },
+    {
+      "ts": "2026-09-25T17:54:04",
+      "agente": 5,
+      "nivel": "info",
+      "mensagem": "Relatorio tecnico emitido."
+    },
+    {
+      "ts": "2026-09-25T17:54:05",
       "agente": 6,
       "nivel": "info",
       "mensagem": "Triagem concluida: 11 achados."
@@ -3629,6 +3799,164 @@
         "r2": 0.9950818387015555,
         "equacao": "s = +0.3636·log10(t) +1.6897   (R² = 0.9951)"
       }
+    }
+  },
+  "analise_laboratorial_dados": {
+    "arquivo": "analise_laboratorial_exemplo.pdf",
+    "conforme_potabilidade": true,
+    "parametros": [
+      {
+        "chave": "coliformes_totais",
+        "parametro": "Coliformes Totais",
+        "resultado": "Ausencia em 100 mL",
+        "vmp": "Ausencia em 100 mL",
+        "unidade": "",
+        "status": "conforme",
+        "motivo": "Em conformidade com a Portaria 888/2021",
+        "pagina": 1
+      },
+      {
+        "chave": "escherichia_coli",
+        "parametro": "Escherichia coli",
+        "resultado": "Ausencia em 100 mL",
+        "vmp": "Ausencia em 100 mL",
+        "unidade": "",
+        "status": "conforme",
+        "motivo": "Em conformidade com a Portaria 888/2021",
+        "pagina": 1
+      },
+      {
+        "chave": "turbidez",
+        "parametro": "Turbidez",
+        "resultado": "0,42 uT",
+        "vmp": 5.0,
+        "unidade": "uT",
+        "status": "conforme",
+        "motivo": "Em conformidade com a Portaria 888/2021",
+        "pagina": 1
+      },
+      {
+        "chave": "cor_aparente",
+        "parametro": "Cor Aparente",
+        "resultado": "< 5,0 uH",
+        "vmp": 15.0,
+        "unidade": "uH",
+        "status": "conforme",
+        "motivo": "Em conformidade com a Portaria 888/2021",
+        "pagina": 1
+      },
+      {
+        "chave": "ph",
+        "parametro": "pH",
+        "resultado": "7,1",
+        "vmp": "6.0 a 9.5",
+        "unidade": "-",
+        "status": "conforme",
+        "motivo": "Em conformidade com a Portaria 888/2021",
+        "pagina": 1
+      },
+      {
+        "chave": "fluoreto",
+        "parametro": "Fluoreto",
+        "resultado": "0,12 mg/L",
+        "vmp": 1.5,
+        "unidade": "mg/L",
+        "status": "conforme",
+        "motivo": "Em conformidade com a Portaria 888/2021",
+        "pagina": 1
+      },
+      {
+        "chave": "nitrato",
+        "parametro": "Nitrato (como N)",
+        "resultado": "2,1 mg/L",
+        "vmp": 10.0,
+        "unidade": "mg/L",
+        "status": "conforme",
+        "motivo": "Em conformidade com a Portaria 888/2021",
+        "pagina": 1
+      },
+      {
+        "chave": "cloreto",
+        "parametro": "Cloreto",
+        "resultado": "18,4 mg/L",
+        "vmp": 250.0,
+        "unidade": "mg/L",
+        "status": "conforme",
+        "motivo": "Em conformidade com a Portaria 888/2021",
+        "pagina": 1
+      },
+      {
+        "chave": "sulfato",
+        "parametro": "Sulfato",
+        "resultado": "9,7 mg/L",
+        "vmp": 250.0,
+        "unidade": "mg/L",
+        "status": "conforme",
+        "motivo": "Em conformidade com a Portaria 888/2021",
+        "pagina": 1
+      },
+      {
+        "chave": "dureza",
+        "parametro": "Dureza Total",
+        "resultado": "86 mg/L CaCO3",
+        "vmp": 500.0,
+        "unidade": "mg/L",
+        "status": "conforme",
+        "motivo": "Em conformidade com a Portaria 888/2021",
+        "pagina": 1
+      },
+      {
+        "chave": "ferro",
+        "parametro": "Ferro Total",
+        "resultado": "0,09 mg/L",
+        "vmp": 0.3,
+        "unidade": "mg/L",
+        "status": "conforme",
+        "motivo": "Em conformidade com a Portaria 888/2021",
+        "pagina": 1
+      },
+      {
+        "chave": "manganes",
+        "parametro": "Manganes",
+        "resultado": "0,03 mg/L",
+        "vmp": 0.1,
+        "unidade": "mg/L",
+        "status": "conforme",
+        "motivo": "Em conformidade com a Portaria 888/2021",
+        "pagina": 1
+      }
+    ],
+    "total_parametros_lidos": 12
+  },
+  "parametros_qualidade": {
+    "coliformes_totais": "Ausencia em 100 mL",
+    "escherichia_coli": "Ausencia em 100 mL",
+    "turbidez": "0,42 uT",
+    "cor_aparente": "< 5,0 uH",
+    "ph": "7,1",
+    "fluoreto": "0,12 mg/L",
+    "nitrato": "2,1 mg/L",
+    "cloreto": "18,4 mg/L",
+    "sulfato": "9,7 mg/L",
+    "dureza": "86 mg/L CaCO3",
+    "ferro": "0,09 mg/L",
+    "manganes": "0,03 mg/L"
+  },
+  "destilacao_documental": {
+    "matricula_imovel": {
+      "tipo": "D",
+      "confianca": "A",
+      "nota": "---\ntitle: matricula_imovel_exemplo.pdf (Destilacao GabeBrain)\ntipo: D\nrotulo_tipo: Documento Notarial / Certidao de Registro de Imoveis\nconfianca_fonte: A\njustificativa_fonte: Certidao notarial oficial dotada de fe publica\nprocessado_em: 2026-09-25\npaginas: 1\n---\n\n# Destilacao Documental GabeBrain - matricula_imovel_exemplo.pdf\n\n**Tipo Documental:** `D` -- Documento Notarial / Certidao de Registro de Imoveis  \n**Nivel de Confianca da Fonte:** `A` (Certidao notarial oficial dotada de fe publica)  \n**Extensao:** 1 pagina(s) analisadas via Docling / PyMuPDF  \n\n---\n\n## Escopo e Objeto do Documento\nO presente documento foi submetido ao processo de outorga do SIOUT RS e triado automaticamente pelo leitor estruturado GabeBrain.\n\n## Principais Achados Tecnicos (com citacao de pagina)\n- **Titular / Proprietario Declarado:** Metalurgica Sinos Ltda. — CNPJ 00.000.000/0001-00 -- p. 1\n- **Area Superficial Registrada:** 1.8 -- p. 1\n\n## Conformidade Normativa e Evidencias\n- **Conformidade Geral de Potabilidade:** CONFORME\n- **Total de Parametros Avaliados:** 0\n- **Citacao e Rastreabilidade:** Todos os dados foram extraidos diretamente do documento original anexado ao processo.\n"
+    },
+    "analise_laboratorial": {
+      "tipo": "N",
+      "confianca": "A",
+      "nota": "---\ntitle: analise_laboratorial_exemplo.pdf (Destilacao GabeBrain)\ntipo: N\nrotulo_tipo: Norma Tecnica / Regulamento Legal\nconfianca_fonte: A\njustificativa_fonte: Norma tecnica oficial ou resolucao estatal dotada de forca de lei\nprocessado_em: 2026-09-25\npaginas: 1\n---\n\n# Destilacao Documental GabeBrain - analise_laboratorial_exemplo.pdf\n\n**Tipo Documental:** `N` -- Norma Tecnica / Regulamento Legal  \n**Nivel de Confianca da Fonte:** `A` (Norma tecnica oficial ou resolucao estatal dotada de forca de lei)  \n**Extensao:** 1 pagina(s) analisadas via Docling / PyMuPDF  \n\n---\n\n## Escopo e Objeto do Documento\nO presente documento foi submetido ao processo de outorga do SIOUT RS e triado automaticamente pelo leitor estruturado GabeBrain.\n\n## Principais Achados Tecnicos (com citacao de pagina)\n### Resultados Analiticos de Potabilidade (Portaria GM/MS 888/2021)\n- [CONFORME] **Coliformes Totais:** `Ausencia em 100 mL` (VMP: `Ausencia em 100 mL`) -- p. 1\n- [CONFORME] **Escherichia coli:** `Ausencia em 100 mL` (VMP: `Ausencia em 100 mL`) -- p. 1\n- [CONFORME] **Turbidez:** `0,42 uT` (VMP: `5.0`) -- p. 1\n- [CONFORME] **Cor Aparente:** `< 5,0 uH` (VMP: `15.0`) -- p. 1\n- [CONFORME] **pH:** `7,1` (VMP: `6.0 a 9.5`) -- p. 1\n- [CONFORME] **Fluoreto:** `0,12 mg/L` (VMP: `1.5`) -- p. 1\n- [CONFORME] **Nitrato (como N):** `2,1 mg/L` (VMP: `10.0`) -- p. 1\n- [CONFORME] **Cloreto:** `18,4 mg/L` (VMP: `250.0`) -- p. 1\n- [CONFORME] **Sulfato:** `9,7 mg/L` (VMP: `250.0`) -- p. 1\n- [CONFORME] **Dureza Total:** `86 mg/L CaCO3` (VMP: `500.0`) -- p. 1\n- [CONFORME] **Ferro Total:** `0,09 mg/L` (VMP: `0.3`) -- p. 1\n- [CONFORME] **Manganes:** `0,03 mg/L` (VMP: `0.1`) -- p. 1\n- **Titular / Proprietario Declarado:** Metalurgica Sinos Ltda. -- p. 1\n\n## Conformidade Normativa e Evidencias\n- **Conformidade Geral de Potabilidade:** CONFORME\n- **Total de Parametros Avaliados:** 12\n- **Citacao e Rastreabilidade:** Todos os dados foram extraidos diretamente do documento original anexado ao processo.\n"
+    },
+    "declaracao_separacao_redes": {
+      "tipo": "D",
+      "confianca": "B",
+      "nota": "---\ntitle: declaracao_separacao_redes_exemplo.pdf (Destilacao GabeBrain)\ntipo: D\nrotulo_tipo: Declaracao Administrativa de Separacao de Redes\nconfianca_fonte: B\njustificativa_fonte: Declaracao formal assinada pelo titular e responsavel com responsabilidade civil e penal\nprocessado_em: 2026-09-25\npaginas: 1\n---\n\n# Destilacao Documental GabeBrain - declaracao_separacao_redes_exemplo.pdf\n\n**Tipo Documental:** `D` -- Declaracao Administrativa de Separacao de Redes  \n**Nivel de Confianca da Fonte:** `B` (Declaracao formal assinada pelo titular e responsavel com responsabilidade civil e penal)  \n**Extensao:** 1 pagina(s) analisadas via Docling / PyMuPDF  \n\n---\n\n## Escopo e Objeto do Documento\nO presente documento foi submetido ao processo de outorga do SIOUT RS e triado automaticamente pelo leitor estruturado GabeBrain.\n\n## Principais Achados Tecnicos (com citacao de pagina)\n- Nenhum parametro quantitativo especifico identificado no texto, p. 1\n\n## Conformidade Normativa e Evidencias\n- **Conformidade Geral de Potabilidade:** CONFORME\n- **Total de Parametros Avaliados:** 0\n- **Citacao e Rastreabilidade:** Todos os dados foram extraidos diretamente do documento original anexado ao processo.\n"
     }
   }
 }

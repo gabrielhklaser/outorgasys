@@ -27,12 +27,20 @@ from folium import plugins
 import geopandas as gpd
 from shapely.geometry import Point, mapping
 
-from .layer_manipulation import (
-    CRS_WGS84_GEO,
-    carregar_e_reparar,
-    recortar_por_raio,
-    sanitizar_atributos_para_geojson,
-)
+try:
+    from .layer_manipulation import (
+        CRS_WGS84_GEO,
+        carregar_e_reparar,
+        recortar_por_raio,
+        sanitizar_atributos_para_geojson,
+    )
+except ImportError:
+    from layer_manipulation import (
+        CRS_WGS84_GEO,
+        carregar_e_reparar,
+        recortar_por_raio,
+        sanitizar_atributos_para_geojson,
+    )
 
 
 def criar_mapa_multicamadas(
@@ -70,7 +78,8 @@ def criar_mapa_multicamadas(
     ).add_to(m)
 
     folium.TileLayer(
-        tiles="CartoDB positron",
+        tiles="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+        attr='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
         name="⚪ CartoDB Positron (Claro)",
         overlay=False,
         control=True,
@@ -170,7 +179,7 @@ def criar_mapa_multicamadas(
                 },
                 tooltip=folium.GeoJsonTooltip(
                     fields=[c for c in ["NM_UNIDADE", "SIGLA", "LITOLOGIA", "FORMACAO", "nome", "sigla"] if c in gdf_geo.columns],
-                    aliases=["Unidade: ", "Sigla: ", "Litologia: ", "Formacao: ", "Nome: ", "Sigla: ][:len([c for c in ["NM_UNIDADE", "SIGLA", "LITOLOGIA", "FORMACAO", "nome", "sigla"] if c in gdf_geo.columns])],
+                    aliases=["Unidade: ", "Sigla: ", "Litologia: ", "Formacao: ", "Nome: ", "Sigla: "][:len([c for c in ["NM_UNIDADE", "SIGLA", "LITOLOGIA", "FORMACAO", "nome", "sigla"] if c in gdf_geo.columns])],
                 ) if any(c in gdf_geo.columns for c in ["NM_UNIDADE", "SIGLA", "LITOLOGIA", "FORMACAO", "nome", "sigla"]) else None,
             ).add_to(fg_geo)
             fg_geo.add_to(m)
