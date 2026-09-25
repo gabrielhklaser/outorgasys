@@ -2,7 +2,7 @@
 ## MEMORIAL DESCRITIVO PARA OUTORGA DE AGUA SUBTERRANEA - SIOUT/RS
 
 **Processo:** EX-CAMPOBOM-001  
-**Data de emissao:** 23/09/2026  
+**Data de emissao:** 25/09/2026  
 **Sistema:** outorgasys v1.0.0
 
 
@@ -73,7 +73,8 @@ _Referencias: espessura minima 10 cm, area minima 1 m2, rebordo minimo 30 cm; es
 | Distancia (m) | 358,9 |
 
 
-_Nenhuma ocorrencia mapeada no raio de 500 m._
+**Ocorrencias no raio de seguranca de 500 m:**
+- vias: 114 feicao(oes)
 
 
 ## 3. PARAMETROS HIDRAULICOS E RESULTADOS DO ENSAIO
@@ -94,7 +95,7 @@ _Nenhuma ocorrencia mapeada no raio de 500 m._
 | Duracao do ensaio | 24,0 h | 1.440 min |
 
 ### 3.1 Graficos do ensaio
-![Graficos do ensaio](data/processos/EX-CAMPOBOM-001/graficos/graficos_ensaio.png)
+![Graficos do ensaio](data\processos\EX-CAMPOBOM-001\graficos\graficos_ensaio.png)
 
 
 ## 4. DESCRICAO DOS EQUIPAMENTOS INSTALADOS
@@ -212,10 +213,10 @@ _Nenhuma ocorrencia mapeada no raio de 500 m._
 - O regime operacional proposto reserva 12,0 h/dia de repouso ao aquifero, atendendo ao repouso minimo de 4 h/dia exigido pelo SIOUT RS.
 - O imovel e atendido por rede publica de abastecimento de agua. Declara-se a SEPARACAO FISICA DAS REDES HIDRAULICAS, sem qualquer interconexao, cross-connection ou by-pass entre a rede publica e a rede alimentada pelo poco, ficando a agua subterranea restrita as finalidades nao destinadas ao consumo humano direto.
 - A distancia ao corpo hidrico superficial mais proximo ('Rio dos Sinos') e de 358,9 m, acima do limiar de 50 m que exigiria estudo de interferencia especifico.
-- Nao foram identificadas fontes potenciais de poluicao mapeadas dentro do raio de seguranca de 500 m nas bases consultadas; a constatacao deve ser confirmada por vistoria de campo.
 
 ### 7.2 Recomendacoes
 - Manter sinalizacao permanente e distinta nas duas redes (padrao de cores diferenciado) e submeter o sistema a inspecao periodica, de modo a comprovar a ausencia de interconexao.
+- Dentro do raio de seguranca de 500 m foram identificadas as seguintes ocorrencias: vias (114 feicao/feicoes). Recomenda-se vistoria de campo para avaliacao e mitigacao das fontes potenciais de poluicao, com prioridade para postos de combustivel, estacoes de tratamento de esgoto, tanques e areas industriais.
 - [MED-010] Vazao adotada de 11.9939 m3/h excede a vazao nominal do hidrometro (2.5 m3/h). O instrumento operara acima da faixa de trabalho, com perda de precisao metrologica e desgaste acelerado.
 - [MED-020] Velocidade media estimada de 4.14 m/s no hidrometro DN32. Recomenda-se ate 3 m/s para preservar a classe de precisao.
 - Instalar e manter lacre e/ou sinalizacao no hidrometro, com leitura mensal registrada em planilha propria para fins de fiscalizacao da outorga.
@@ -237,7 +238,7 @@ Geologo
 Registro: CREA-RS 0000000000  
 ART: ART RS2024 0000000  
 
-____________________, 23/09/2026
+____________________, 25/09/2026
 
 _______________________________________________
 Assinatura do Responsavel Tecnico
@@ -255,7 +256,7 @@ _Conforme a norma CEGM/CREA-RS n. 08/2022, o presente laudo deve ser assinado po
 | geologia_rs | ok | Google Drive do projeto - 'Geologico Rio Grande do Sul.kmz' | 4 |
 | hidrogeologia_rs | ok | Google Drive do projeto - 'Hidrogelogia_RS.kmz' | 1 |
 | municipios_rs | ok | IBGE - Malha Municipal 2022 | 2 |
-| osm | ausente | OpenStreetMap (Overpass) | 0 |
+| osm | ok | OpenStreetMap (Overpass) - consulta ao vivo | 1722 |
 | otto_nivel_1 | ausente | ANA - BHO 2017 Otto nivel 1 | 0 |
 | otto_nivel_2 | ausente | ANA - BHO 2017 Otto nivel 2 | 0 |
 | otto_nivel_3 | ausente | ANA - BHO 2017 Otto nivel 3 | 0 |

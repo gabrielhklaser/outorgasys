@@ -2,7 +2,7 @@
   "id": "EX-CAMPOBOM-001",
   "versao": "1.0.0",
   "criado_em": "2026-09-23T12:25:28",
-  "atualizado_em": "2026-09-23T12:26:16",
+  "atualizado_em": "2026-09-25T17:44:29",
   "status": "triagem",
   "agentes_concluidos": [
     1,
@@ -45,8 +45,8 @@
   "documentos": {
     "ensaio_bombeamento": {
       "nome": "ensaio_bombeamento_PT-01.xlsx",
-      "caminho": "data/processos/EX-CAMPOBOM-001/arquivos/ensaio_bombeamento_PT-01.xlsx",
-      "tamanho": 10288,
+      "caminho": "data\\processos\\EX-CAMPOBOM-001\\arquivos\\ensaio_bombeamento_PT-01.xlsx",
+      "tamanho": 10383,
       "origem": "gerado pela plataforma",
       "sintetico": true,
       "parametros_geracao": {
@@ -61,24 +61,24 @@
     },
     "matricula_imovel": {
       "nome": "matricula_imovel_exemplo.pdf",
-      "caminho": "data/processos/EX-CAMPOBOM-001/arquivos/matricula_imovel_exemplo.pdf",
-      "tamanho": 2532,
+      "caminho": "data\\processos\\EX-CAMPOBOM-001\\arquivos\\matricula_imovel_exemplo.pdf",
+      "tamanho": 2535,
       "origem": "gerado pela plataforma",
       "exemplo": true,
       "nao_valido_para_protocolo": true
     },
     "analise_laboratorial": {
       "nome": "analise_laboratorial_exemplo.pdf",
-      "caminho": "data/processos/EX-CAMPOBOM-001/arquivos/analise_laboratorial_exemplo.pdf",
-      "tamanho": 3702,
+      "caminho": "data\\processos\\EX-CAMPOBOM-001\\arquivos\\analise_laboratorial_exemplo.pdf",
+      "tamanho": 3686,
       "origem": "gerado pela plataforma",
       "exemplo": true,
       "nao_valido_para_protocolo": true
     },
     "declaracao_separacao_redes": {
       "nome": "declaracao_separacao_redes_exemplo.pdf",
-      "caminho": "data/processos/EX-CAMPOBOM-001/arquivos/declaracao_separacao_redes_exemplo.pdf",
-      "tamanho": 3013,
+      "caminho": "data\\processos\\EX-CAMPOBOM-001\\arquivos\\declaracao_separacao_redes_exemplo.pdf",
+      "tamanho": 3006,
       "origem": "gerado pela plataforma",
       "exemplo": true,
       "nao_valido_para_protocolo": true
@@ -86,7 +86,7 @@
     "registro_fotografico": [
       {
         "nome": "foto_01_boca_poco.jpg",
-        "caminho": "data/processos/EX-CAMPOBOM-001/arquivos/foto_01_boca_poco.jpg",
+        "caminho": "data\\processos\\EX-CAMPOBOM-001\\arquivos\\foto_01_boca_poco.jpg",
         "tamanho": 34657,
         "origem": "gerado pela plataforma",
         "exemplo": true,
@@ -94,7 +94,7 @@
       },
       {
         "nome": "foto_02_laje_protecao.jpg",
-        "caminho": "data/processos/EX-CAMPOBOM-001/arquivos/foto_02_laje_protecao.jpg",
+        "caminho": "data\\processos\\EX-CAMPOBOM-001\\arquivos\\foto_02_laje_protecao.jpg",
         "tamanho": 39823,
         "origem": "gerado pela plataforma",
         "exemplo": true,
@@ -102,7 +102,7 @@
       },
       {
         "nome": "foto_03_cercamento.jpg",
-        "caminho": "data/processos/EX-CAMPOBOM-001/arquivos/foto_03_cercamento.jpg",
+        "caminho": "data\\processos\\EX-CAMPOBOM-001\\arquivos\\foto_03_cercamento.jpg",
         "tamanho": 44399,
         "origem": "gerado pela plataforma",
         "exemplo": true,
@@ -110,7 +110,7 @@
       },
       {
         "nome": "foto_04_cavalete_hidrometro.jpg",
-        "caminho": "data/processos/EX-CAMPOBOM-001/arquivos/foto_04_cavalete_hidrometro.jpg",
+        "caminho": "data\\processos\\EX-CAMPOBOM-001\\arquivos\\foto_04_cavalete_hidrometro.jpg",
         "tamanho": 38241,
         "origem": "gerado pela plataforma",
         "exemplo": true,
@@ -195,9 +195,9 @@
       "distancia_m": 358.95
     },
     "caminho_mapas": [
-      "data/processos/EX-CAMPOBOM-001/mapas/mapa_situacao.jpg",
-      "data/processos/EX-CAMPOBOM-001/mapas/mapa_geologico.jpg",
-      "data/processos/EX-CAMPOBOM-001/mapas/mapa_hidrologico.jpg"
+      "data\\processos\\EX-CAMPOBOM-001\\mapas\\mapa_situacao.jpg",
+      "data\\processos\\EX-CAMPOBOM-001\\mapas\\mapa_geologico.jpg",
+      "data\\processos\\EX-CAMPOBOM-001\\mapas\\mapa_hidrologico.jpg"
     ],
     "detalhes": {
       "buffer": {
@@ -229,7 +229,9 @@
       },
       "raio_seguranca": {
         "raio_m": 500.0,
-        "ocorrencias": {},
+        "ocorrencias": {
+          "vias": 114
+        },
         "origem": "OpenStreetMap/Overpass + camadas do usuario"
       },
       "preflight_qualidade": {
@@ -243,7 +245,7 @@
               "ok": "True",
               "resource_limits": "{'declared_within_feature_limit': True, 'feature_data_loaded': False, 'max_features_for_downstream_load': 100000, 'max_input_bytes': 67108864}",
               "source": "{'basename_sha256': 'ba4023f1b3630c3ba0a9c025e8ced422d01e6a5fbdbc2eb67c1c5a86985d5086', 'path_emitted': False, 'primary_file_bytes': 11067392, 'primary_file_...",
-              "stack": "{'matches_pinned_snapshot': {'geopandas': True, 'numpy': False, 'packaging': False, 'pandas': False, 'pyarrow': False, 'pyogrio': True, 'pyproj': True, 'shap...",
+              "stack": "{'matches_pinned_snapshot': {'geopandas': True, 'numpy': False, 'packaging': False, 'pandas': False, 'pyarrow': False, 'pyogrio': True, 'pyproj': False, 'sha...",
               "technical_inventory": "{'bounds_available': True, 'bounds_redacted': True, 'crs': {'authority': 'EPSG:4674', 'axes': [{'abbreviation': 'Lat', 'direction': 'north', 'unit': 'degree'...",
               "tool": "vector_inventory",
               "warnings": "['No feature values, coordinates, bounds, paths, layer names, or field names were emitted.', 'GDAL/GEOS/PROJ and binary wheels are native-code trust boundari..."
@@ -271,7 +273,7 @@
               "ok": "True",
               "resource_limits": "{'declared_within_feature_limit': True, 'feature_data_loaded': False, 'max_features_for_downstream_load': 100000, 'max_input_bytes': 67108864}",
               "source": "{'basename_sha256': '58fa068b7894bd52d66207ff329531ac6e5aab0beb7f9a857adfe5d29a007c06', 'path_emitted': False, 'primary_file_bytes': 2011136, 'primary_file_s...",
-              "stack": "{'matches_pinned_snapshot': {'geopandas': True, 'numpy': False, 'packaging': False, 'pandas': False, 'pyarrow': False, 'pyogrio': True, 'pyproj': True, 'shap...",
+              "stack": "{'matches_pinned_snapshot': {'geopandas': True, 'numpy': False, 'packaging': False, 'pandas': False, 'pyarrow': False, 'pyogrio': True, 'pyproj': False, 'sha...",
               "technical_inventory": "{'bounds_available': True, 'bounds_redacted': True, 'crs': {'authority': 'EPSG:4674', 'axes': [{'abbreviation': 'Lat', 'direction': 'north', 'unit': 'degree'...",
               "tool": "vector_inventory",
               "warnings": "['No feature values, coordinates, bounds, paths, layer names, or field names were emitted.', 'GDAL/GEOS/PROJ and binary wheels are native-code trust boundari..."
@@ -299,7 +301,7 @@
               "ok": "True",
               "resource_limits": "{'declared_within_feature_limit': True, 'feature_data_loaded': False, 'max_features_for_downstream_load': 100000, 'max_input_bytes': 67108864}",
               "source": "{'basename_sha256': '51965a2a9670b1de5e0d3cceb02fb19d1f1277fcf874a99b75277579471e1d7a', 'path_emitted': False, 'primary_file_bytes': 10670080, 'primary_file_...",
-              "stack": "{'matches_pinned_snapshot': {'geopandas': True, 'numpy': False, 'packaging': False, 'pandas': False, 'pyarrow': False, 'pyogrio': True, 'pyproj': True, 'shap...",
+              "stack": "{'matches_pinned_snapshot': {'geopandas': True, 'numpy': False, 'packaging': False, 'pandas': False, 'pyarrow': False, 'pyogrio': True, 'pyproj': False, 'sha...",
               "technical_inventory": "{'bounds_available': True, 'bounds_redacted': True, 'crs': {'authority': 'EPSG:4674', 'axes': [{'abbreviation': 'Lat', 'direction': 'north', 'unit': 'degree'...",
               "tool": "vector_inventory",
               "warnings": "['No feature values, coordinates, bounds, paths, layer names, or field names were emitted.', 'GDAL/GEOS/PROJ and binary wheels are native-code trust boundari..."
@@ -327,7 +329,7 @@
               "ok": "True",
               "resource_limits": "{'declared_within_feature_limit': True, 'feature_data_loaded': False, 'max_features_for_downstream_load': 100000, 'max_input_bytes': 67108864}",
               "source": "{'basename_sha256': 'f7f0276674ffaf1119b4b6fd8ab863910382a91baa22932786b257a30aecdd1e', 'path_emitted': False, 'primary_file_bytes': 27832320, 'primary_file_...",
-              "stack": "{'matches_pinned_snapshot': {'geopandas': True, 'numpy': False, 'packaging': False, 'pandas': False, 'pyarrow': False, 'pyogrio': True, 'pyproj': True, 'shap...",
+              "stack": "{'matches_pinned_snapshot': {'geopandas': True, 'numpy': False, 'packaging': False, 'pandas': False, 'pyarrow': False, 'pyogrio': True, 'pyproj': False, 'sha...",
               "technical_inventory": "{'bounds_available': True, 'bounds_redacted': True, 'crs': {'authority': 'EPSG:4674', 'axes': [{'abbreviation': 'Lat', 'direction': 'north', 'unit': 'degree'...",
               "tool": "vector_inventory",
               "warnings": "['No feature values, coordinates, bounds, paths, layer names, or field names were emitted.', 'GDAL/GEOS/PROJ and binary wheels are native-code trust boundari..."
@@ -343,7 +345,7 @@
               "output": "{'basename_sha256': None, 'path_emitted': False, 'requested': False, 'roundtrip_verified': False, 'sha256': None, 'written': False}",
               "repair_contract": "{'keep_collapsed': True, 'method': 'linework', 'precision_grid': None, 'precision_grid_units': None, 'source_modified': False, 'type_transition_rows': 0}",
               "simulated_after": "{'coordinates_emitted': False, 'duplicate_index_rows': 0, 'empty': 0, 'features': 67535, 'geometry_type_counts': {'LineString': 67535}, 'has_m': 0, 'has_z': ...",
-              "source": "{'path_emitted': False, 'primary_file_bytes': 27832320, 'primary_file_sha256': '6c750d8c6868c251a416b66bcb51f5ef94f8d1d5b5efaa200e8a438ced199292'}",
+              "source": "{'path_emitted': False, 'primary_file_bytes': 27832320, 'primary_file_sha256': '73fa92978f61c3316bc2ddfd7ab69fea77771cb203741727c0da5342e376546e'}",
               "stable_id_audit": "{'duplicate_rows': None, 'null_rows': None, 'provided': False}"
             }
           }
@@ -352,7 +354,7 @@
           "bbox": "{'crosses_antimeridian': False, 'provided': False, 'used_as_area_of_interest': False, 'values_emitted': False}",
           "best_available": "True",
           "candidate_count": "1",
-          "candidate_summaries_first_five": "[{'accuracy_known': True, 'accuracy_metres': 0.0, 'area_of_use_name': 'World', 'description': 'axis order change (2D) + UTM zone 22S'}]",
+          "candidate_summaries_first_five": "[{'accuracy_known': False, 'accuracy_metres': None, 'area_of_use_name': 'Between 54°W and 48°W, southern hemisphere between 80°S and equator, onshore and off...",
           "coordinate_array_order": "x_y_via_always_xy",
           "coordinates_emitted": "False",
           "coordinates_transformed": "False",
@@ -364,9 +366,9 @@
         }
       },
       "mapas": {
-        "mapa_situacao": "data/processos/EX-CAMPOBOM-001/mapas/mapa_situacao.jpg",
-        "mapa_geologico": "data/processos/EX-CAMPOBOM-001/mapas/mapa_geologico.jpg",
-        "mapa_hidrologico": "data/processos/EX-CAMPOBOM-001/mapas/mapa_hidrologico.jpg"
+        "mapa_situacao": "data\\processos\\EX-CAMPOBOM-001\\mapas\\mapa_situacao.jpg",
+        "mapa_geologico": "data\\processos\\EX-CAMPOBOM-001\\mapas\\mapa_geologico.jpg",
+        "mapa_hidrologico": "data\\processos\\EX-CAMPOBOM-001\\mapas\\mapa_hidrologico.jpg"
       }
     },
     "proveniencia": {
@@ -468,11 +470,11 @@
       },
       "osm": {
         "chave": "osm",
-        "status": "ausente",
-        "origem": "OpenStreetMap (Overpass)",
-        "arquivo": "",
-        "feicoes": 0,
-        "mensagem": "Overpass indisponivel e sem cache local"
+        "status": "ok",
+        "origem": "OpenStreetMap (Overpass) - consulta ao vivo",
+        "arquivo": "osm_3f513e81716b.geojson",
+        "feicoes": 1722,
+        "mensagem": ""
       }
     },
     "pendencias": [],
@@ -1241,9 +1243,9 @@
       }
     },
     "graficos": {
-      "painel": "data/processos/EX-CAMPOBOM-001/graficos/graficos_ensaio.png",
-      "rebaixamento": "data/processos/EX-CAMPOBOM-001/graficos/grafico_rebaixamento.png",
-      "recuperacao": "data/processos/EX-CAMPOBOM-001/graficos/grafico_recuperacao.png"
+      "painel": "data\\processos\\EX-CAMPOBOM-001\\graficos\\graficos_ensaio.png",
+      "rebaixamento": "data\\processos\\EX-CAMPOBOM-001\\graficos\\grafico_rebaixamento.png",
+      "recuperacao": "data\\processos\\EX-CAMPOBOM-001\\graficos\\grafico_recuperacao.png"
     },
     "avisos": [],
     "erros": [],
@@ -1621,8 +1623,8 @@
         ]
       },
       "tendencia": {
-        "a": 1.689661463007644,
-        "b": 0.3636157606255775,
+        "a": 1.6896614630076452,
+        "b": 0.3636157606255771,
         "r2": 0.9950818387015555,
         "equacao": "s = +0.3636·log10(t) +1.6897   (R² = 0.9951)"
       }
@@ -1841,7 +1843,7 @@
         "titulo": "LAUDO TECNICO DE CARACTERIZACAO HIDROGEOLOGICA",
         "subtitulo": "MEMORIAL DESCRITIVO PARA OUTORGA DE AGUA SUBTERRANEA - SIOUT/RS",
         "processo": "EX-CAMPOBOM-001",
-        "data_emissao": "23/09/2026",
+        "data_emissao": "25/09/2026",
         "versao_sistema": "1.0.0"
       },
       "identificacao": {
@@ -1899,7 +1901,9 @@
         },
         "raio_seguranca": {
           "raio_m": 500.0,
-          "ocorrencias": {},
+          "ocorrencias": {
+            "vias": 114
+          },
           "origem": "OpenStreetMap/Overpass + camadas do usuario"
         }
       },
@@ -1971,9 +1975,9 @@
             }
           },
           "graficos": {
-            "painel": "data/processos/EX-CAMPOBOM-001/graficos/graficos_ensaio.png",
-            "rebaixamento": "data/processos/EX-CAMPOBOM-001/graficos/grafico_rebaixamento.png",
-            "recuperacao": "data/processos/EX-CAMPOBOM-001/graficos/grafico_recuperacao.png"
+            "painel": "data\\processos\\EX-CAMPOBOM-001\\graficos\\graficos_ensaio.png",
+            "rebaixamento": "data\\processos\\EX-CAMPOBOM-001\\graficos\\grafico_rebaixamento.png",
+            "recuperacao": "data\\processos\\EX-CAMPOBOM-001\\graficos\\grafico_recuperacao.png"
           },
           "avisos": [],
           "erros": [],
@@ -2351,8 +2355,8 @@
               ]
             },
             "tendencia": {
-              "a": 1.689661463007644,
-              "b": 0.3636157606255775,
+              "a": 1.6896614630076452,
+              "b": 0.3636157606255771,
               "r2": 0.9950818387015555,
               "equacao": "s = +0.3636·log10(t) +1.6897   (R² = 0.9951)"
             }
@@ -2698,11 +2702,11 @@
           "Recomenda-se a vazao de explotacao de 11,99 m3/h (Q_estavel), resultando em volume anual estimado de 37.522 m3/ano.",
           "O regime operacional proposto reserva 12,0 h/dia de repouso ao aquifero, atendendo ao repouso minimo de 4 h/dia exigido pelo SIOUT RS.",
           "O imovel e atendido por rede publica de abastecimento de agua. Declara-se a SEPARACAO FISICA DAS REDES HIDRAULICAS, sem qualquer interconexao, cross-connection ou by-pass entre a rede publica e a rede alimentada pelo poco, ficando a agua subterranea restrita as finalidades nao destinadas ao consumo humano direto.",
-          "A distancia ao corpo hidrico superficial mais proximo ('Rio dos Sinos') e de 358,9 m, acima do limiar de 50 m que exigiria estudo de interferencia especifico.",
-          "Nao foram identificadas fontes potenciais de poluicao mapeadas dentro do raio de seguranca de 500 m nas bases consultadas; a constatacao deve ser confirmada por vistoria de campo."
+          "A distancia ao corpo hidrico superficial mais proximo ('Rio dos Sinos') e de 358,9 m, acima do limiar de 50 m que exigiria estudo de interferencia especifico."
         ],
         "recomendacoes": [
           "Manter sinalizacao permanente e distinta nas duas redes (padrao de cores diferenciado) e submeter o sistema a inspecao periodica, de modo a comprovar a ausencia de interconexao.",
+          "Dentro do raio de seguranca de 500 m foram identificadas as seguintes ocorrencias: vias (114 feicao/feicoes). Recomenda-se vistoria de campo para avaliacao e mitigacao das fontes potenciais de poluicao, com prioridade para postos de combustivel, estacoes de tratamento de esgoto, tanques e areas industriais.",
           "[MED-010] Vazao adotada de 11.9939 m3/h excede a vazao nominal do hidrometro (2.5 m3/h). O instrumento operara acima da faixa de trabalho, com perda de precisao metrologica e desgaste acelerado.",
           "[MED-020] Velocidade media estimada de 4.14 m/s no hidrometro DN32. Recomenda-se ate 3 m/s para preservar a classe de precisao.",
           "Instalar e manter lacre e/ou sinalizacao no hidrometro, com leitura mensal registrada em planilha propria para fins de fiscalizacao da outorga.",
@@ -2716,19 +2720,19 @@
         "titulo": "Geologo",
         "registro": "CREA-RS 0000000000",
         "art": "ART RS2024 0000000",
-        "local_data": "____________________, 23/09/2026",
+        "local_data": "____________________, 25/09/2026",
         "nota_normativa": "Conforme a norma CEGM/CREA-RS n. 08/2022, o presente laudo deve ser assinado por profissional habilitado (Geologo ou Engenheiro de Minas) com a respectiva Anotacao de Responsabilidade Tecnica (ART)."
       },
       "anexos": {
         "mapas": [
-          "data/processos/EX-CAMPOBOM-001/mapas/mapa_situacao.jpg",
-          "data/processos/EX-CAMPOBOM-001/mapas/mapa_geologico.jpg",
-          "data/processos/EX-CAMPOBOM-001/mapas/mapa_hidrologico.jpg"
+          "data\\processos\\EX-CAMPOBOM-001\\mapas\\mapa_situacao.jpg",
+          "data\\processos\\EX-CAMPOBOM-001\\mapas\\mapa_geologico.jpg",
+          "data\\processos\\EX-CAMPOBOM-001\\mapas\\mapa_hidrologico.jpg"
         ],
         "graficos": {
-          "painel": "data/processos/EX-CAMPOBOM-001/graficos/graficos_ensaio.png",
-          "rebaixamento": "data/processos/EX-CAMPOBOM-001/graficos/grafico_rebaixamento.png",
-          "recuperacao": "data/processos/EX-CAMPOBOM-001/graficos/grafico_recuperacao.png"
+          "painel": "data\\processos\\EX-CAMPOBOM-001\\graficos\\graficos_ensaio.png",
+          "rebaixamento": "data\\processos\\EX-CAMPOBOM-001\\graficos\\grafico_rebaixamento.png",
+          "recuperacao": "data\\processos\\EX-CAMPOBOM-001\\graficos\\grafico_recuperacao.png"
         },
         "proveniencia": {
           "municipios_rs": {
@@ -2829,22 +2833,37 @@
           },
           "osm": {
             "chave": "osm",
-            "status": "ausente",
-            "origem": "OpenStreetMap (Overpass)",
-            "arquivo": "",
-            "feicoes": 0,
-            "mensagem": "Overpass indisponivel e sem cache local"
+            "status": "ok",
+            "origem": "OpenStreetMap (Overpass) - consulta ao vivo",
+            "arquivo": "osm_3f513e81716b.geojson",
+            "feicoes": 1722,
+            "mensagem": ""
           }
         }
       }
     },
-    "markdown": "data/processos/EX-CAMPOBOM-001/relatorio/laudo_tecnico.md",
-    "pdf": "data/processos/EX-CAMPOBOM-001/relatorio/laudo_tecnico.pdf",
-    "minuta": "data/processos/EX-CAMPOBOM-001/relatorio/minuta_siout.md",
+    "markdown": "data\\processos\\EX-CAMPOBOM-001\\relatorio\\laudo_tecnico.md",
+    "pdf": "data\\processos\\EX-CAMPOBOM-001\\relatorio\\laudo_tecnico.pdf",
+    "minuta": "data\\processos\\EX-CAMPOBOM-001\\relatorio\\minuta_siout.md",
     "erros": [],
     "avisos": []
   },
   "issues": [
+    {
+      "id": "D010",
+      "categoria": "ambiente",
+      "categoria_rotulo": "Ambiente e dependencias",
+      "severidade": "critico",
+      "titulo": "Dependencias ausentes",
+      "detalhe": "Pacotes nao importaveis: fiona",
+      "agente": null,
+      "origem": "diagnostico de ambiente",
+      "sugestao": "Reinstale com: pip install -r requirements.txt",
+      "correcao": [
+        "Reinstalar as dependencias: pip install -r requirements.txt.",
+        "Reiniciar a aplicacao."
+      ]
+    },
     {
       "id": "D001",
       "categoria": "geoespacial",
@@ -2969,23 +2988,6 @@
       "categoria": "geoespacial",
       "categoria_rotulo": "Base geoespacial",
       "severidade": "info",
-      "titulo": "Camada oficial ausente, com substituto declarado: osm",
-      "detalhe": "status=ausente; Overpass indisponivel e sem cache local | Substituto aplicado: cache local do Overpass; sem rede a plataforma segue apenas com as bases estatais e as camadas enviadas pelo usuario. A origem alternativa esta declarada no laudo, conforme a politica de fallback local adotada para este ambiente.",
-      "agente": 2,
-      "origem": "Agente 2 / registro de camadas",
-      "sugestao": "Forneca a camada via upload no Agente 2.",
-      "correcao": [
-        "Confirmar se o arquivo da camada existe em data/vetoriais/.",
-        "Se ausente, executar o workflow 'build-vetorial-data' no GitHub Actions.",
-        "Se o servidor de origem estiver bloqueado, converter a base no ambiente do usuario e depositar o .gpkg em data/vetoriais/.",
-        "Reprocessar o Agente 2 para o ponto informado."
-      ]
-    },
-    {
-      "id": "D009",
-      "categoria": "geoespacial",
-      "categoria_rotulo": "Base geoespacial",
-      "severidade": "info",
       "titulo": "Camada do inventario ausente, com substituto declarado: nascentes_rs",
       "detalhe": "status=ausente;  | Substituto aplicado: nascentes do OpenStreetMap (natural=spring) - ja usadas no Mapa 3 (hidrografico e hidrogeologico)",
       "agente": 2,
@@ -2999,7 +3001,7 @@
       ]
     },
     {
-      "id": "D010",
+      "id": "D009",
       "categoria": "geoespacial",
       "categoria_rotulo": "Base geoespacial",
       "severidade": "info",
@@ -3099,6 +3101,72 @@
       "agente": 6,
       "nivel": "info",
       "mensagem": "Triagem concluida: 11 achados."
+    },
+    {
+      "ts": "2026-09-25T17:43:32",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Arquivo registrado em 'ensaio_bombeamento': ensaio_bombeamento_PT-01.xlsx"
+    },
+    {
+      "ts": "2026-09-25T17:43:32",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Arquivo registrado em 'matricula_imovel': matricula_imovel_exemplo.pdf"
+    },
+    {
+      "ts": "2026-09-25T17:43:32",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Arquivo registrado em 'analise_laboratorial': analise_laboratorial_exemplo.pdf"
+    },
+    {
+      "ts": "2026-09-25T17:43:32",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Arquivo registrado em 'declaracao_separacao_redes': declaracao_separacao_redes_exemplo.pdf"
+    },
+    {
+      "ts": "2026-09-25T17:43:32",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Arquivo registrado em 'registro_fotografico': foto_01_boca_poco.jpg"
+    },
+    {
+      "ts": "2026-09-25T17:43:32",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Arquivo registrado em 'registro_fotografico': foto_02_laje_protecao.jpg"
+    },
+    {
+      "ts": "2026-09-25T17:43:32",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Arquivo registrado em 'registro_fotografico': foto_03_cercamento.jpg"
+    },
+    {
+      "ts": "2026-09-25T17:43:32",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Arquivo registrado em 'registro_fotografico': foto_04_cavalete_hidrometro.jpg"
+    },
+    {
+      "ts": "2026-09-25T17:43:32",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Cadastro de exemplo carregado. Os anexos (matricula, analise laboratorial, declaracao de separacao de redes e registro fotografico) sao exemplos gerados pela plataforma e estao marcados como nao validos para protocolo."
+    },
+    {
+      "ts": "2026-09-25T17:44:27",
+      "agente": 5,
+      "nivel": "info",
+      "mensagem": "Relatorio tecnico emitido."
+    },
+    {
+      "ts": "2026-09-25T17:44:29",
+      "agente": 6,
+      "nivel": "info",
+      "mensagem": "Triagem concluida: 11 achados."
     }
   ],
   "responsavel_tecnico": {
@@ -3176,9 +3244,9 @@
       }
     },
     "graficos": {
-      "painel": "data/processos/EX-CAMPOBOM-001/graficos/graficos_ensaio.png",
-      "rebaixamento": "data/processos/EX-CAMPOBOM-001/graficos/grafico_rebaixamento.png",
-      "recuperacao": "data/processos/EX-CAMPOBOM-001/graficos/grafico_recuperacao.png"
+      "painel": "data\\processos\\EX-CAMPOBOM-001\\graficos\\graficos_ensaio.png",
+      "rebaixamento": "data\\processos\\EX-CAMPOBOM-001\\graficos\\grafico_rebaixamento.png",
+      "recuperacao": "data\\processos\\EX-CAMPOBOM-001\\graficos\\grafico_recuperacao.png"
     },
     "avisos": [],
     "erros": [],
@@ -3556,8 +3624,8 @@
         ]
       },
       "tendencia": {
-        "a": 1.689661463007644,
-        "b": 0.3636157606255775,
+        "a": 1.6896614630076452,
+        "b": 0.3636157606255771,
         "r2": 0.9950818387015555,
         "equacao": "s = +0.3636·log10(t) +1.6897   (R² = 0.9951)"
       }
