@@ -273,3 +273,136 @@ def salvar_mapa_html(mapa: folium.Map, destino: str | Path) -> Path:
     p.parent.mkdir(parents=True, exist_ok=True)
     mapa.save(str(p))
     return p
+
+
+# -------------------------------------------------------------------------------------
+# Backend Alternativo: Leafmap (via geoai-py/leafmap)
+# Uso recomendado quando geoai-py estiver instalado para exibir imagens de satelite
+# locais (Sentinel-2, NAIP) como camadas tile via localtileserver.
+# -------------------------------------------------------------------------------------
+
+
+def criar_mapa_leafmap(
+    lat: float,
+    lon: float,
+    zoom_inicial: int = 14,
+    raster_path: Optional[str] = None,
+    raster_nome: str = "Satelite",
+    camadas_vetoriais: Optional[Dict[str, Any]] = None,
+) -> Any:
+    """
+    Cria um mapa interativo usando leafmap (incluido no geoai-py).
+
+    Vantagens sobre Folium puro:
+    - Suporte nativo a GeoTIFF locais via localtileserver (sem pre-conversao)
+    - Suporte a COG (Cloud Optimized GeoTIFF) direto na web
+    - Widgets Jupyter/Streamlit nativos
+    - Integrado com geoai, torchgeo e Planetary Computer
+
+    Args:
+        lat: Latitude do centro do mapa.
+        lon: Longitude do centro do mapa.
+        zoom_inicial: Zoom inicial (default 14).
+        raster_path: Caminho absoluto para GeoTIFF local (ex: Sentinel-2 baixado via geoai).
+        raster_nome: Nome de exibicao da camada raster.
+        camadas_vetoriais: Dict {nome: GeoDataFrame} com camadas vetoriais a exibir.
+
+    Returns:
+        leafmap.Map (compativel com .to_html() para exportar como Folium HTML)
+
+    Exemplo:
+        import geoai
+        geoai.download_sentinel2(
+            bbox=[-51.08, -29.72, -51.00, -29.65],
+            output_dir="C:/tmp/sentinel2",
+        )
+        m = criar_mapa_leafmap(-29.69, -51.05, raster_path="C:/tmp/sentinel2/image.tif")
+        m.to_html("mapa_com_satelite.html")
+    """
+    try:
+        import leafmap
+    except ImportError:
+        raise ImportError(
+            "leafmap nao encontrado. Instale com: pip install geoai-py"
+        )
+
+    m = leafmap.Map(center=[lat, lon], zoom=zoom_inicial)
+    m.add_basemap("OpenStreetMap")
+    m.add_basemap("SATELLITE")
+
+    # Adicionar raster local via localtileserver
+    if raster_path and Path(raster_path).exists():
+        try:
+            m.add_raster(raster_path, layer_name=raster_nome, zoom_to_layer=False)
+        except Exception as e:
+            print(f"[GIS] Aviso: nao foi possivel adicionar raster '{raster_path}': {e}")
+
+    # Adicionar camadas vetoriais
+    if camadas_vetoriais:
+        cores = {
+            "geologia": "#e8d5a3",
+            "hidrogeologia": "#bcd9f2",
+            "solos": "#c8a96e",
+            "drenagem": "#0288d1",
+            "vias": "#8a8a8a",
+            "propriedade": "#2e7d32",
+        }
+        for nome, gdf in camadas_vetoriais.items():
+            if gdf is None or not len(gdf):
+                continue
+            try:
+                if gdf.crs is None:
+                    gdf = gdf.set_crs("EPSG:4326")
+                gdf_wgs = gdf.to_crs("EPSG:4326")
+                cor = cores.get(nome, "#666666")
+                style = {"fillColor": cor, "color": cor, "weight": 1.5, "fillOpacity": 0.5}
+                m.add_gdf(gdf_wgs, layer_name=nome.capitalize(), style=style, zoom_to_layer=False)
+            except Exception as e:
+                print(f"[GIS] Aviso: camada '{nome}' nao adicionada ao leafmap: {e}")
+
+    return m
+
+
+def adicionar_raster_ao_folium(
+    mapa: folium.Map,
+    raster_path: str,
+    nome_camada: str = "Raster",
+    opacidade: float = 0.7,
+) -> folium.Map:
+    """
+    Adiciona um GeoTIFF local como camada tile ao mapa Folium usando localtileserver.
+
+    Requer: pip install localtileserver
+
+    Args:
+        mapa: Instancia folium.Map existente.
+        raster_path: Caminho absoluto para arquivo GeoTIFF (ex: Sentinel-2 baixado via geoai).
+        nome_camada: Nome de exibicao no LayerControl.
+        opacidade: Opacidade da camada (0.0 a 1.0).
+
+    Returns:
+        O mesmo mapa Folium com a camada tile adicionada.
+
+    Exemplo:
+        m = criar_mapa_multicamadas(lat=-29.69, lon=-51.05, ...)
+        adicionar_raster_ao_folium(m, "C:/tmp/sentinel2.tif", nome_camada="Sentinel-2 2024")
+        salvar_mapa_html(m, "mapa_com_satelite.html")
+    """
+    try:
+        from localtileserver import TileClient, get_folium_tile_layer
+    except ImportError:
+        print("[GIS] Aviso: localtileserver nao instalado. Instale com: pip install localtileserver")
+        return mapa
+
+    if not Path(raster_path).exists():
+        print(f"[GIS] Aviso: arquivo raster nao encontrado: {raster_path}")
+        return mapa
+
+    try:
+        client = TileClient(raster_path)
+        tile_layer = get_folium_tile_layer(client, name=nome_camada, opacity=opacidade)
+        tile_layer.add_to(mapa)
+    except Exception as e:
+        print(f"[GIS] Aviso: nao foi possivel criar tile layer de '{raster_path}': {e}")
+
+    return mapa
