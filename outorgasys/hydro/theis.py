@@ -27,6 +27,11 @@ import numpy as np
 
 from .. import config as C
 
+# Faixa usual de transmissividade para aquiferos brasileiros (m2/s). Antes o
+# teste usava 1e-4..1.0 enquanto a mensagem citava 1e-5..1e-1.
+T_M2S_MIN = 1e-5
+T_M2S_MAX = 1e-1
+
 
 # --------------------------------------------------------------------------------------
 # Utilidades numericas
@@ -112,7 +117,7 @@ def identificar_q_estavel(tempo_min: Sequence[Any],
     minimo = max(3, int(math.ceil(fracao_minima * n)))
     melhor: VazaoEstabilizada | None = None
     for i in range(n, minimo - 1, -1):
-        janela = q[:i][-i:] if False else q[n - i:]  # ultimos i pontos
+        janela = q[n - i:]  # ultimos i pontos
         cv = coeficiente_variacao(janela)
         if math.isfinite(cv) and cv <= tolerancia_cv:
             # Quanto maior a janela, melhor (percorremos de tras para frente).
@@ -374,14 +379,19 @@ def calcular(ne: float | None, nd_final: float | None,
 
     reta: RetaRecuperacao | None = None
     if t_linha_min and s_residual_m and t_total:
-        tl = _arr(t_linha_min)
-        tl = tl[_finito(tl) & (tl >= 0)]
+        tl, sr = _arr(t_linha_min), _arr(s_residual_m)
+        n_par = min(len(tl), len(sr))
+        if len(tl) != len(sr):
+            avisos.append(f"Recuperacao com {len(tl)} tempos e {len(sr)} leituras de s'; "
+                          f"usados os {n_par} primeiros pares.")
+        tl, sr = tl[:n_par], sr[:n_par]
+        # Mesma mascara nos dois vetores para nao desalinhar os pares (t', s').
+        valido = _finito(tl) & (tl > 0)
+        tl, sr = tl[valido], sr[valido]
         if len(tl) >= 2:
             # t / t' com t = t_bombeamento_total + t' (convencao do enunciado)
-            t_abs = t_total + tl
-            with np.errstate(divide="ignore", invalid="ignore"):
-                razao = np.where(tl > 0, t_abs / tl, np.nan)
-            reta = ajustar_reta_recuperacao(razao, s_residual_m)
+            razao = (t_total + tl) / tl
+            reta = ajustar_reta_recuperacao(razao, sr)
             if reta.observacao:
                 detalhes["observacao_recuperacao"] = reta.observacao
         else:
@@ -397,10 +407,11 @@ def calcular(ne: float | None, nd_final: float | None,
     if q_estavel and delta and delta > 1e-9:
         T_m2h = (C.COEF_COOPER_JACOB * q_estavel) / delta
         T_m2s = T_m2h / 3600.0
-        if not (1e-4 <= T_m2s <= 1.0):
+        if not (T_M2S_MIN <= T_m2s <= T_M2S_MAX):
             avisos.append(
                 f"Transmissividade de {T_m2s:.2e} m2/s fora da faixa usual para "
-                "aquiferos brasileiros (1e-5 a 1e-1 m2/s). Confira Δs' e Q_estavel."
+                f"aquiferos brasileiros ({T_M2S_MIN:.0e} a {T_M2S_MAX:.0e} m2/s). "
+                "Confira Δs' e Q_estavel."
             )
     elif delta is not None and delta <= 1e-9:
         avisos.append("Δs' nulo ou desprezivel: reta de recuperacao horizontal, "

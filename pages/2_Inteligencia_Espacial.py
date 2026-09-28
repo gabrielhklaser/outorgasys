@@ -12,7 +12,7 @@ from outorgasys import config as C
 from outorgasys.agents import agente2_gis as a2
 from outorgasys.gis import geo, layers
 from outorgasys.gis import skill_bridge as skills
-from outorgasys.state import Processo
+from outorgasys.state import Processo, nome_arquivo_seguro
 from outorgasys.ui import (
     aplicar_tema, barra_lateral, cabecalho, chip, chips, fonte,
     mostrar_imagem, mostrar_pendencias, passo, tabela,
@@ -80,7 +80,7 @@ with st.expander("Camadas vetoriais do utilizador (opcional — KML/KMZ/GPKG/Geo
                               key=f"up_{chave}")
         if up is not None:
             reg = proc.data.setdefault("camadas_usuario", {}).get(chave)
-            dest = proc.dir_arquivos / up.name
+            dest = proc.dir_arquivos / nome_arquivo_seguro(up.name)
             dest.write_bytes(up.getbuffer())
             proc.data.setdefault("camadas_usuario", {})[chave] = {
                 "nome": up.name,

@@ -14,6 +14,7 @@ from outorgasys import config as C
 from outorgasys.agents import agente1_triagem as a1
 from outorgasys.agents import agente3_hidro as a3
 from outorgasys.hydro import planilha, sintetico
+from outorgasys.state import nome_arquivo_seguro
 from outorgasys.ui import (
     aplicar_tema, barra_lateral, cabecalho, download_arquivo, fonte,
     mostrar_imagem, passo, tabela,
@@ -79,7 +80,7 @@ elif fonte_dados == opcoes[1]:
     up = st.file_uploader("Planilha de ensaio (.xlsx/.xls/.csv)",
                           type=["xlsx", "xls", "csv"], key="up_ensaio_a3")
     if up is not None:
-        dest = proc.dir_arquivos / up.name
+        dest = proc.dir_arquivos / nome_arquivo_seguro(up.name)
         dest.write_bytes(up.getbuffer())
         a1.registrar_upload(proc, "ensaio_bombeamento", up)
         arquivo = dest

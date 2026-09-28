@@ -83,7 +83,7 @@ def auditar_equipamentos(proc, q_estavel: float | None, q_ot: float | None,
     r_res = rules.avaliar_reservacao(reserv, vazao_adotada, horas_dia)
 
     capacidade_total_l = sum(
-        float(x.get("capacidade_l") or 0) for x in (reserv or [])
+        (rules._num(x.get("capacidade_l")) or 0.0) for x in (reserv or [])
         if str(x.get("capacidade_l") or "").strip()
     )
 

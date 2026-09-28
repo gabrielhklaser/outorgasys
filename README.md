@@ -271,10 +271,12 @@ recuperar a transmissividade de entrada (erro de ~0,3 %).
 ```bash
 .venv/bin/python tests/smoke_ui.py       # todas as páginas com processo vazio
 .venv/bin/python tests/smoke_exemplo.py  # todas as páginas com o exemplo carregado
-.venv/bin/python tests/test_agents.py    # regras e memória de cálculo (se presente)
+.venv/bin/python tests/test_theis.py     # testes unitários da memória de cálculo (ou: pytest tests/test_theis.py)
 ```
 
-Ambos usam `streamlit.testing.v1.AppTest` e falham se qualquer página levantar
+Roadmap de melhorias e achados de revisão: [docs/MELHORIAS.md](docs/MELHORIAS.md).
+
+Os dois smoke tests usam `streamlit.testing.v1.AppTest` e falham se qualquer página levantar
 exceção (incluindo erro de sintaxe). O `smoke_ui.py` isola `data/processos` em
 um diretório temporário para não poluir o repositório.
 

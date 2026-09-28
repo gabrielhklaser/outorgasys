@@ -56,10 +56,13 @@ jobs:
         run: python -c "import pyogrio; d=set(pyogrio.list_drivers()); print('KML', 'KML' in d); print('LIBKML', 'LIBKML' in d); print('GPKG', 'GPKG' in d)"
 
       - name: Build vector database
+        env:
+          # inputs.only via env para evitar injecao de comando no shell
+          ONLY: ${{ inputs.only }}
         run: |
           python scripts/fetch_data.py \
             ${{ inputs.force && '--force' || '' }} \
-            ${{ inputs.only && format('--only {0}', inputs.only) || '' }}
+            ${ONLY:+--only "$ONLY"}
 
       - name: Consume build request
         # O pedido e disparado por commit (o token do Actions nao pode chamar

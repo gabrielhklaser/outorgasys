@@ -22,6 +22,14 @@ from typing import Any
 from . import config as C
 
 
+def nome_arquivo_seguro(nome: str) -> str:
+    """Reduz o nome enviado pelo cliente ao basename (bloqueia path traversal)."""
+    base = Path(str(nome).replace("\\", "/")).name.strip()
+    if base in ("", ".", ".."):
+        raise ValueError(f"Nome de arquivo invalido: {nome!r}")
+    return base
+
+
 # --------------------------------------------------------------------------------------
 # Persistencia tolerante
 # --------------------------------------------------------------------------------------
@@ -261,7 +269,7 @@ class Processo:
         """Persiste um UploadedFile do Streamlit e registra no campo 'documentos'."""
         if uploaded is None:
             return None
-        dest = self.dir_arquivos / uploaded.name
+        dest = self.dir_arquivos / nome_arquivo_seguro(uploaded.name)
         with open(dest, "wb") as fh:
             fh.write(uploaded.getbuffer())
         docs = self.data.setdefault("documentos", {})
