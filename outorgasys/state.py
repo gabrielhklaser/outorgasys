@@ -10,7 +10,10 @@ permitir auditoria posterior.
 from __future__ import annotations
 
 import datetime
+import hashlib
 import json
+import logging
+import re
 import shutil
 import tempfile
 import time
@@ -21,13 +24,26 @@ from typing import Any
 
 from . import config as C
 
+log = logging.getLogger(__name__)
+
+
+_CONTROLE = re.compile(r"[\x00-\x1f\x7f]")
+_PID_VALIDO = re.compile(r"[A-Za-z0-9][A-Za-z0-9_-]{0,63}")
+
 
 def nome_arquivo_seguro(nome: str) -> str:
     """Reduz o nome enviado pelo cliente ao basename (bloqueia path traversal)."""
-    base = Path(str(nome).replace("\\", "/")).name.strip()
+    base = _CONTROLE.sub("", Path(str(nome).replace("\\", "/")).name).strip()
     if base in ("", ".", ".."):
         raise ValueError(f"Nome de arquivo invalido: {nome!r}")
     return base
+
+
+def validar_pid(pid: Any) -> str:
+    """Aceita so identificadores que viram nome de arquivo sem sair de PROCESSOS."""
+    if not isinstance(pid, str) or not _PID_VALIDO.fullmatch(pid):
+        raise ValueError(f"Identificador de processo invalido: {pid!r}")
+    return pid
 
 
 # --------------------------------------------------------------------------------------
@@ -110,6 +126,29 @@ def _sanear_json(obj: Any, _profundidade: int = 0) -> Any:
     return f"<{nome_tipo} nao serializavel>"
 
 
+def _restaurar_json(obj: Any) -> Any:
+    """Inverso de ``_sanear_json`` para DataFrames e Series.
+
+    Sem isto o processo carregado do disco traz o ensaio como dict
+    (``{"__tipo__": "dataframe", ...}``) e as paginas so funcionavam porque
+    relem a planilha a cada execucao.
+    """
+    if isinstance(obj, dict):
+        tipo = obj.get("__tipo__")
+        if tipo == "dataframe" and "colunas" in obj:
+            import pandas as pd  # noqa: PLC0415
+
+            return pd.DataFrame(obj.get("linhas") or [], columns=obj["colunas"])
+        if tipo == "serie":
+            import pandas as pd  # noqa: PLC0415
+
+            return pd.Series(obj.get("valores") or [])
+        return {k: _restaurar_json(v) for k, v in obj.items()}
+    if isinstance(obj, list):
+        return [_restaurar_json(v) for v in obj]
+    return obj
+
+
 def novo_id() -> str:
     return time.strftime("%Y%m%d") + "-" + uuid.uuid4().hex[:6].upper()
 
@@ -173,29 +212,40 @@ class Processo:
         processo novo — evita que ``Processo(pid=...)`` substitua silenciosamente
         um trabalho ja salvo. Passe ``carregar=False`` para forcar um novo.
         """
+        if pid:
+            validar_pid(pid)
         if data is None and pid and carregar:
             existente = self._ler(pid)
             if existente is not None:
                 data = existente
         self.data: dict = data if data is not None else _vazio_processo(pid or novo_id())
-        self.id: str = self.data["id"]
+        self.id: str = validar_pid(self.data["id"])
 
     @staticmethod
     def _json_de(pid: str) -> Path:
-        return C.PROCESSOS / f"{pid}.json"
+        return C.PROCESSOS / f"{validar_pid(pid)}.json"
 
     @staticmethod
     def _diretorio_de(pid: str) -> Path:
-        return C.PROCESSOS / pid
+        return C.PROCESSOS / validar_pid(pid)
 
     @staticmethod
     def _ler(pid: str) -> dict | None:
-        p = Processo._json_de(pid)
+        try:
+            p = Processo._json_de(pid)
+        except ValueError:
+            return None  # identificador invalido nao corresponde a processo algum
         if not p.exists():
             return None
         try:
-            return json.loads(p.read_text(encoding="utf-8"))
-        except Exception:  # noqa: BLE001
+            # utf-8-sig: o Bloco de Notas do Windows grava UTF-8 com BOM.
+            return _restaurar_json(json.loads(p.read_text(encoding="utf-8-sig")))
+        except ValueError as exc:
+            # JSON ilegivel: guarda os bytes originais em vez de deixar o proximo
+            # salvar() sobrescrever o arquivo com um processo vazio.
+            copia = p.with_name(f"{p.name}.corrompido-{time.strftime('%Y%m%d%H%M%S')}")
+            p.replace(copia)
+            log.warning("JSON do processo %s ilegivel (%s); copia em %s", pid, exc, copia.name)
             return None
 
     # ------------------------------------------------------------------ caminhos
@@ -269,37 +319,41 @@ class Processo:
         """Persiste um UploadedFile do Streamlit e registra no campo 'documentos'."""
         if uploaded is None:
             return None
-        dest = self.dir_arquivos / nome_arquivo_seguro(uploaded.name)
+        nome = nome_arquivo_seguro(uploaded.name)
+        dest = self.dir_arquivos / nome
+        conteudo = uploaded.getbuffer()
         with open(dest, "wb") as fh:
-            fh.write(uploaded.getbuffer())
+            fh.write(conteudo)
+        # O registro usa o nome JA saneado: o bruto vindo do cliente pode ter
+        # separadores de diretorio e voltaria a ser perigoso em remover_upload.
+        registro = {
+            "nome": nome,
+            "caminho": C.caminho_relativo(dest),
+            "tamanho": dest.stat().st_size,
+            "sha256": hashlib.sha256(conteudo).hexdigest(),
+        }
         docs = self.data.setdefault("documentos", {})
         if chave == "registro_fotografico":
-            docs.setdefault(chave, [])
-            docs[chave] = [
-                d for d in docs[chave] if d.get("nome") != uploaded.name
-            ] + [{
-                "nome": uploaded.name,
-                "caminho": C.caminho_relativo(dest),
-                "tamanho": dest.stat().st_size,
-            }]
+            docs[chave] = [d for d in docs.get(chave) or [] if d.get("nome") != nome] \
+                + [registro]
         else:
-            docs[chave] = {
-                "nome": uploaded.name,
-                "caminho": C.caminho_relativo(dest),
-                "tamanho": dest.stat().st_size,
-            }
+            docs[chave] = registro
         return dest
 
     def remover_upload(self, chave: str, nome: str | None = None) -> None:
         docs = self.data.setdefault("documentos", {})
+        try:
+            seguro = nome_arquivo_seguro(nome) if nome else None
+        except ValueError:
+            return  # nome invalido nao corresponde a arquivo algum
         if chave == "registro_fotografico":
-            docs[chave] = [d for d in docs.get(chave, []) if d.get("nome") != nome]
+            docs[chave] = [d for d in docs.get(chave, []) if d.get("nome") != seguro]
         else:
             docs.pop(chave, None)
-        if nome:
-            p = self.dir_arquivos / nome
-            if p.exists():
-                p.unlink()
+        if seguro:
+            alvo = self.dir_arquivos / seguro
+            if alvo.is_file():
+                alvo.unlink()
 
     # ------------------------------------------------------------------ io
     def salvar(self) -> Path:
@@ -314,7 +368,13 @@ class Processo:
     @classmethod
     def carregar(cls, pid: str) -> "Processo | None":
         dados = cls._ler(pid)
-        return cls(dados) if dados is not None else None
+        if dados is None:
+            return None
+        try:
+            return cls(dados)
+        except (KeyError, ValueError):
+            log.warning("Processo %s ignorado: JSON sem id valido", pid)
+            return None
 
     @classmethod
     def listar(cls) -> list[dict]:

@@ -16,6 +16,7 @@ from __future__ import annotations
 import datetime as dt
 from pathlib import Path
 from typing import Any, Iterable, Sequence
+from xml.sax.saxutils import escape as _xml_escape
 
 from reportlab.lib import colors
 from reportlab.lib.enums import TA_CENTER, TA_JUSTIFY
@@ -97,7 +98,7 @@ def _sanitize(texto: Any) -> str:
     for k, v in _MAPA_TEXTO.items():
         if k in s:
             s = s.replace(k, v)
-    # Escapa & < > soltos que nao sejam entidades conhecidas.
+    # Aqui so se convertem caracteres; marcacao e tratada por _dado().
     try:
         s.encode("cp1252")
         limpo = s
@@ -106,8 +107,27 @@ def _sanitize(texto: Any) -> str:
     return limpo
 
 
+def _dado(texto: Any) -> str:
+    """Texto vindo do processo, pronto para entrar num ``Paragraph``.
+
+    O ReportLab le ``<b>``, ``<a>`` e ``<img src=...>``. Sem escapar, ``<Sul>``
+    some do laudo e ``<img src="caminho">`` embute um arquivo do servidor. O
+    escape vem depois do _sanitize porque ele troca simbolos por ``<=``, ``->``.
+    """
+    return _xml_escape(_sanitize(texto))
+
+
 def _p(texto: Any, estilo) -> Paragraph:
+    """Paragrafo com marcacao ESCRITA NO CODIGO (``<b>``, ``<br/>``).
+
+    Dado do processo entra via ``_dado()`` ou ``_pd()``, nunca direto aqui.
+    """
     return Paragraph(_sanitize(texto), estilo)
+
+
+def _pd(texto: Any, estilo) -> Paragraph:
+    """Paragrafo cujo conteudo e dado puro: nada e interpretado como marcacao."""
+    return Paragraph(_dado(texto), estilo)
 
 
 def _tabela_dados(pares: dict, estilos, largura_total: float = 17.0 * cm,
@@ -115,7 +135,7 @@ def _tabela_dados(pares: dict, estilos, largura_total: float = 17.0 * cm,
     dados = [[_p("<b>Item</b>", estilos["celula_b"]),
               _p("<b>Valor</b>", estilos["celula_b"])]]
     for k, v in pares.items():
-        dados.append([_p(k, estilos["celula"]), _p(v, estilos["celula"])])
+        dados.append([_pd(k, estilos["celula"]), _pd(v, estilos["celula"])])
     t = Table(dados, colWidths=[largura_total * col1, largura_total * (1 - col1)],
               repeatRows=1)
     t.setStyle(TableStyle([
@@ -133,9 +153,9 @@ def _tabela_dados(pares: dict, estilos, largura_total: float = 17.0 * cm,
 def _tabela_linhas(linhas: Sequence[dict], colunas: Sequence[tuple[str, str]],
                    estilos, largura_total: float = 17.0 * cm,
                    larguras: Sequence[float] | None = None) -> Table:
-    dados = [[_p(f"<b>{rot}</b>", estilos["celula_b"]) for _, rot in colunas]]
+    dados = [[_p(f"<b>{_dado(rot)}</b>", estilos["celula_b"]) for _, rot in colunas]]
     for ln in linhas:
-        dados.append([_p(ln.get(ch, "-"), estilos["celula"]) for ch, _ in colunas])
+        dados.append([_pd(ln.get(ch, "-"), estilos["celula"]) for ch, _ in colunas])
     n = len(colunas)
     if larguras:
         soma = sum(larguras)
@@ -159,11 +179,9 @@ def _imagem(caminho: str | Path | None, largura: float = 17.0 * cm,
             altura_max: float = 10.5 * cm) -> Any:
     if not caminho:
         return _p("_Imagem nao disponivel._", getSampleStyleSheet()["BodyText"])
-    p = Path(caminho)
-    if not p.is_absolute():
-        p = C.ROOT / p
+    p = C.caminho_absoluto(caminho)
     if not p.exists():
-        return _p(f"_Imagem nao encontrada: {caminho}_",
+        return _pd(f"_Imagem nao encontrada: {caminho}_",
                   getSampleStyleSheet()["BodyText"])
     try:
         from PIL import Image as PILImage  # noqa: PLC0415
@@ -243,10 +261,10 @@ def gerar_pdf(estrutura: dict, destino: Path, titulo_extra: str = "") -> Path:
     cab = estrutura["cabecalho"]
 
     # ---------------- Capa ------------------------------------------------------------
-    S.append(Paragraph(_sanitize(cab["titulo"]), est["titulo"]))
-    S.append(Paragraph(_sanitize(cab["subtitulo"]), est["subtitulo"]))
+    S.append(Paragraph(_dado(cab["titulo"]), est["titulo"]))
+    S.append(Paragraph(_dado(cab["subtitulo"]), est["subtitulo"]))
     if titulo_extra:
-        S.append(Paragraph(_sanitize(titulo_extra), est["subtitulo"]))
+        S.append(Paragraph(_dado(titulo_extra), est["subtitulo"]))
     S.append(Spacer(1, 4))
 
     S.append(_tabela_dados({
@@ -370,7 +388,7 @@ def gerar_pdf(estrutura: dict, destino: Path, titulo_extra: str = "") -> Path:
     S.append(Paragraph(_sanitize("5. FLUXOGRAMA E MEMORIAL DO SISTEMA DE ABASTECIMENTO"), est["h1"]))
     S.append(Paragraph(_sanitize("5.1 Memorial descritivo do percurso da agua"), est["h2"]))
     for e in estrutura["memorial"]["etapas"]:
-        S.append(Paragraph(_sanitize(f"<b>{e['etapa']}</b> - {e['descricao']}"), est["item"]))
+        S.append(Paragraph(f"<b>{_dado(e['etapa'])}</b> - {_dado(e['descricao'])}", est["item"]))
     S.append(Spacer(1, 6))
     S.append(Paragraph(_sanitize("5.2 Fluxograma esquematico em bloco"), est["h2"]))
     S.append(_fluxograma(est))
@@ -403,13 +421,13 @@ def gerar_pdf(estrutura: dict, destino: Path, titulo_extra: str = "") -> Path:
     S.append(Paragraph(_sanitize("7. PARECER CONCLUSIVO E RECOMENDACOES"), est["h1"]))
     S.append(Paragraph(_sanitize("7.1 Conclusoes"), est["h2"]))
     for c in estrutura["parecer"]["conclusoes"]:
-        S.append(Paragraph(_sanitize(c), est["item"], bulletText="-"))
+        S.append(Paragraph(_dado(c), est["item"], bulletText="-"))
     S.append(Paragraph(_sanitize("7.2 Recomendacoes"), est["h2"]))
     for r in estrutura["parecer"]["recomendacoes"]:
-        S.append(Paragraph(_sanitize(r), est["item"], bulletText="-"))
+        S.append(Paragraph(_dado(r), est["item"], bulletText="-"))
     S.append(Paragraph(_sanitize("7.3 Declaracoes"), est["h2"]))
     S.append(_p(f"Imovel atendido por rede publica de abastecimento de agua: "
-                f"<b>{estrutura['parecer']['rede_publica']}</b>", est["corpo"]))
+                f"<b>{_dado(estrutura['parecer']['rede_publica'])}</b>", est["corpo"]))
     if estrutura["parecer"]["rede_publica"] == "Sim":
         S.append(_p("<b>Atestado de separacao de redes:</b> declara-se a separacao "
                     "fisica integral das redes hidraulicas, sem qualquer interconexao, "
@@ -418,7 +436,7 @@ def gerar_pdf(estrutura: dict, destino: Path, titulo_extra: str = "") -> Path:
                     "finalidades industriais, de limpeza geral de patio, irrigacao ou "
                     "recirculacao.", est["corpo"]))
     S.append(_p(f"<b>Repouso diario minimo do aquifero:</b> "
-                f"{estrutura['regime'].get('Repouso diario', '-')} "
+                f"{_dado(estrutura['regime'].get('Repouso diario', '-'))} "
                 f"(minimo exigido pelo SIOUT RS: {C.REPOUSO_MINIMO_H:g} h/dia).",
                 est["corpo"]))
 
@@ -462,12 +480,12 @@ def gerar_pdf(estrutura: dict, destino: Path, titulo_extra: str = "") -> Path:
             "ART": a["art"],
         }, est),
         Spacer(1, 10),
-        Paragraph(_sanitize(a["local_data"]), est["corpo"]),
+        Paragraph(_dado(a["local_data"]), est["corpo"]),
         Spacer(1, 14),
         Paragraph("_" * 62, est["corpo"]),
         Paragraph(_sanitize("Assinatura do Responsavel Tecnico"), est["nota"]),
         Spacer(1, 6),
-        Paragraph(_sanitize(a["nota_normativa"]), est["nota"]),
+        Paragraph(_dado(a["nota_normativa"]), est["nota"]),
     ]
     S.append(KeepTogether(bloco))
 

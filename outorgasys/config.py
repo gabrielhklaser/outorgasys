@@ -43,17 +43,23 @@ def caminho_relativo(p) -> str:
     tambem resulta no absoluto pela semantica do pathlib.
     """
     pp = Path(p)
+    # Barra normal sempre: o JSON do processo e gravado numa plataforma e lido
+    # em outra, e a barra invertida so separa diretorios no Windows.
     try:
-        return str(pp.relative_to(ROOT))
+        return pp.relative_to(ROOT).as_posix()
     except (ValueError, TypeError):
-        return str(pp)
+        return pp.as_posix()
 
 
 def caminho_absoluto(p):
-    """Inverso de caminho_relativo: aceita relativo ao ROOT ou absoluto."""
+    """Inverso de caminho_relativo: aceita relativo ao ROOT ou absoluto.
+
+    Aceita tambem separador de Windows ("data\\processos\\X"), como os JSONs
+    gerados numa maquina Windows e abertos em Linux (Render).
+    """
     if p in (None, ""):
         return None
-    pp = Path(p)
+    pp = Path(str(p).replace("\\", "/"))
     return pp if pp.is_absolute() else (ROOT / pp)
 
 for _p in (VETORIAIS, CACHE_OSM, PROCESSOS, SAIDA, EXEMPLOS, ASSETS):
@@ -168,7 +174,13 @@ TAMANHO_MAX_UPLOAD_MB = int(os.environ.get("OUTORGASYS_MAX_UPLOAD_MB", "200"))
 # --------------------------------------------------------------------------------------
 
 #: Valores maximos permitidos (VMP) dos parametros cobrados na triagem documental.
-#: Fonte: Portaria GM/MS n. 888/2021, Anexos 1-10 (padroes de potabilidade).
+#: Fonte: Portaria GM/MS n. 888/2021 (Anexo 1 microbiologico, Anexo 9 substancias
+#: quimicas, Anexo 11 padrao organoleptico):
+#: https://bvsms.saude.gov.br/bvs/saudelegis/gm/2021/prt0888_07_05_2021.html
+#: A 888/2021 baixou cadmio (0,005 -> 0,003), dureza total (500 -> 300) e solidos
+#: dissolvidos totais (1000 -> 500) em relacao ao Anexo XX da PRC n. 5/2017.
+#: Cianeto saiu do Anexo 9 em 2021; o limite de 0,07 mg/L abaixo vem da norma
+#: anterior e fica como referencia ate decisao do responsavel tecnico.
 PARAMETROS_POTABILIDADE = {
     "coliformes_totais": ("Coliformes totais", "Presenca/Ausencia", "Ausencia em 100 mL", None),
     "escherichia_coli": ("Escherichia coli", "Presenca/Ausencia", "Ausencia em 100 mL", None),
@@ -184,10 +196,10 @@ PARAMETROS_POTABILIDADE = {
     "ferro": ("Ferro", "mg/L", "<=", 0.3),
     "manganes": ("Manganes", "mg/L", "<=", 0.1),
     "sodio": ("Sodio", "mg/L", "<=", 200.0),
-    "solidos_dissolvidos_totais": ("Solidos dissolvidos totais", "mg/L", "<=", 1000.0),
-    "dureza_total": ("Dureza total", "mg/L", "<=", 500.0),
+    "solidos_dissolvidos_totais": ("Solidos dissolvidos totais", "mg/L", "<=", 500.0),
+    "dureza_total": ("Dureza total", "mg/L", "<=", 300.0),
     "arsenio": ("Arsenio", "mg/L", "<=", 0.01),
-    "cadmio": ("Cadmio", "mg/L", "<=", 0.005),
+    "cadmio": ("Cadmio", "mg/L", "<=", 0.003),
     "chumbo": ("Chumbo", "mg/L", "<=", 0.01),
     "mercurio": ("Mercurio", "mg/L", "<=", 0.001),
     "cromo_total": ("Cromo total", "mg/L", "<=", 0.05),

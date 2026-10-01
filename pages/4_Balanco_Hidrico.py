@@ -12,8 +12,8 @@ import streamlit as st
 from outorgasys import config as C
 from outorgasys.agents import agente4_balanco as a4
 from outorgasys.ui import (
-    aplicar_tema, barra_lateral, cabecalho, chip, fonte, mostrar_pendencias,
-    passo, tabela,
+    aplicar_tema, barra_lateral, cabecalho, chip, escapar, fonte,
+    mostrar_pendencias, passo, tabela,
 )
 
 aplicar_tema()
@@ -115,7 +115,7 @@ c[1].metric("Origem", esc.get("origem") or "-")
 c[2].metric("Repouso diario (h)", f"{bal.get('repouso_diario_h'):g}"
             if bal.get("repouso_diario_h") is not None else "-")
 if esc.get("justificativa"):
-    st.markdown(f'<div class="out-panel">{esc["justificativa"]}</div>',
+    st.markdown(f'<div class="out-panel">{escapar(esc["justificativa"])}</div>',
                 unsafe_allow_html=True)
 if bal.get("repouso_atende"):
     st.success(f"Repouso diario de {bal.get('repouso_diario_h'):g} h atende ao "

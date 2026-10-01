@@ -25,8 +25,9 @@ from .. import rules
 def dias_operacao_por_mes(ano: int, dias_semana: float) -> list[float]:
     """Dias de operacao em cada mes, a partir da periodicidade semanal.
 
-    A periodicidade informada (dias por semana) e distribuida proportionalmente
-    sobre os dias uteis de cada mes do calendario informado.
+    A periodicidade informada (dias por semana) e distribuida proporcionalmente
+    sobre os dias corridos de cada mes do calendario informado: dias do mes x
+    dias por semana / 7. Nao se descontam fins de semana nem feriados.
     """
     fracao = max(0.0, min(1.0, float(dias_semana) / 7.0))
     out = []
@@ -42,8 +43,10 @@ def quadro_vazao(ano: int, horas_dia: float, dias_semana: float,
     dias = dias_operacao_por_mes(ano, dias_semana)
     linhas = []
     total = 0.0
-    for i, (nome, n_dias) in enumerate(zip(C.NOMES_MESES, dias), start=1):
-        volume = n_dias * horas_dia * vazao_m3h
+    for i, (nome, n_dias) in enumerate(zip(C.NOMES_MESES, dias, strict=True), start=1):
+        # Arredonda cada linha antes de somar: o total precisa fechar com o que o
+        # quadro mostra (a soma dos volumes sem arredondar diferia em centesimos).
+        volume = round(n_dias * horas_dia * vazao_m3h, 2)
         total += volume
         linhas.append({
             "mes": nome,
@@ -118,13 +121,7 @@ def auditar_equipamentos(proc, q_estavel: float | None, q_ot: float | None,
     }
 
 
-def _num(v: Any) -> float | None:
-    try:
-        if v is None or str(v).strip() == "":
-            return None
-        return float(str(v).replace(",", "."))
-    except Exception:  # noqa: BLE001
-        return None
+_num = rules._num  # uma unica conversao numerica para o projeto (ver rules._num)
 
 
 def _velocidade(hidro: dict, vazao: float | None) -> float | None:
@@ -160,7 +157,7 @@ def escolher_vazao_adotada(hidraulica: dict, preferencia: str = "auto") -> dict:
         adotada = min(q_ot, q_est)
         return {
             "vazao": adotada,
-            "origem": "Q_ot" if adotada == q_ot else "Q_estavel",
+            "origem": "Q_ot" if q_ot <= q_est else "Q_estavel",
             "justificativa": (
                 "Adota-se o menor valor entre Q_ot (vazao otima de campo, que ja "
                 "incorpora o fator de seguranca de longo prazo de "

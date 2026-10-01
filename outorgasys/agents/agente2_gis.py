@@ -18,7 +18,7 @@ import functools
 import json
 import traceback
 from pathlib import Path
-from typing import Any
+from typing import Any, Sequence
 
 import geopandas as gpd  # noqa: PLC0415
 import pandas as pd  # noqa: PLC0415

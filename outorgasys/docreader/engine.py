@@ -14,10 +14,15 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
+# PyMuPDF e opcional (licenca AGPL, nao esta no requirements.txt). Quando ausente,
+# a leitura de texto usa pypdf, que ja e dependencia do projeto.
 try:
     import pymupdf as fitz
 except ImportError:
-    import fitz
+    try:
+        import fitz
+    except ImportError:
+        fitz = None
 
 _DOCLING_AVAILABLE = False
 try:
@@ -76,6 +81,21 @@ def classificar_tipologia(texto: str) -> tuple[str, str, str, str]:
     return ("R", "Documento Tecnico / Administrativo", "C", "Documento tecnico apresentado no processo de licenciamento/outorga")
 
 
+def _ler_paginas(p: Path) -> tuple[List[str], Dict[str, Any]]:
+    """Texto por pagina e metadados do PDF, com PyMuPDF ou pypdf."""
+    if fitz is not None:
+        with fitz.open(str(p)) as doc:
+            return [pg.get_text() for pg in doc], dict(doc.metadata or {})
+
+    from pypdf import PdfReader  # noqa: PLC0415
+
+    leitor = PdfReader(str(p))
+    meta = {str(k).lstrip("/").lower(): str(v) for k, v in (leitor.metadata or {}).items()}
+    # O modo layout mantem cada linha de tabela numa linha de texto, com as
+    # colunas separadas por varios espacos; o modo padrao quebra celula a celula.
+    return [(pg.extract_text(extraction_mode="layout") or "") for pg in leitor.pages], meta
+
+
 def processar_documento(caminho: str | Path, usar_docling: bool = True) -> DocumentoProcessado:
     """Executa a leitura economica e estruturada do documento."""
     p = Path(caminho)
@@ -88,14 +108,10 @@ def processar_documento(caminho: str | Path, usar_docling: bool = True) -> Docum
     markdown = ""
     meta_brutos: Dict[str, Any] = {}
 
-    # 1. Leitura rapida com PyMuPDF para extracao basica de texto e metadados
-    doc_fitz = fitz.open(str(p))
-    meta_brutos = dict(doc_fitz.metadata or {})
-    num_paginas = len(doc_fitz)
-
-    for num_p, page in enumerate(doc_fitz, 1):
-        txt_pag = page.get_text()
-        paginas.append(txt_pag)
+    # 1. Leitura rapida (PyMuPDF se instalado, senao pypdf) de texto e metadados
+    paginas, meta_brutos = _ler_paginas(p)
+    num_paginas = len(paginas)
+    for num_p, txt_pag in enumerate(paginas, 1):
         texto_completo += f"\n--- Pagina {num_p} ---\n" + txt_pag
 
     # 2. Leitura profunda com Docling se disponivel (para extracao de tabelas e markdown estruturado)

@@ -72,6 +72,7 @@ def calcular(proc, usar_q_manual: bool = False, q_manual: float | None = None,
     nd_m: list[float] = []
     s_m: list[float] = []
     q_m3h: list[float] = []
+    t_q: list[float] = []   # tempo de cada leitura de Q (a coluna Q pode ter lacunas)
     if bombeamento is not None and len(bombeamento):
         t_min = [v for v in bombeamento.get("t_min", pd.Series(dtype=float)).tolist()
                  if pd.notna(v)]
@@ -81,6 +82,9 @@ def calcular(proc, usar_q_manual: bool = False, q_manual: float | None = None,
                if pd.notna(v)]
         q_m3h = [v for v in bombeamento.get("q_m3h", pd.Series(dtype=float)).tolist()
                  if pd.notna(v)]
+        if "t_min" in bombeamento and "q_m3h" in bombeamento:
+            pares = bombeamento[["t_min", "q_m3h"]].dropna()
+            t_q, q_m3h = pares["t_min"].tolist(), pares["q_m3h"].tolist()
 
     if not s_m and nd_m and ne is not None:
         s_m = [v - ne for v in nd_m if v is not None]
@@ -103,21 +107,25 @@ def calcular(proc, usar_q_manual: bool = False, q_manual: float | None = None,
         tempo_total = max(t_min)
 
     # ---- memoria de calculo ----------------------------------------------------------
+    manual = bool(usar_q_manual and q_manual)
+    if manual:
+        # T = 0,183 · Q / Δs' depende da vazao: a manual entra no calculo, nao so
+        # no resultado. Antes, sem Q na planilha, T e Q_ot ficavam sem valor.
+        t_q = t_min or [0.0]
+        q_m3h = [float(q_manual)] * len(t_q)
+
     res = theis.calcular(
         ne=ne, nd_final=nd,
-        tempo_min=t_min, vazao_m3h=q_m3h,
+        tempo_min=t_min, vazao_m3h=q_m3h, tempo_vazao_min=t_q,
         t_linha_min=t_linha, s_residual_m=s_linha,
         raio_poco_m=planilha.numeric(pouco.get("raio_m")),
         tempo_bombeamento_total_min=tempo_total,
     )
 
-    if usar_q_manual and q_manual:
-        res.q_estavel = float(q_manual)
-        if res.s_max:
-            res.q_capacidade_especifica = res.q_estavel / res.s_max
-            if res.T_m2h:
-                res.q_longo_prazo = res.T_m2h * C.FATOR_LONGO_PRAZO
-                res.Q_ot = res.q_longo_prazo * res.s_max
+    if manual:
+        res.vazao_estabilizada.metodo = "informada manualmente pelo responsavel tecnico"
+        res.vazao_estabilizada.observacao = (
+            f"Vazao estabilizada de {float(q_manual):g} m3/h informada manualmente.")
         res.detalhes["q_estavel_origem"] = "informada manualmente pelo responsavel tecnico"
     else:
         res.detalhes["q_estavel_origem"] = "identificada na planilha (patamar estabilizado)"
@@ -194,6 +202,16 @@ def calcular(proc, usar_q_manual: bool = False, q_manual: float | None = None,
     return saida
 
 
+def _criterio_jacob_lohman(memoria: dict) -> str:
+    """Formula e premissas da contraprova, para o leitor do laudo ver o que foi adotado."""
+    base = "Q = 4π·T·s / ln(2,25·T·t / (r²·S))"
+    d = (memoria.get("detalhes") or {}).get("jacob_lohman")
+    if not d:
+        return base
+    return (f"{base}; premissas adotadas: S = {d['S_adotado']:g}, "
+            f"t = {d['t_dias']:g} d, r = {d['raio_m']:g} m")
+
+
 def tabela_memoria(saida: dict) -> list[dict]:
     """Linhas da tabela 'Parametros Hidraulicos e Resultados do Ensaio'."""
     p = saida.get("parametros", {})
@@ -229,7 +247,7 @@ def tabela_memoria(saida: dict) -> list[dict]:
         ("Vazao otima de explotacao (Q_ot)", f(p.get("Q_ot_m3h"), 2, "m3/h"),
          "Q_ot = q(t) · s_max"),
         ("Contraprova Jacob-Lohman", f(p.get("Q_jacob_lohman_m3h"), 2, "m3/h"),
-         "Estimativa independente de longo prazo"),
+         _criterio_jacob_lohman(m)),
         ("Duracao do ensaio", f(p.get("duracao_h"), 1, "h"),
          f"{f(p.get('tempo_bombeamento_min'), 0, 'min')}"),
     ]
