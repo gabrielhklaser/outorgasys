@@ -124,12 +124,22 @@ else:
 # Leitura efetiva
 if arquivo is not None:
     try:
-        proc["ensaio"] = a3.processar_planilha(arquivo)
-        proc.salvar()
+        lido = a3.processar_planilha(arquivo)
     except Exception as exc:  # noqa: BLE001
         st.error(f"Falha ao interpretar o arquivo: {type(exc).__name__}: {exc}")
         with st.expander("Detalhes"):
             st.code(traceback.format_exc())
+    else:
+        # Uma leitura que falhou (arquivo movido, caminho de outro sistema) nao
+        # pode apagar um ensaio que ja foi processado com sucesso.
+        if lido.get("ok") or not (proc.get("ensaio") or {}).get("ok"):
+            proc["ensaio"] = lido
+            proc.salvar()
+        else:
+            motivo = "; ".join(str(e) for e in lido.get("erros") or []) \
+                or "arquivo ausente ou ilegivel"
+            st.warning(f"Nao foi possivel ler a planilha ({motivo}). "
+                       "Mantidos os dados do ensaio ja processado.")
 
 ensaio = proc.get("ensaio") or {}
 bom = ensaio.get("bombeamento")
