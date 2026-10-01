@@ -77,7 +77,8 @@ def _num(v: Any) -> float | None:
     if v is None or isinstance(v, bool):
         return None
     if isinstance(v, (int, float)):
-        return None if (isinstance(v, float) and math.isnan(v)) else float(v)
+        f = float(v)
+        return f if math.isfinite(f) else None
     s = str(v).strip()
     if not s:
         return None
@@ -87,9 +88,12 @@ def _num(v: Any) -> float | None:
     elif "," in s:
         s = s.replace(",", ".")
     try:
-        return float(s)
+        f = float(s)
     except ValueError:
         return None
+    # float() aceita "nan" e "inf"; com eles toda comparacao dava False e o valor
+    # passava pelas validacoes de limite sem gerar pendencia.
+    return f if math.isfinite(f) else None
 
 
 # --------------------------------------------------------------------------------------
