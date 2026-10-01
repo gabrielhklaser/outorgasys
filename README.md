@@ -43,6 +43,19 @@ Variáveis de ambiente:
 | `MPLCONFIGDIR` | `/var/data/outorgasys/.mplconfig` | Cache do matplotlib num diretório gravável |
 | `MPLBACKEND` | `Agg` | Renderização de gráficos sem display |
 | `OMP_NUM_THREADS` | `1` | Evita sobrecarga de threads BLAS |
+| `OUTORGASYS_SENHA` | `<uma senha longa>` | **Opcional.** Sem ela o app abre sem senha; com ela, toda página pede a senha antes de mostrar dados |
+
+### Acesso e autenticação
+
+Sem `OUTORGASYS_SENHA`, o serviço é público: qualquer visitante abre, edita e
+baixa qualquer processo. Defina a variável no Render (**Environment**) para
+ativar o portão por senha. Limites: senha compartilhada, sem usuários individuais
+e sem trilha de auditoria — os detalhes estão em `outorgasys/auth.py`. Para acesso
+por pessoa, o caminho é o login OIDC do Streamlit (`st.login`) ou um proxy
+autenticado na frente da aplicação.
+
+Os documentos ficam como arquivos dentro do processo (uploads, mapas, laudos);
+não vão para o histórico do git.
 
 ### Notas importantes
 
@@ -112,6 +125,15 @@ outorgasys/
 
 ### Agente 1 — enquadramento e travas
 
+A **leitura estruturada de laudos** (botão "Executar Leitura Estruturada" na
+Triagem) extrai os parâmetros de potabilidade da Portaria GM/MS n. 888/2021
+(Anexos 1, 9 e 11) do PDF da análise laboratorial. O leitor padrão é `pypdf`,
+sem dependências extras; com PyMuPDF ou IBM Docling instalados (opcionais, ver
+`requirements.txt`) a extração fica mais precisa. Um laudo que não rende parâmetro
+legível aparece como "não foi lido", nunca como conforme.
+
+
+
 - **Opção A** (⌀ útil < 4″): dispensa o ensaio de 24 h.
 - **Opção B** (⌀ útil ≥ 4″): exige ensaio de bombeamento contínuo de 24 h
   **acompanhado do ensaio de recuperação**.
@@ -151,6 +173,7 @@ outorgasys/
 | Capacidade específica | `q = Q_estável / s_máx` |
 | Capacidade de longo prazo | `q(t) = 0,8 · T` |
 | Vazão ótima | `Q_ot = q(t) · s_máx` |
+| Contraprova Jacob–Lohman | `Q = 4π·T·s_máx / ln(2,25·T·t / (r²·S))`, premissas declaradas (S = 1e-4, t = 365 d, r = raio do poço ou 0,10 m) |
 
 A **vazão de explotação adotada é o menor valor entre `Q_ot` e `Q_estável`**, de
 modo que o poço nunca opere acima da vazão efetivamente testada.
@@ -164,7 +187,8 @@ o valor de `Δs'` por ciclo logarítmico.
 ### Agente 4 — balanço e equipamentos
 
 - Quadro de Vazão da Intervenção: `Dias/Mês`, `Dias de operação`,
-  `Horas/Dia`, `Vazão (m³/h)`, `Volume (m³/mês)` — 12 meses + total anual.
+  `Horas/Dia`, `Vazão (m³/h)`, `Volume (m³/mês)` — 12 meses, e o total anual é a
+  soma dos volumes exibidos (cada linha arredonda a 0,01 m³).
 - Dias de operação por mês = `dias do mês × (dias por semana / 7)`.
 - Motobomba: vazão na faixa de **0,8 a 1,1 ×** a vazão ótima e submersão do
   rotor entre **6 e 10 m** abaixo do nível dinâmico (evitar cavitação).
@@ -268,17 +292,25 @@ recuperar a transmissividade de entrada (erro de ~0,3 %).
 
 ## Testes
 
+148 testes em ~40 s (cobertura de 82% de linha, medida com `pytest-cov`), dois
+smoke tests de página e regras do ruff aprovadas pelo workflow `tests.yml` em
+todo push e pull request.
+
 ```bash
+pip install -r requirements-dev.txt
+
+.venv/bin/python -m pytest               # 148 testes (pytest-cov opcional: --cov=outorgasys)
 .venv/bin/python tests/smoke_ui.py       # todas as páginas com processo vazio
 .venv/bin/python tests/smoke_exemplo.py  # todas as páginas com o exemplo carregado
-.venv/bin/python tests/test_theis.py     # testes unitários da memória de cálculo (ou: pytest tests/test_theis.py)
+.venv/bin/ruff check .
 ```
 
-Roadmap de melhorias e achados de revisão: [docs/MELHORIAS.md](docs/MELHORIAS.md).
-
 Os dois smoke tests usam `streamlit.testing.v1.AppTest` e falham se qualquer página levantar
-exceção (incluindo erro de sintaxe). O `smoke_ui.py` isola `data/processos` em
-um diretório temporário para não poluir o repositório.
+exceção (incluindo erro de sintaxe). Ambos isolam `data/processos` e `data/saida`
+em um diretório temporário para não poluir o repositório. A suíte foi verificada
+com Streamlit 1.49 e 1.64.
+
+Roadmap de melhorias e achados de revisão: [docs/MELHORIAS.md](docs/MELHORIAS.md).
 
 ---
 
@@ -300,3 +332,10 @@ um diretório temporário para não poluir o repositório.
   as bases estatais e as camadas enviadas pelo usuário.
 - O Agente 6 **não** abre issues nem executa `git push`: prepara os artefatos e
   deixa a decisão para o operador.
+- O portão por senha (`OUTORGASYS_SENHA`) é uma senha **compartilhada, sem
+  usuários individuais nem trilha de auditoria**; para acesso por pessoa, veja
+  [Acesso e autenticação](#acesso-e-autenticação).
+- O exemplo versionado ainda traz os números de antes da revisão
+  (`Q_jacob_lohman 4,14 m³/h`, volume anual 37.521,87 m³); após esta data,
+  regenere com `python scripts/semente_campo_bom.py --limpar` (precisa de rede
+  para os mapas) e faça commit.
