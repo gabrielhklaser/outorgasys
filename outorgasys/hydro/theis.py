@@ -38,9 +38,16 @@ T_M2S_MAX = 1e-1
 # --------------------------------------------------------------------------------------
 
 
+def _para_float(x: Any) -> float:
+    """float(x), ou NaN para nulo, texto nao numerico e pd.NA."""
+    try:
+        return float(x)
+    except (TypeError, ValueError):
+        return float("nan")
+
+
 def _arr(v: Sequence[Any]) -> np.ndarray:
-    a = np.asarray([float(x) if x is not None and x == x else np.nan for x in v], dtype=float)
-    return a
+    return np.asarray([_para_float(x) for x in v], dtype=float)
 
 
 def _finito(a: np.ndarray) -> np.ndarray:

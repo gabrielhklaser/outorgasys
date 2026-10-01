@@ -109,6 +109,14 @@ def test_premissas_da_contraprova_aparecem_na_tabela_de_memoria():
     assert "S = 0.0001" in criterio and "t = 365 d" in criterio and "r = 0.1 m" in criterio
 
 
+def test_arr_tolera_texto_nulo_e_na_do_pandas():
+    import pandas as pd
+
+    a = theis._arr(["1", "x", None, float("nan"), 2, pd.NA])
+
+    assert [None if math.isnan(v) else v for v in a] == [1.0, None, None, None, 2.0, None]
+
+
 if __name__ == "__main__":
     for nome, fn in list(globals().items()):
         if nome.startswith("test_") and callable(fn):
