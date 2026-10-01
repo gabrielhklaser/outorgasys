@@ -11,8 +11,8 @@ import streamlit as st
 from outorgasys import config as C
 from outorgasys.agents import agente6_dev as a6
 from outorgasys.ui import (
-    aplicar_tema, barra_lateral, cabecalho, chip, download_arquivo, fonte,
-    passo, tabela,
+    aplicar_tema, barra_lateral, cabecalho, chip, download_arquivo, escapar,
+    fonte, passo, tabela,
 )
 
 aplicar_tema()
@@ -150,7 +150,7 @@ for a in filtrados:
         st.markdown(
             f'{chip(a["categoria_rotulo"], COR.get(a["severidade"], "info"))}'
             f'{chip(rot_agente, "off")}'
-            f'<span class="out-fonte">origem: {a.get("origem")}</span>',
+            f'<span class="out-fonte">origem: {escapar(a.get("origem"))}</span>',
             unsafe_allow_html=True,
         )
         if a.get("detalhe"):
