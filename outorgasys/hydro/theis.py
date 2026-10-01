@@ -98,8 +98,8 @@ def identificar_q_estavel(tempo_min: Sequence[Any],
                           fracao_minima: float = 0.25) -> VazaoEstabilizada:
     """Identifica a vazao estabilizada final de operacao (Q_estavel).
 
-    Criterio: percorre janelas terminais da serie (da menor para a maior) e adota
-    a maior janela cujo coeficiente de variacao fique abaixo de
+    Criterio: percorre janelas terminais da serie (da maior para a menor) e adota
+    a primeira, ou seja, a maior janela cujo coeficiente de variacao fique abaixo de
     ``tolerancia_cv`` - ou seja, o trecho final em patamar continuo, conforme os
     criterios de regime permanente. Se nenhuma janela estabilizar, usa a mediana
     do ultimo terco da serie e sinaliza a ressalva.
@@ -135,7 +135,7 @@ def identificar_q_estavel(tempo_min: Sequence[Any],
         janela = q[n - i:]  # ultimos i pontos
         cv = coeficiente_variacao(janela)
         if math.isfinite(cv) and cv <= tolerancia_cv:
-            # Quanto maior a janela, melhor (percorremos de tras para frente).
+            # Percorre da maior janela para a menor: a primeira que passa e a maior.
             melhor = VazaoEstabilizada(
                 q_estavel=float(np.mean(janela)),
                 indice_inicio=int(n - i),
@@ -150,25 +150,6 @@ def identificar_q_estavel(tempo_min: Sequence[Any],
             break
 
     if melhor is not None:
-        # Amplia a janela enquanto o CV continuar aceitavel.
-        i = melhor.n_pontos
-        while i < n:
-            janela = q[n - (i + 1):]
-            cv = coeficiente_variacao(janela)
-            if not (math.isfinite(cv) and cv <= tolerancia_cv):
-                break
-            i += 1
-            melhor = VazaoEstabilizada(
-                q_estavel=float(np.mean(janela)),
-                indice_inicio=int(n - i),
-                n_pontos=int(i),
-                cv=float(cv),
-                metodo=melhor.metodo,
-                serie=janela.tolist(),
-                tempo_inicio_min=float(t[n - i]),
-                observacao=f"Patamar de {i} leituras a partir de t = {t[n - i]:.0f} min "
-                           f"(CV = {cv * 100:.1f}%)." + nota,
-            )
         return melhor
 
     # Sem patamar CV-baixo: cai para o ultimo terco.

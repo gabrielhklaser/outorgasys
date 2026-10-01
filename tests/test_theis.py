@@ -117,6 +117,41 @@ def test_arr_tolera_texto_nulo_e_na_do_pandas():
     assert [None if math.isnan(v) else v for v in a] == [1.0, None, None, None, 2.0, None]
 
 
+def _janela_maxima_referencia(q, tol=0.10, fracao=0.25):
+    """Maior janela terminal (>= max(3, 25% de n)) com CV <= tol; None se nao houver."""
+    n = len(q)
+    minimo = max(3, math.ceil(fracao * n))
+    for i in range(n, minimo - 1, -1):
+        janela = q[n - i:]
+        media = sum(janela) / i
+        if abs(media) < 1e-12:
+            continue
+        desvio = (sum((x - media) ** 2 for x in janela) / i) ** 0.5
+        if desvio / abs(media) <= tol:
+            return i, media
+    return None
+
+
+def test_q_estavel_adota_a_maior_janela_terminal_com_cv_aceitavel():
+    """Equivale a procurar, de n para o minimo, a primeira janela com CV <= 10%."""
+    import random
+
+    rng = random.Random(20260930)
+    for _ in range(300):
+        n = rng.randint(3, 40)
+        rampa = rng.randint(0, n // 2)
+        base = rng.uniform(2.0, 20.0)
+        q = [base * (1.0 + rng.uniform(0.1, 0.8)) for _ in range(rampa)]
+        q += [base * (1.0 + rng.uniform(-0.04, 0.04)) for _ in range(n - rampa)]
+        est = theis.identificar_q_estavel(list(range(n)), q)
+        ref = _janela_maxima_referencia(q)
+        if ref is None:
+            assert "ultimo terco" in est.metodo
+        else:
+            assert est.n_pontos == ref[0]
+            assert abs(est.q_estavel - ref[1]) < 1e-9
+
+
 if __name__ == "__main__":
     for nome, fn in list(globals().items()):
         if nome.startswith("test_") and callable(fn):
