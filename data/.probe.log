@@ -10,7 +10,7 @@ curl:  https://download.geofabrik.de/south-america/brazil/sul-latest-free.shp.zi
       -> curl: (28) Operation timed out after 25000 milliseconds with 0 bytes received
 000 0 
 curl:  https://download.geofabrik.de/south-america/brazil/sul-latest.osm.pbf
-      -> curl: (28) Operation timed out after 25001 milliseconds with 0 bytes received
+      -> curl: (28) Operation timed out after 25000 milliseconds with 0 bytes received
 000 0 
 206    https://raw.githubusercontent.com/python/cpython/main/README.rst
       -> 206 2001 text/plain; charset=utf-8
@@ -19,7 +19,7 @@ curl:  https://download.geofabrik.de/south-america/brazil/sul-latest.osm.pbf
 200    https://servicodados.ibge.gov.br/api/v1/localidades/municipios
       -> 200 2470036 application/json; charset=utf-8
 200    https://servicodados.ibge.gov.br/api/v3/agregados
-      -> 200 1952618 application/json; charset=utf-8
+      -> 200 1952678 application/json; charset=utf-8
 403    https://www.ibge.gov.br/geociencias/downloads-geociencias.html
       -> 403 5711 text/html; charset=UTF-8
 curl:  https://www.sema.rs.gov.br/
@@ -39,7 +39,7 @@ curl:  https://sistemas.dsr.rs.gov.br/
 400    https://basemaps.arcgis.com/arcgis/rest/services/World_Basemap_v2/MapServer
       -> 400 60 text/plain
 404    https://elevation-tiles-prod.s3.amazonaws.com/skadi/S30/S30W052/S30W052.hgt.gz
-      -> 404 323 application/xml
+      -> 404 303 application/xml
 206    https://s3.amazonaws.com/elevation-tiles-prod/v2/terrarium/10/512/620.png
       -> 206 2001 image/png
 404    https://copernicus-dem-30m.s3.amazonaws.com/Copernicus_DSM_COG_30_S30_00_W052_00_DEM/Copernicus_DSM_COG_30_S30_00_W052_00_DEM.tif
@@ -57,9 +57,6 @@ HTTP/2 403
 content-type: text/html; charset=UTF-8
 content-length: 5453
 --- sul-latest-free.shp.zip
-HTTP/1.1 404 Not Found
-Content-Type: text/html; charset=iso-8859-1
+curl: (28) Operation timed out after 30002 milliseconds with 0 bytes received
 --- sul-latest.osm.pbf
-HTTP/1.1 503 Service Unavailable
-Content-Type: text/html;charset=utf-8
-Content-Length: 3174
+curl: (28) Operation timed out after 30002 milliseconds with 0 bytes received
