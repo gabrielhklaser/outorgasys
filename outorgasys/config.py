@@ -43,17 +43,23 @@ def caminho_relativo(p) -> str:
     tambem resulta no absoluto pela semantica do pathlib.
     """
     pp = Path(p)
+    # Barra normal sempre: o JSON do processo e gravado numa plataforma e lido
+    # em outra, e a barra invertida so separa diretorios no Windows.
     try:
-        return str(pp.relative_to(ROOT))
+        return pp.relative_to(ROOT).as_posix()
     except (ValueError, TypeError):
-        return str(pp)
+        return pp.as_posix()
 
 
 def caminho_absoluto(p):
-    """Inverso de caminho_relativo: aceita relativo ao ROOT ou absoluto."""
+    """Inverso de caminho_relativo: aceita relativo ao ROOT ou absoluto.
+
+    Aceita tambem separador de Windows ("data\\processos\\X"), como os JSONs
+    gerados numa maquina Windows e abertos em Linux (Render).
+    """
     if p in (None, ""):
         return None
-    pp = Path(p)
+    pp = Path(str(p).replace("\\", "/"))
     return pp if pp.is_absolute() else (ROOT / pp)
 
 for _p in (VETORIAIS, CACHE_OSM, PROCESSOS, SAIDA, EXEMPLOS, ASSETS):
