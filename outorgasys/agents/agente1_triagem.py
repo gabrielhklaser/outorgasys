@@ -73,13 +73,41 @@ def pode_avancar(proc) -> tuple[bool, list[str]]:
     return res.ok, [f"{p.codigo}: {p.titulo}" for p in res.bloqueios]
 
 
+def _registro_igual(proc, chave: str, arquivo) -> dict | None:
+    """Registro ja existente para este mesmo arquivo (nome e conteudo), ou None."""
+    import hashlib  # noqa: PLC0415
+
+    from ..state import nome_arquivo_seguro  # noqa: PLC0415
+
+    try:
+        nome = nome_arquivo_seguro(arquivo.name)
+    except ValueError:
+        return None
+    atual = (proc.get("documentos") or {}).get(chave)
+    candidatos = atual if isinstance(atual, list) else [atual]
+    digest = hashlib.sha256(arquivo.getbuffer()).hexdigest()
+    for reg in candidatos:
+        if (isinstance(reg, dict) and reg.get("nome") == nome
+                and reg.get("sha256") == digest
+                and C.caminho_absoluto(reg.get("caminho")) is not None
+                and C.caminho_absoluto(reg.get("caminho")).exists()):
+            return reg
+    return None
+
+
 def registrar_upload(proc, chave: str, arquivo, papel: str | None = None) -> dict:
     """Persiste um arquivo enviado e devolve o registro criado."""
     if arquivo is None:
         return {}
+    # O Streamlit reexecuta a pagina a cada interacao e o uploader continua com o
+    # mesmo arquivo; sem esta checagem cada rerun regravava o arquivo e somava uma
+    # linha ao log do processo.
+    existente = _registro_igual(proc, chave, arquivo)
+    if existente is not None:
+        return existente
     caminho = proc.salvar_upload(chave, arquivo)
     registro = {
-        "nome": getattr(arquivo, "name", str(caminho)),
+        "nome": caminho.name if caminho else str(getattr(arquivo, "name", "")),
         "caminho": C.caminho_relativo(caminho) if caminho else None,
         "tamanho": caminho.stat().st_size if caminho else 0,
         "papel": papel,

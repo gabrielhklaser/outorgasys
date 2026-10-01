@@ -142,3 +142,32 @@ def test_json_corrompido_e_preservado_em_vez_de_sobrescrito(dados_tmp):
     assert len(copias) == 1
     assert copias[0].read_text(encoding="utf-8").startswith('{"id": "T-RUIM-001"')
     assert not caminho.exists()
+
+
+# --- registro idempotente (cada rerun do Streamlit repete o upload) -----------------
+
+
+def test_registrar_o_mesmo_upload_de_novo_nao_duplica_o_log(dados_tmp):
+    from outorgasys.agents import agente1_triagem as a1
+
+    p = Processo(pid="T-LOG-001", carregar=False)
+    arquivo = _Upload("laudo.pdf", b"%PDF-1.4 teste")
+
+    for _ in range(3):
+        a1.registrar_upload(p, "analise_laboratorial", arquivo)
+
+    recebidos = [e for e in p["log"] if "Arquivo recebido" in e["mensagem"]]
+    assert len(recebidos) == 1
+    assert p["documentos"]["analise_laboratorial"]["nome"] == "laudo.pdf"
+
+
+def test_upload_com_novo_conteudo_e_registrado_de_novo(dados_tmp):
+    from outorgasys.agents import agente1_triagem as a1
+
+    p = Processo(pid="T-LOG-002", carregar=False)
+    a1.registrar_upload(p, "analise_laboratorial", _Upload("laudo.pdf", b"v1"))
+    a1.registrar_upload(p, "analise_laboratorial", _Upload("laudo.pdf", b"versao 2"))
+
+    recebidos = [e for e in p["log"] if "Arquivo recebido" in e["mensagem"]]
+    assert len(recebidos) == 2
+    assert p["documentos"]["analise_laboratorial"]["tamanho"] == len(b"versao 2")
