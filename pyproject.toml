@@ -1,0 +1,19 @@
+# Configuracao de ferramentas de desenvolvimento. O app em si continua sendo
+# instalado por requirements.txt (nao ha pacote publicavel).
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# Torna "import outorgasys" valido sem o sys.path.insert que cada teste repetia.
+pythonpath = ["."]
+addopts = "-q"
+
+[tool.ruff]
+target-version = "py311"
+# skills/ e data/ sao conteudo vendorizado e dados; nao fazem parte da revisao.
+extend-exclude = ["skills", "data"]
+
+[tool.ruff.lint]
+# Conjunto de bugs reais: erro de sintaxe (E9), comparacoes e construcoes
+# invalidas (F63, F7) e nomes indefinidos (F82). Regras de estilo ficam fora
+# de proposito para o gate nao exigir reformatar o repositorio inteiro.
+select = ["E9", "F63", "F7", "F82"]

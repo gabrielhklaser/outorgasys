@@ -1,0 +1,9 @@
+# Ferramentas de desenvolvimento e CI. Producao usa apenas requirements.txt.
+#
+#   python -m venv .venv && .venv/bin/pip install -r requirements-dev.txt
+#   .venv/bin/python -m pytest
+-r requirements.txt
+
+pytest>=8.0
+pytest-cov>=5.0
+ruff>=0.6
