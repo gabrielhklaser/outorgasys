@@ -10,7 +10,9 @@ permitir auditoria posterior.
 from __future__ import annotations
 
 import datetime
+import hashlib
 import json
+import re
 import shutil
 import tempfile
 import time
@@ -22,9 +24,12 @@ from typing import Any
 from . import config as C
 
 
+_CONTROLE = re.compile(r"[\x00-\x1f\x7f]")
+
+
 def nome_arquivo_seguro(nome: str) -> str:
     """Reduz o nome enviado pelo cliente ao basename (bloqueia path traversal)."""
-    base = Path(str(nome).replace("\\", "/")).name.strip()
+    base = _CONTROLE.sub("", Path(str(nome).replace("\\", "/")).name).strip()
     if base in ("", ".", ".."):
         raise ValueError(f"Nome de arquivo invalido: {nome!r}")
     return base
@@ -292,37 +297,41 @@ class Processo:
         """Persiste um UploadedFile do Streamlit e registra no campo 'documentos'."""
         if uploaded is None:
             return None
-        dest = self.dir_arquivos / nome_arquivo_seguro(uploaded.name)
+        nome = nome_arquivo_seguro(uploaded.name)
+        dest = self.dir_arquivos / nome
+        conteudo = uploaded.getbuffer()
         with open(dest, "wb") as fh:
-            fh.write(uploaded.getbuffer())
+            fh.write(conteudo)
+        # O registro usa o nome JA saneado: o bruto vindo do cliente pode ter
+        # separadores de diretorio e voltaria a ser perigoso em remover_upload.
+        registro = {
+            "nome": nome,
+            "caminho": C.caminho_relativo(dest),
+            "tamanho": dest.stat().st_size,
+            "sha256": hashlib.sha256(conteudo).hexdigest(),
+        }
         docs = self.data.setdefault("documentos", {})
         if chave == "registro_fotografico":
-            docs.setdefault(chave, [])
-            docs[chave] = [
-                d for d in docs[chave] if d.get("nome") != uploaded.name
-            ] + [{
-                "nome": uploaded.name,
-                "caminho": C.caminho_relativo(dest),
-                "tamanho": dest.stat().st_size,
-            }]
+            docs[chave] = [d for d in docs.get(chave) or [] if d.get("nome") != nome] \
+                + [registro]
         else:
-            docs[chave] = {
-                "nome": uploaded.name,
-                "caminho": C.caminho_relativo(dest),
-                "tamanho": dest.stat().st_size,
-            }
+            docs[chave] = registro
         return dest
 
     def remover_upload(self, chave: str, nome: str | None = None) -> None:
         docs = self.data.setdefault("documentos", {})
+        try:
+            seguro = nome_arquivo_seguro(nome) if nome else None
+        except ValueError:
+            return  # nome invalido nao corresponde a arquivo algum
         if chave == "registro_fotografico":
-            docs[chave] = [d for d in docs.get(chave, []) if d.get("nome") != nome]
+            docs[chave] = [d for d in docs.get(chave, []) if d.get("nome") != seguro]
         else:
             docs.pop(chave, None)
-        if nome:
-            p = self.dir_arquivos / nome
-            if p.exists():
-                p.unlink()
+        if seguro:
+            alvo = self.dir_arquivos / seguro
+            if alvo.is_file():
+                alvo.unlink()
 
     # ------------------------------------------------------------------ io
     def salvar(self) -> Path:
