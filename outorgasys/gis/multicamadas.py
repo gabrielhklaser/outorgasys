@@ -70,8 +70,6 @@ def gerar_mapa_multicamadas(
 
     script_path = C.ROOT / "skills" / "gis-multicamadas" / "scripts" / "multicamadas_map.py"
     if not script_path.exists():
-        script_path = C.ROOT / "skills" / "gis_multicamadas" / "scripts" / "multicamadas_map.py"
-    if not script_path.exists():
         raise FileNotFoundError(f"Script multicamadas_map.py nao encontrado em {script_path}")
 
     parent_dir = str(script_path.parent)
