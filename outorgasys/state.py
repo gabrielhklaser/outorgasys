@@ -12,6 +12,7 @@ from __future__ import annotations
 import datetime
 import hashlib
 import json
+import logging
 import re
 import shutil
 import tempfile
@@ -23,8 +24,11 @@ from typing import Any
 
 from . import config as C
 
+log = logging.getLogger(__name__)
+
 
 _CONTROLE = re.compile(r"[\x00-\x1f\x7f]")
+_PID_VALIDO = re.compile(r"[A-Za-z0-9][A-Za-z0-9_-]{0,63}")
 
 
 def nome_arquivo_seguro(nome: str) -> str:
@@ -33,6 +37,13 @@ def nome_arquivo_seguro(nome: str) -> str:
     if base in ("", ".", ".."):
         raise ValueError(f"Nome de arquivo invalido: {nome!r}")
     return base
+
+
+def validar_pid(pid: Any) -> str:
+    """Aceita so identificadores que viram nome de arquivo sem sair de PROCESSOS."""
+    if not isinstance(pid, str) or not _PID_VALIDO.fullmatch(pid):
+        raise ValueError(f"Identificador de processo invalido: {pid!r}")
+    return pid
 
 
 # --------------------------------------------------------------------------------------
@@ -201,24 +212,29 @@ class Processo:
         processo novo — evita que ``Processo(pid=...)`` substitua silenciosamente
         um trabalho ja salvo. Passe ``carregar=False`` para forcar um novo.
         """
+        if pid:
+            validar_pid(pid)
         if data is None and pid and carregar:
             existente = self._ler(pid)
             if existente is not None:
                 data = existente
         self.data: dict = data if data is not None else _vazio_processo(pid or novo_id())
-        self.id: str = self.data["id"]
+        self.id: str = validar_pid(self.data["id"])
 
     @staticmethod
     def _json_de(pid: str) -> Path:
-        return C.PROCESSOS / f"{pid}.json"
+        return C.PROCESSOS / f"{validar_pid(pid)}.json"
 
     @staticmethod
     def _diretorio_de(pid: str) -> Path:
-        return C.PROCESSOS / pid
+        return C.PROCESSOS / validar_pid(pid)
 
     @staticmethod
     def _ler(pid: str) -> dict | None:
-        p = Processo._json_de(pid)
+        try:
+            p = Processo._json_de(pid)
+        except ValueError:
+            return None  # identificador invalido nao corresponde a processo algum
         if not p.exists():
             return None
         try:
@@ -346,7 +362,13 @@ class Processo:
     @classmethod
     def carregar(cls, pid: str) -> "Processo | None":
         dados = cls._ler(pid)
-        return cls(dados) if dados is not None else None
+        if dados is None:
+            return None
+        try:
+            return cls(dados)
+        except (KeyError, ValueError):
+            log.warning("Processo %s ignorado: JSON sem id valido", pid)
+            return None
 
     @classmethod
     def listar(cls) -> list[dict]:

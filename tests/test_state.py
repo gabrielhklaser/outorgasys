@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import pandas as pd
+import pytest
 
 from outorgasys import config as C
 from outorgasys.state import Processo
@@ -97,3 +98,20 @@ def test_remover_upload_apaga_o_arquivo_registrado(dados_tmp):
 
     assert not destino.exists()
     assert p["documentos"]["registro_fotografico"] == []
+
+
+# --- identificador do processo -------------------------------------------------
+
+
+@pytest.mark.parametrize("pid", ["../x", "a/b", "a\\b", "..", "", "x" * 80, "a b", "a.json"])
+def test_pid_invalido_e_rejeitado(dados_tmp, pid):
+    with pytest.raises(ValueError):
+        Processo(pid=pid) if pid else Processo._json_de(pid)
+    with pytest.raises(ValueError):
+        Processo._json_de(pid)
+    assert Processo.carregar(pid) is None
+
+
+@pytest.mark.parametrize("pid", ["EX-CAMPOBOM-001", "20260930-A1B2C3", "T_x-1"])
+def test_pid_valido_e_aceito(dados_tmp, pid):
+    assert Processo._json_de(pid).name == f"{pid}.json"
