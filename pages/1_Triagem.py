@@ -227,6 +227,10 @@ if qualidade_dados or destilacoes:
             st.success("✅ Todos os parametros laboratoriais estao em conformidade com o Padrao de Potabilidade.")
         else:
             st.error("⚠️ Foram identificadas inconformidades nos parametros laboratoriais segundo a Portaria 888/2021.")
+    elif qualidade_dados:
+        for aviso in qualidade_dados.get("avisos") or [
+                "Nenhum parametro de potabilidade foi reconhecido no documento."]:
+            st.warning(aviso)
 
     if destilacoes:
         with st.expander("📄 Notas Destiladas GabeBrain (Citacao exata de pagina e confianca da fonte)"):

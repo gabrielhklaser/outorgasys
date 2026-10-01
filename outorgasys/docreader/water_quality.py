@@ -168,9 +168,17 @@ def extrair_qualidade_agua(doc: DocumentoProcessado) -> Dict[str, Any]:
             "pagina": achado["pagina"],
         })
 
+    avisos: List[str] = []
+    if not relatorio_conformidade:
+        # Nada lido nao e prova de conformidade: o veredito fica indeterminado.
+        conforme_geral = None
+        avisos.append("Nenhum parametro de potabilidade foi reconhecido no documento; "
+                      "a conformidade nao pode ser atestada automaticamente.")
+
     return {
         "arquivo": doc.nome,
         "conforme_potabilidade": conforme_geral,
         "parametros": relatorio_conformidade,
         "total_parametros_lidos": len(relatorio_conformidade),
+        "avisos": avisos,
     }

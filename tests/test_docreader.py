@@ -47,3 +47,20 @@ def test_extrai_parametros_do_laudo_so_com_pypdf(engine_sem_pymupdf):
     assert por_chave["turbidez"]["resultado"].startswith("0,42")
     assert all(p["status"] == "conforme" for p in q["parametros"])
     assert q["conforme_potabilidade"] is True
+
+
+def test_nada_reconhecido_nao_vira_conforme():
+    """Extracao vazia e verdade vacua: nao pode aparecer como CONFORME."""
+    from outorgasys.docreader import extrair_qualidade_agua
+    from outorgasys.docreader.engine import DocumentoProcessado
+
+    doc = DocumentoProcessado(
+        caminho=PDF_EXEMPLO, nome="vazio.pdf", num_paginas=1, tipo_estimado="R",
+        rotulo_tipo="x", confianca_fonte="C", justificativa_fonte="x",
+        texto_completo="Texto sem nenhum parametro de potabilidade.",
+        markdown="", paginas=["x"], tabelas=[])
+
+    q = extrair_qualidade_agua(doc)
+
+    assert q["parametros"] == []
+    assert q["conforme_potabilidade"] is None
