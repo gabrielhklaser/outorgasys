@@ -38,9 +38,16 @@ T_M2S_MAX = 1e-1
 # --------------------------------------------------------------------------------------
 
 
+def _para_float(x: Any) -> float:
+    """float(x), ou NaN para nulo, texto nao numerico e pd.NA."""
+    try:
+        return float(x)
+    except (TypeError, ValueError):
+        return float("nan")
+
+
 def _arr(v: Sequence[Any]) -> np.ndarray:
-    a = np.asarray([float(x) if x is not None and x == x else np.nan for x in v], dtype=float)
-    return a
+    return np.asarray([_para_float(x) for x in v], dtype=float)
 
 
 def _finito(a: np.ndarray) -> np.ndarray:
@@ -91,24 +98,32 @@ def identificar_q_estavel(tempo_min: Sequence[Any],
                           fracao_minima: float = 0.25) -> VazaoEstabilizada:
     """Identifica a vazao estabilizada final de operacao (Q_estavel).
 
-    Criterio: percorre janelas terminais da serie (da menor para a maior) e adota
-    a maior janela cujo coeficiente de variacao fique abaixo de
+    Criterio: percorre janelas terminais da serie (da maior para a menor) e adota
+    a primeira, ou seja, a maior janela cujo coeficiente de variacao fique abaixo de
     ``tolerancia_cv`` - ou seja, o trecho final em patamar continuo, conforme os
     criterios de regime permanente. Se nenhuma janela estabilizar, usa a mediana
     do ultimo terco da serie e sinaliza a ressalva.
     """
     t, q = _arr(tempo_min), _arr(vazao_m3h)
+    nota = ""
+    if len(t) != len(q):
+        # Planilha com lacunas na coluna Q: sem como parear, usa os primeiros pares
+        # em vez de levantar ValueError no broadcast do numpy.
+        n_par = min(len(t), len(q))
+        nota = (f" Tempos ({len(t)}) e vazoes ({len(q)}) em numero diferente; "
+                f"usados os {n_par} primeiros pares.")
+        t, q = t[:n_par], q[:n_par]
     mask = _finito(t) & _finito(q) & (q > 0)
     t, q = t[mask], q[mask]
     n = len(q)
     if n == 0:
         return VazaoEstabilizada(None, None, 0, None, "sem dados",
-                                 observacao="Nenhuma vazao valida informada.")
+                                 observacao="Nenhuma vazao valida informada." + nota)
     if n < 3:
         return VazaoEstabilizada(float(np.median(q)), 0, n, 0.0, "mediana (serie curta)",
                                  serie=q.tolist(), tempo_inicio_min=float(t[0]),
                                  observacao="Serie de vazoes muito curta para teste de "
-                                            "estabilizacao; adotada a mediana.")
+                                            "estabilizacao; adotada a mediana." + nota)
 
     # Ordena por tempo e garante monotonicidade crescente.
     ordem = np.argsort(t, kind="stable")
@@ -120,7 +135,7 @@ def identificar_q_estavel(tempo_min: Sequence[Any],
         janela = q[n - i:]  # ultimos i pontos
         cv = coeficiente_variacao(janela)
         if math.isfinite(cv) and cv <= tolerancia_cv:
-            # Quanto maior a janela, melhor (percorremos de tras para frente).
+            # Percorre da maior janela para a menor: a primeira que passa e a maior.
             melhor = VazaoEstabilizada(
                 q_estavel=float(np.mean(janela)),
                 indice_inicio=int(n - i),
@@ -130,30 +145,11 @@ def identificar_q_estavel(tempo_min: Sequence[Any],
                 serie=janela.tolist(),
                 tempo_inicio_min=float(t[n - i]),
                 observacao=f"Patamar de {i} leituras a partir de t = {t[n - i]:.0f} min "
-                           f"(CV = {cv * 100:.1f}%).",
+                           f"(CV = {cv * 100:.1f}%)." + nota,
             )
             break
 
     if melhor is not None:
-        # Amplia a janela enquanto o CV continuar aceitavel.
-        i = melhor.n_pontos
-        while i < n:
-            janela = q[n - (i + 1):]
-            cv = coeficiente_variacao(janela)
-            if not (math.isfinite(cv) and cv <= tolerancia_cv):
-                break
-            i += 1
-            melhor = VazaoEstabilizada(
-                q_estavel=float(np.mean(janela)),
-                indice_inicio=int(n - i),
-                n_pontos=int(i),
-                cv=float(cv),
-                metodo=melhor.metodo,
-                serie=janela.tolist(),
-                tempo_inicio_min=float(t[n - i]),
-                observacao=f"Patamar de {i} leituras a partir de t = {t[n - i]:.0f} min "
-                           f"(CV = {cv * 100:.1f}%).",
-            )
         return melhor
 
     # Sem patamar CV-baixo: cai para o ultimo terco.
@@ -169,7 +165,7 @@ def identificar_q_estavel(tempo_min: Sequence[Any],
         serie=janela.tolist(),
         tempo_inicio_min=float(t[corte]),
         observacao="Nao foi identificado patamar com CV <= %.0f%%; adotou-se a mediana "
-                   "do ultimo terco da serie. Revise a planilha." % (tolerancia_cv * 100),
+                   "do ultimo terco da serie. Revise a planilha." % (tolerancia_cv * 100) + nota,
     )
 
 
@@ -329,8 +325,14 @@ def calcular(ne: float | None, nd_final: float | None,
              t_linha_min: Sequence[Any] | None = None,
              s_residual_m: Sequence[Any] | None = None,
              raio_poco_m: float | None = None,
-             tempo_bombeamento_total_min: float | None = None) -> ResultadoHidraulico:
-    """Executa a memoria de calculo completa descrita no prompt do Agente 3."""
+             tempo_bombeamento_total_min: float | None = None,
+             tempo_vazao_min: Sequence[Any] | None = None) -> ResultadoHidraulico:
+    """Executa a memoria de calculo completa descrita no prompt do Agente 3.
+
+    ``tempo_vazao_min`` e o eixo de tempo das leituras de ``vazao_m3h``; use-o
+    quando a coluna Q tem lacunas e os tempos das demais colunas nao casam com ela.
+    Sem ele, ``tempo_min`` e usado.
+    """
     avisos: list[str] = []
     erros: list[str] = []
     detalhes: dict = {}
@@ -357,7 +359,9 @@ def calcular(ne: float | None, nd_final: float | None,
         erros.append("NE e/ou ND nao informados: impossivel calcular s_max.")
 
     # 2) Vazao estabilizada -----------------------------------------------------------
-    est = identificar_q_estavel(tempo_min or [], vazao_m3h or [])
+    est = identificar_q_estavel(
+        tempo_vazao_min if tempo_vazao_min is not None else (tempo_min or []),
+        vazao_m3h or [])
     q_estavel = est.q_estavel
     if q_estavel is None:
         erros.append("Nao foi possivel identificar a vazao estabilizada (Q_estavel).")
@@ -429,8 +433,11 @@ def calcular(ne: float | None, nd_final: float | None,
     # Contraprova de Jacob-Lohman -------------------------------------------------------
     Q_jl = None
     if T_m2h and s_max:
-        # Q = 2*pi*T*s / ln(2.25*T*t/(r^2*S)), com S de 1e-4 e t de 1 ano (525600 min)
-        # em unidades consistentes (m, h). Usado apenas como ordem de grandeza.
+        # Cooper-Jacob invertido: s = Q / (4*pi*T) * ln(2.25*T*t / (r^2*S))
+        #   ->  Q = 4*pi*T*s / ln(2.25*T*t / (r^2*S)),
+        # com S de 1e-4 e t de 1 ano, em unidades consistentes (m, dia). Conferido
+        # contra Theis exato (Q = 4*pi*T*s / W(u)) em tests/test_theis.py. Usado
+        # apenas como ordem de grandeza; as premissas aparecem na tabela do laudo.
         r = raio_poco_m if raio_poco_m and raio_poco_m > 0 else 0.10
         S = 1e-4
         T_m2_dia = T_m2h * 24.0
@@ -438,7 +445,7 @@ def calcular(ne: float | None, nd_final: float | None,
         try:
             arg = (2.25 * T_m2_dia * t_dia) / (r * r * S)
             if arg > 1.0:
-                Q_jl = (2 * math.pi * T_m2_dia * s_max) / math.log(arg) / 24.0  # m3/h
+                Q_jl = (4 * math.pi * T_m2_dia * s_max) / math.log(arg) / 24.0  # m3/h
                 detalhes["jacob_lohman"] = {"raio_m": r, "S_adotado": S,
                                             "t_dias": t_dia, "arg": arg}
         except Exception:  # noqa: BLE001

@@ -544,6 +544,12 @@ def corpo_issue(a: dict) -> str:
 # --------------------------------------------------------------------------------------
 
 
+def caminho_relatorio(proc) -> str | None:
+    """Caminho (relativo ao projeto, quando possivel) do relatorio de defeitos ja gravado."""
+    destino = C.SAIDA / f"defeitos_{proc.id}.md"
+    return C.caminho_relativo(destino) if destino.is_file() else None
+
+
 def executar(proc, salvar: bool = True) -> dict:
     """Roda o Agente 6 e devolve o relatorio consolidado."""
     saida: dict[str, Any] = {"ok": False, "resumo": {}, "achados": [], "arquivo": None}

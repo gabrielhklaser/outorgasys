@@ -220,21 +220,15 @@ with col2:
 st.markdown("---")
 st.markdown("**Parecer conclusivo**")
 parecer = (rel.get("estrutura") or {}).get("parecer") or {}
-if parecer:
-    st.markdown(
-        f'<div class="out-panel">'
-        f'{chip(parecer.get("parecer") or "-", "ok" if (parecer.get("favoravel")) else "bloqueio")}'
-        f'<br/><br/>{parecer.get("texto") or ""}</div>',
-        unsafe_allow_html=True,
-    )
-    if parecer.get("exigencias"):
-        st.markdown("**Exigencias:**")
-        for e in parecer["exigencias"]:
-            st.markdown(f"- {e}")
-    if parecer.get("ressalvas"):
-        st.markdown("**Ressalvas:**")
-        for r in parecer["ressalvas"]:
-            st.markdown(f"- {r}")
+# laudo.montar_parecer() grava "conclusoes" e "recomendacoes".
+if parecer.get("conclusoes"):
+    st.markdown("**Conclusoes:**")
+    for c in parecer["conclusoes"]:
+        st.markdown(f"- {c}")
+if parecer.get("recomendacoes"):
+    st.markdown("**Recomendacoes:**")
+    for r in parecer["recomendacoes"]:
+        st.markdown(f"- {r}")
 
 fonte("O laudo e emitido em formato editavel (Markdown) e em PDF, para assinatura "
       "do Geologo ou Engenheiro de Minas com registro no CEGM/CREA-RS, conforme a "

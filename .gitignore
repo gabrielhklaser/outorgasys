@@ -7,6 +7,8 @@ __pycache__/
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
+.coverage
+htmlcov/
 .DS_Store
 
 # --- dados brutos / temporarios (nao versionar: sao recompilados pelo workflow) ---

@@ -6,10 +6,12 @@
       -> 403 5645 text/html; charset=UTF-8
 404    https://data.hydrosheds.org/file/HydroSHEDS/hydrosheds-tech-documentation-v10.pdf
       -> 404 94 application/json;charset=utf-8
-206    https://download.geofabrik.de/south-america/brazil/sul-latest-free.shp.zip
-      -> 206 2001 application/zip
-206    https://download.geofabrik.de/south-america/brazil/sul-latest.osm.pbf
-      -> 206 2001 application/octet-stream
+curl:  https://download.geofabrik.de/south-america/brazil/sul-latest-free.shp.zip
+      -> curl: (28) Operation timed out after 25000 milliseconds with 0 bytes received
+000 0 
+curl:  https://download.geofabrik.de/south-america/brazil/sul-latest.osm.pbf
+      -> curl: (28) Operation timed out after 25001 milliseconds with 0 bytes received
+000 0 
 206    https://raw.githubusercontent.com/python/cpython/main/README.rst
       -> 206 2001 text/plain; charset=utf-8
 206    https://github.com/python/cpython
@@ -20,15 +22,16 @@
       -> 200 1952618 application/json; charset=utf-8
 403    https://www.ibge.gov.br/geociencias/downloads-geociencias.html
       -> 403 5711 text/html; charset=UTF-8
-206    https://www.sema.rs.gov.br/
-      -> 206 2001 text/html; charset=UTF-8
+curl:  https://www.sema.rs.gov.br/
+      -> curl: (28) Connection timed out after 25002 milliseconds
+000 0 
 curl:  https://sistemas.dsr.rs.gov.br/
       -> curl: (6) Could not resolve host: sistemas.dsr.rs.gov.br
 000 0 
 206    https://portal1.snirh.gov.br/ana/apps/webappviewer/index.html
       -> 206 2001 text/html
 200    https://metadados.inde.gov.br/geonetwork/srv/api/records/b228d007-6d68-46e5-b30d-a1e191b2b21f
-      -> 200 67181 text/html;charset=UTF-8
+      -> 200 67188 text/html;charset=UTF-8
 400    https://ows.terrestris.de/osm/service
       -> 400 486 text/xml; charset=utf-8
 206    https://tile.openstreetmap.org/10/512/620.png
@@ -54,14 +57,9 @@ HTTP/2 403
 content-type: text/html; charset=UTF-8
 content-length: 5453
 --- sul-latest-free.shp.zip
-HTTP/1.1 302 Found
+HTTP/1.1 404 Not Found
 Content-Type: text/html; charset=iso-8859-1
-HTTP/1.1 200 OK
-Content-Length: 1044633843
-Content-Type: application/zip
 --- sul-latest.osm.pbf
-HTTP/1.1 302 Found
-Content-Type: text/html; charset=iso-8859-1
-HTTP/1.1 200 OK
-Content-Length: 424978491
-Content-Type: application/octet-stream
+HTTP/1.1 503 Service Unavailable
+Content-Type: text/html;charset=utf-8
+Content-Length: 3174

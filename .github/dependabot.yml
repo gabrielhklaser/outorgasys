@@ -1,0 +1,15 @@
+# Atualizacoes automaticas. As actions estao fixadas por SHA (comentario com a
+# versao); o Dependabot abre PR quando sai versao nova e atualiza o SHA.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+  - package-ecosystem: pip
+    directory: /
+    schedule:
+      interval: monthly
+    groups:
+      dependencias-python:
+        patterns: ["*"]
