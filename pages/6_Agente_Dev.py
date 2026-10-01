@@ -196,23 +196,20 @@ with st.expander("➕ Registrar um defeito manualmente"):
             st.success("Defeito registrado.")
             st.rerun()
 
-rel = proc.get("relatorio_dev") or {}
-caminho_md = rel.get("arquivo") or (
-    f"out/defeitos_{proc.id}.md"
-    if (C.SAIDA / f"defeitos_{proc.id}.md").exists() else None)
+caminho_md = a6.caminho_relatorio(proc)
 
 col_a, col_b = st.columns([1, 1])
 with col_a:
     if st.button("🧾 (Re)gerar relatorio de defeitos", width="stretch"):
         saida = a6.executar(proc, salvar=True)
         proc.salvar()
-        st.success(f"Relatorio gravado em out/defeitos_{proc.id}.md")
+        st.success(f"Relatorio gravado em {saida.get('arquivo') or 'saida/'}")
         st.rerun()
 with col_b:
     download_arquivo(caminho_md, "⬇️ Descarregar relatorio (Markdown)",
                      f"defeitos_{proc.id}.md", "text/markdown")
 
-fonte("Os artefatos do Agente 6 ficam em `out/`. A abertura de issues e o envio "
+fonte("Os artefatos do Agente 6 ficam na pasta saida/ do diretorio de dados. A abertura de issues e o envio "
       "de commits sao decisoes do operador — o agente apenas prepara o corpo.")
 
 st.markdown("")
