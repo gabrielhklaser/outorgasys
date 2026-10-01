@@ -248,7 +248,7 @@ E 494.862,5 / N 6.716.205,8). Resultados esperados:
 | `s_máx` / `Q_estável` | 2,872 m / 11,994 m³/h |
 | `T` | 5,979 m²/h (1,661 × 10⁻³ m²/s) |
 | `Q_ot` / vazão adotada | 13,738 m³/h / **11,994 m³/h** |
-| Volume anual | 37.521,87 m³ |
+| Volume anual | 37.521,84 m³ |
 | Saídas | 3 pranchas, 3 gráficos, laudo PDF de 10 páginas, minuta |
 
 ### Sobre os anexos do exemplo

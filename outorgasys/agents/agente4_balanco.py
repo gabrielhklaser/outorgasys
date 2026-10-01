@@ -42,8 +42,10 @@ def quadro_vazao(ano: int, horas_dia: float, dias_semana: float,
     dias = dias_operacao_por_mes(ano, dias_semana)
     linhas = []
     total = 0.0
-    for i, (nome, n_dias) in enumerate(zip(C.NOMES_MESES, dias), start=1):
-        volume = n_dias * horas_dia * vazao_m3h
+    for i, (nome, n_dias) in enumerate(zip(C.NOMES_MESES, dias, strict=True), start=1):
+        # Arredonda cada linha antes de somar: o total precisa fechar com o que o
+        # quadro mostra (a soma dos volumes sem arredondar diferia em centesimos).
+        volume = round(n_dias * horas_dia * vazao_m3h, 2)
         total += volume
         linhas.append({
             "mes": nome,
