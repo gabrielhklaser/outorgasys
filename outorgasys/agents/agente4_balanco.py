@@ -168,11 +168,16 @@ def escolher_vazao_adotada(hidraulica: dict, preferencia: str = "auto") -> dict:
         return {"vazao": q_est, "origem": "Q_estavel",
                 "justificativa": "Sem Q_ot calculada (falta ensaio de recuperacao); "
                                  "adota-se Q_estavel com ressalva expressa no parecer."}
-    if q_jl:
-        return {"vazao": q_jl, "origem": "Jacob-Lohman",
-                "justificativa": "Sem Q_estavel/Q_ot: usada a estimativa de "
-                                 "Jacob-Lohman como ultimo recurso."}
-    return {"vazao": None, "origem": None, "justificativa": "Sem dados hidraulicos."}
+    # Jacob-Lohman nao entra aqui como "ultimo recurso": e uma contraprova de
+    # regime permanente com recarga, calculada a partir do proprio Q_estavel, e
+    # coloca-la no quadro de vazao levaria uma estimativa informativa para a
+    # transcricao do SIOUT.
+    nota_jl = (f" Ha estimativa de Jacob-Lohman ({q_jl:.2f} m3/h), mas ela serve "
+               "de contraprova e nao substitui o ensaio de bombeamento."
+               if q_jl else "")
+    return {"vazao": None, "origem": None,
+            "justificativa": "Sem Q_estavel nem Q_ot: o quadro de vazao nao pode "
+                             "ser montado." + nota_jl}
 
 
 # --------------------------------------------------------------------------------------

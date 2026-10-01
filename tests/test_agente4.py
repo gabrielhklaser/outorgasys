@@ -70,3 +70,29 @@ def test_vazao_adotada_sem_q_ot_usa_q_estavel_com_ressalva():
 
 def test_vazao_adotada_sem_dados_devolve_none():
     assert a4.escolher_vazao_adotada({})["vazao"] is None
+
+
+def test_jacob_lohman_nao_vira_vazao_do_quadro():
+    """A contraprova de Jacob-Lohman e informativa; nao substitui o ensaio.
+
+    O ramo existia como "ultimo recurso", mas so e alcancavel se houver
+    Q_jacob_lohman sem Q_estavel - e essa estimativa so e calculada quando existe
+    Q_estavel. Se um dia fosse alcancado, colocaria uma estimativa de regime
+    permanente no quadro de vazao que vai para a transcricao do SIOUT.
+    """
+    hid = {"parametros": {"q_estavel_m3h": None, "Q_ot_m3h": None,
+                          "Q_jacob_lohman_m3h": 8.29}}
+
+    r = a4.escolher_vazao_adotada(hid)
+
+    assert r["vazao"] is None
+    assert r["origem"] is None
+    assert "Jacob-Lohman" in r["justificativa"]
+    assert "8.29" in r["justificativa"]
+
+
+def test_preferencia_expressa_nao_ignora_a_ausencia_de_dado():
+    hid = {"parametros": {"q_estavel_m3h": None, "Q_ot_m3h": None,
+                          "Q_jacob_lohman_m3h": 8.29}}
+
+    assert a4.escolher_vazao_adotada(hid, preferencia="q_ot")["vazao"] is None
