@@ -9,6 +9,7 @@ from typing import Any, Iterable, Sequence
 
 import streamlit as st
 
+from . import auth
 from . import config as C
 from .state import Processo, garantir_processo
 
@@ -70,6 +71,9 @@ def aplicar_tema() -> None:
         menu_items={"About": f"{C.TITULO_SISTEMA}\n\nv{C.VERSAO}"},
     )
     st.markdown(CSS, unsafe_allow_html=True)
+    # Toda pagina chama aplicar_tema() primeiro; o portao fica aqui para nenhuma
+    # delas mostrar dados antes de a senha (quando configurada) ser informada.
+    auth.exigir_acesso()
 
 
 def cabecalho(titulo: str, subtitulo: str = "") -> None:

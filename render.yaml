@@ -53,6 +53,11 @@ services:
       # e gravavel em alguns planos).
       - key: MPLCONFIGDIR
         value: /var/data/outorgasys/.mplconfig
+      # Senha unica de acesso (opcional). O valor NAO fica no repositorio: o Render
+      # pede no Blueprint ou voce define em Environment. Vazia, o app abre sem
+      # senha, como antes. Detalhes e limites em outorgasys/auth.py e no README.
+      - key: OUTORGASYS_SENHA
+        sync: false
 
     disk:
       name: outorgasys-data
