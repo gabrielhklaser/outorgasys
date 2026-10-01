@@ -38,7 +38,7 @@ import sys
 import time
 import zipfile
 from pathlib import Path
-from typing import Iterable
+from typing import Any, Iterable
 
 import requests
 
