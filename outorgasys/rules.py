@@ -274,21 +274,39 @@ def validar_declaracao_separacao_redes(rede_publica: bool | None,
     return r
 
 
+def _texto_capacidade(item: dict) -> str:
+    """Capacidade informada como texto.
+
+    ``x.get(...) or ""`` nao serve: capacidade 0 e um valor informado (e
+    invalido) e nao pode ser confundido com campo em branco.
+    """
+    bruto = (item or {}).get("capacidade_l")
+    return "" if bruto is None else str(bruto).strip()
+
+
 def validar_reservacao(reservatorios: Iterable[dict]) -> ResultadoValidacao:
     r = ResultadoValidacao()
-    itens = [x for x in (reservatorios or []) if _num(x.get("capacidade_l"))]
-    if not itens:
+    itens = list(reservatorios or [])
+    com_capacidade = [x for x in itens if _texto_capacidade(x)]
+    if not com_capacidade:
         r.add(Pendencia(
             "RES-001", "Reservacao nao informada",
             "Informe a quantidade e a capacidade volumetrica individual (L) de cada "
             "reservatorio / caixa d'agua instalada.",
             campo="reservacao"))
+    # O indice vem da lista que o usuario informou. Filtrar antes de enumerar
+    # deslocava o numero (um reservatorio invalido no meio fazia o seguinte ser
+    # chamado pelo numero do anterior) e capacidade 0 nunca chegava aqui, porque
+    # _num(0) e falso e o item saia da lista.
     for i, x in enumerate(itens, start=1):
+        if not _texto_capacidade(x):
+            continue
         cap = _num(x.get("capacidade_l"))
-        if cap is not None and cap <= 0:
+        if cap is None or cap <= 0:
             r.add(Pendencia(
                 "RES-002", f"Capacidade invalida no reservatorio {i}",
-                "A capacidade volumetrica deve ser maior que zero.",
+                "A capacidade volumetrica deve ser um numero maior que zero, em "
+                "litros.",
                 bloqueante=True, campo="reservacao"))
     return r
 
@@ -619,7 +637,7 @@ def avaliar_motobomba_vs_poco(bomba: dict, q_estavel: float | None,
                 f"A bomba esta instalada a {prof:g} m e o nivel dinamico a {nd:g} m, "
                 f"restando apenas {subm:g} m de submergencia. Recomenda-se folga "
                 f"minima de {C.SUBMERGENCIA_MIN_M:g} a {C.SUBMERGENCIA_MAX_M:g} m "
-                "abaixo do nivel dinamico para evitar cavitation e sucção de ar.",
+                "abaixo do nivel dinamico para evitar cavitacao e succao de ar.",
                 bloqueante=False, agente=4,
                 campo="motobomba.profundidade_instalacao_m",
                 sugestao=f"Instale a bomba entre {nd + C.SUBMERGENCIA_MIN_M:.1f} m e "

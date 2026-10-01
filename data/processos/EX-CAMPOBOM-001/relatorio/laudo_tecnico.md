@@ -2,7 +2,7 @@
 ## MEMORIAL DESCRITIVO PARA OUTORGA DE AGUA SUBTERRANEA - SIOUT/RS
 
 **Processo:** EX-CAMPOBOM-001  
-**Data de emissao:** 25/09/2026  
+**Data de emissao:** 01/10/2026  
 **Sistema:** outorgasys v1.0.0
 
 
@@ -91,11 +91,11 @@ _Referencias: espessura minima 10 cm, area minima 1 m2, rebordo minimo 30 cm; es
 | Capacidade especifica do poco (q) | 4,176 m3/h/m | q = Q_estavel / s_max |
 | Capacidade especifica de longo prazo (q(t)) | 4,783 m3/h/m | q(t) = 0,8 · T  (fator 0.8) |
 | Vazao otima de explotacao (Q_ot) | 13,74 m3/h | Q_ot = q(t) · s_max |
-| Contraprova Jacob-Lohman | 4,14 m3/h | Estimativa independente de longo prazo |
+| Contraprova Jacob-Lohman | 8,29 m3/h | Q = 4π·T·s / ln(2,25·T·t / (r²·S)); premissas adotadas: S = 0.0001, t = 365 d, r = 0.0762 m |
 | Duracao do ensaio | 24,0 h | 1.440 min |
 
 ### 3.1 Graficos do ensaio
-![Graficos do ensaio](data\processos\EX-CAMPOBOM-001\graficos\graficos_ensaio.png)
+![Graficos do ensaio](data/processos/EX-CAMPOBOM-001/graficos/graficos_ensaio.png)
 
 
 ## 4. DESCRICAO DOS EQUIPAMENTOS INSTALADOS
@@ -238,7 +238,7 @@ Geologo
 Registro: CREA-RS 0000000000  
 ART: ART RS2024 0000000  
 
-____________________, 25/09/2026
+____________________, 01/10/2026
 
 _______________________________________________
 Assinatura do Responsavel Tecnico

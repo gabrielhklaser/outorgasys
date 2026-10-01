@@ -11,12 +11,15 @@ from __future__ import annotations
 
 import traceback
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import pandas as pd  # noqa: PLC0415
 
 from .. import config as C
 from ..hydro import graficos, planilha, theis
+
+if TYPE_CHECKING:  # so para anotacao: evita carregar state em runtime
+    from ..state import Processo
 
 
 def processar_planilha(caminho: Path | Any, meta_manual: dict | None = None) -> dict:
@@ -35,7 +38,7 @@ def processar_planilha(caminho: Path | Any, meta_manual: dict | None = None) -> 
     }
 
 
-def calcular(proc, usar_q_manual: bool = False, q_manual: float | None = None,
+def calcular(proc: Processo, usar_q_manual: bool = False, q_manual: float | None = None,
              gerar_graficos: bool = True) -> dict:
     """Executa a memoria de calculo completa e gera os graficos."""
     saida: dict[str, Any] = {

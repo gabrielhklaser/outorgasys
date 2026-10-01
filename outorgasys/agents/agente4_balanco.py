@@ -11,10 +11,13 @@ from __future__ import annotations
 
 import calendar
 import math
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from .. import config as C
 from .. import rules
+
+if TYPE_CHECKING:  # so para anotacao: evita carregar state em runtime
+    from ..state import Processo
 
 
 # --------------------------------------------------------------------------------------
@@ -73,7 +76,7 @@ def quadro_vazao(ano: int, horas_dia: float, dias_semana: float,
 # --------------------------------------------------------------------------------------
 
 
-def auditar_equipamentos(proc, q_estavel: float | None, q_ot: float | None,
+def auditar_equipamentos(proc: Processo, q_estavel: float | None, q_ot: float | None,
                          nd_m: float | None, vazao_adotada: float | None,
                          horas_dia: float | None) -> dict:
     """Cruzamento da capacidade do poco com os equipamentos declarados."""
@@ -168,11 +171,16 @@ def escolher_vazao_adotada(hidraulica: dict, preferencia: str = "auto") -> dict:
         return {"vazao": q_est, "origem": "Q_estavel",
                 "justificativa": "Sem Q_ot calculada (falta ensaio de recuperacao); "
                                  "adota-se Q_estavel com ressalva expressa no parecer."}
-    if q_jl:
-        return {"vazao": q_jl, "origem": "Jacob-Lohman",
-                "justificativa": "Sem Q_estavel/Q_ot: usada a estimativa de "
-                                 "Jacob-Lohman como ultimo recurso."}
-    return {"vazao": None, "origem": None, "justificativa": "Sem dados hidraulicos."}
+    # Jacob-Lohman nao entra aqui como "ultimo recurso": e uma contraprova de
+    # regime permanente com recarga, calculada a partir do proprio Q_estavel, e
+    # coloca-la no quadro de vazao levaria uma estimativa informativa para a
+    # transcricao do SIOUT.
+    nota_jl = (f" Ha estimativa de Jacob-Lohman ({q_jl:.2f} m3/h), mas ela serve "
+               "de contraprova e nao substitui o ensaio de bombeamento."
+               if q_jl else "")
+    return {"vazao": None, "origem": None,
+            "justificativa": "Sem Q_estavel nem Q_ot: o quadro de vazao nao pode "
+                             "ser montado." + nota_jl}
 
 
 # --------------------------------------------------------------------------------------
@@ -180,7 +188,7 @@ def escolher_vazao_adotada(hidraulica: dict, preferencia: str = "auto") -> dict:
 # --------------------------------------------------------------------------------------
 
 
-def executar(proc, ano: int | None = None, preferencia_vazao: str = "auto") -> dict:
+def executar(proc: Processo, ano: int | None = None, preferencia_vazao: str = "auto") -> dict:
     """Executa o Agente 4 e devolve o balanco completo + auditorias."""
     import datetime as _dt
 
