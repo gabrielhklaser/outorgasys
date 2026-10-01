@@ -445,8 +445,11 @@ def calcular(ne: float | None, nd_final: float | None,
     # Contraprova de Jacob-Lohman -------------------------------------------------------
     Q_jl = None
     if T_m2h and s_max:
-        # Q = 2*pi*T*s / ln(2.25*T*t/(r^2*S)), com S de 1e-4 e t de 1 ano (525600 min)
-        # em unidades consistentes (m, h). Usado apenas como ordem de grandeza.
+        # Cooper-Jacob invertido: s = Q / (4*pi*T) * ln(2.25*T*t / (r^2*S))
+        #   ->  Q = 4*pi*T*s / ln(2.25*T*t / (r^2*S)),
+        # com S de 1e-4 e t de 1 ano, em unidades consistentes (m, dia). Conferido
+        # contra Theis exato (Q = 4*pi*T*s / W(u)) em tests/test_theis.py. Usado
+        # apenas como ordem de grandeza; as premissas aparecem na tabela do laudo.
         r = raio_poco_m if raio_poco_m and raio_poco_m > 0 else 0.10
         S = 1e-4
         T_m2_dia = T_m2h * 24.0
@@ -454,7 +457,7 @@ def calcular(ne: float | None, nd_final: float | None,
         try:
             arg = (2.25 * T_m2_dia * t_dia) / (r * r * S)
             if arg > 1.0:
-                Q_jl = (2 * math.pi * T_m2_dia * s_max) / math.log(arg) / 24.0  # m3/h
+                Q_jl = (4 * math.pi * T_m2_dia * s_max) / math.log(arg) / 24.0  # m3/h
                 detalhes["jacob_lohman"] = {"raio_m": r, "S_adotado": S,
                                             "t_dias": t_dia, "arg": arg}
         except Exception:  # noqa: BLE001

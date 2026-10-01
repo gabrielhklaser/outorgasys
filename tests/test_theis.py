@@ -70,6 +70,45 @@ def test_calcular_nd_acima_de_ne_gera_erro():
     assert any("nao positivo" in e for e in res.erros)
 
 
+def _ensaio_sintetico(q=12.0, delta=0.5, ne=10.0, nd=13.0, t_total=1440.0):
+    tempo = list(range(0, int(t_total) + 1, 60))
+    t_linha = [10, 30, 60, 120, 240]
+    s_res = [delta * math.log10((t_total + x) / x) for x in t_linha]
+    return theis.calcular(ne=ne, nd_final=nd, tempo_min=tempo, vazao_m3h=[q] * len(tempo),
+                          t_linha_min=t_linha, s_residual_m=s_res,
+                          tempo_bombeamento_total_min=t_total)
+
+
+def test_contraprova_jacob_lohman_coincide_com_theis_exato():
+    """Q = 4*pi*T*s / W(u), com W a funcao de poco de Theis (referencia independente).
+
+    A aproximacao de Cooper-Jacob, s = Q/(4*pi*T) * ln(2,25*T*t/(r2*S)), vale para
+    u pequeno; aqui u e da ordem de 1e-11. O codigo usava 2*pi e saia pela metade.
+    """
+    from scipy.special import exp1
+
+    res = _ensaio_sintetico()
+    T_dia = res.T_m2h * 24.0
+    r, S, t_dias = 0.10, 1e-4, 365.0
+    u = r * r * S / (4.0 * T_dia * t_dias)
+    esperado_m3h = 4.0 * math.pi * T_dia * res.s_max / exp1(u) / 24.0
+
+    assert abs(res.Q_jacob_lohman - esperado_m3h) / esperado_m3h < 1e-3
+
+
+def test_premissas_da_contraprova_aparecem_na_tabela_de_memoria():
+    from outorgasys.agents import agente3_hidro as a3
+
+    res = _ensaio_sintetico()
+    linhas = a3.tabela_memoria({"parametros": {"Q_jacob_lohman_m3h": res.Q_jacob_lohman},
+                                "memoria": res.to_dict()})
+    criterio = next(l["criterio"] for l in linhas if "Jacob-Lohman" in l["parametro"])
+
+    assert "4π" in criterio
+    assert "premissas adotadas" in criterio
+    assert "S = 0.0001" in criterio and "t = 365 d" in criterio and "r = 0.1 m" in criterio
+
+
 if __name__ == "__main__":
     for nome, fn in list(globals().items()):
         if nome.startswith("test_") and callable(fn):

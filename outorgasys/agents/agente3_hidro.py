@@ -202,6 +202,16 @@ def calcular(proc, usar_q_manual: bool = False, q_manual: float | None = None,
     return saida
 
 
+def _criterio_jacob_lohman(memoria: dict) -> str:
+    """Formula e premissas da contraprova, para o leitor do laudo ver o que foi adotado."""
+    base = "Q = 4π·T·s / ln(2,25·T·t / (r²·S))"
+    d = (memoria.get("detalhes") or {}).get("jacob_lohman")
+    if not d:
+        return base
+    return (f"{base}; premissas adotadas: S = {d['S_adotado']:g}, "
+            f"t = {d['t_dias']:g} d, r = {d['raio_m']:g} m")
+
+
 def tabela_memoria(saida: dict) -> list[dict]:
     """Linhas da tabela 'Parametros Hidraulicos e Resultados do Ensaio'."""
     p = saida.get("parametros", {})
@@ -237,7 +247,7 @@ def tabela_memoria(saida: dict) -> list[dict]:
         ("Vazao otima de explotacao (Q_ot)", f(p.get("Q_ot_m3h"), 2, "m3/h"),
          "Q_ot = q(t) · s_max"),
         ("Contraprova Jacob-Lohman", f(p.get("Q_jacob_lohman_m3h"), 2, "m3/h"),
-         "Estimativa independente de longo prazo"),
+         _criterio_jacob_lohman(m)),
         ("Duracao do ensaio", f(p.get("duracao_h"), 1, "h"),
          f"{f(p.get('tempo_bombeamento_min'), 0, 'min')}"),
     ]
