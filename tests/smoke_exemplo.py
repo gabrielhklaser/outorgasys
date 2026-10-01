@@ -88,7 +88,8 @@ def main() -> int:
                 falhas += 1
                 continue
             n_md = len(at.markdown or [])
-            n_img = len(at.get("image") or [])
+            # o AppTest chama o elemento de "image" (1.50+) ou "imgs" (anteriores)
+            n_img = len(at.get("image") or []) + len(at.get("imgs") or [])
             print(f"[OK     ] {rotulo:14s} {arquivo}  ({n_md} markdown, "
                   f"{n_img} imagens)")
         except Exception as exc:  # noqa: BLE001

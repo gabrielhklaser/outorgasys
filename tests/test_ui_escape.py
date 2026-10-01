@@ -30,21 +30,26 @@ def test_escapar_converte_none_e_numeros():
     assert ui.escapar("a & b <c>") == "a &amp; b &lt;c&gt;"
 
 
-def _app_blocos_html():
-    from outorgasys import ui
+# Script gravado em arquivo: from_function e from_string falham no AppTest do
+# Streamlit 1.49 quando rodam depois de testes que usam st.rerun().
+_SCRIPT_BLOCOS_HTML = """
+from outorgasys import ui
 
-    carga = '<img src=x onerror="alert(1)"><script>alert(2)</script>'
-    ui.cabecalho(carga, carga)
-    ui.passo(1, carga)
-    ui.fonte(carga)
-    ui.chips([(carga, "info")])
-    ui.mostrar_pendencias([{
-        "codigo": carga, "titulo": carga, "mensagem": carga, "sugestao": carga,
-        "bloqueante": True}])
+carga = '<img src=x onerror="alert(1)"><script>alert(2)</script>'
+ui.cabecalho(carga, carga)
+ui.passo(1, carga)
+ui.fonte(carga)
+ui.chips([(carga, "info")])
+ui.mostrar_pendencias([{
+    "codigo": carga, "titulo": carga, "mensagem": carga, "sugestao": carga,
+    "bloqueante": True}])
+"""
 
 
-def test_blocos_html_da_ui_escapam_conteudo():
-    at = AppTest.from_function(_app_blocos_html, default_timeout=60)
+def test_blocos_html_da_ui_escapam_conteudo(tmp_path):
+    script = tmp_path / "blocos_html.py"
+    script.write_text(_SCRIPT_BLOCOS_HTML, encoding="utf-8")
+    at = AppTest.from_file(str(script), default_timeout=60)
     at.run()
     assert not at.exception, [str(e.value) for e in at.exception]
 
