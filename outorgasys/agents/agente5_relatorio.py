@@ -14,13 +14,16 @@ from __future__ import annotations
 
 import traceback
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from .. import config as C
 from ..report import laudo, pdf as pdf_mod
 
+if TYPE_CHECKING:  # so para anotacao: evita carregar state em runtime
+    from ..state import Processo
 
-def gerar(proc, resp_tecnico: dict | None = None, art: str | None = None,
+
+def gerar(proc: Processo, resp_tecnico: dict | None = None, art: str | None = None,
           gerar_pdf: bool = True) -> dict:
     """Executa o Agente 5 e devolve os caminhos dos documentos gerados."""
     saida: dict[str, Any] = {
@@ -83,7 +86,7 @@ def gerar(proc, resp_tecnico: dict | None = None, art: str | None = None,
 # --------------------------------------------------------------------------------------
 
 
-def gerar_minuta(proc, estrutura: dict) -> str:
+def gerar_minuta(proc: Processo, estrutura: dict) -> str:
     """Minuta com os campos a transcrever no formulario do SIOUT RS."""
     e = estrutura
     hid = (proc.get("hidraulica") or proc.get("hidrogeologia") or {}).get("parametros") or {}

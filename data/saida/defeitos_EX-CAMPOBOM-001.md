@@ -1,58 +1,43 @@
 # RELATORIO DE DEFEITOS E PLANO DE CORRECAO
 
 **Processo:** EX-CAMPOBOM-001  
-**Gerado em:** 25/09/2026 17:54:05  
+**Gerado em:** 01/10/2026 16:37:00  
 **Sistema:** outorgasys v1.0.0
 
 ## 1. Resumo
 
-- Total de achados: **11**
-- Bloqueantes (criticos): **1**
+- Total de achados: **10**
+- Bloqueantes (criticos): **0**
 
 | Severidade | Quantidade |
 |---|---|
-| critico | 1 |
 | info | 10 |
 
 | Agente | Quantidade |
 |---|---|
-| - - Ambiente | 1 |
 | 2 - Inteligencia Espacial e Automacao GIS | 10 |
 
 | Categoria | Quantidade |
 |---|---|
 | Base geoespacial | 10 |
-| Ambiente e dependencias | 1 |
 
 ## 2. Ambiente
 
 ```json
 {
-  "python": "3.14.7",
-  "plataforma": "Windows-11-10.0.26200-SP0",
+  "python": "3.11.2",
+  "plataforma": "Linux-6.1.158+-x86_64-with-glibc2.36",
   "skills": {
     "shapely-compute": true,
     "geopandas": true,
     "geomaster": true,
     "gis-multicamadas": true,
-    "python": "C:\\Users\\Gabriel\\AppData\\Local\\Programs\\Python\\Python314\\python.EXE"
+    "python": "/usr/bin/python"
   }
 }
 ```
 
 ## 3. Achados e plano de correcao
-
-### D010 - [CRITICO] Dependencias ausentes
-
-- **Categoria:** Ambiente e dependencias
-- **Agente responsavel:** N/A
-- **Origem:** diagnostico de ambiente
-- **Detalhe:** Pacotes nao importaveis: fiona
-- **Sugestao:** Reinstale com: pip install -r requirements.txt
-
-**Passos de correcao:**
-1. Reinstalar as dependencias: pip install -r requirements.txt.
-2. Reiniciar a aplicacao.
 
 ### D001 - [INFO] Camada oficial ausente, com substituto declarado: regioes_hidrograficas
 
@@ -180,7 +165,7 @@
 3. Se o servidor de origem estiver bloqueado, converter a base no ambiente do usuario e depositar o .gpkg em data/vetoriais/.
 4. Reprocessar o Agente 2 para o ponto informado.
 
-### D011 - [INFO] Camadas obrigatorias ausentes, porem com substituto declarado
+### D010 - [INFO] Camadas obrigatorias ausentes, porem com substituto declarado
 
 - **Categoria:** Base geoespacial
 - **Agente responsavel:** 2
