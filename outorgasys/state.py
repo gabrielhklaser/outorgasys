@@ -14,10 +14,10 @@ import hashlib
 import json
 import logging
 import re
+import secrets
 import shutil
 import tempfile
 import time
-import uuid
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
@@ -150,7 +150,14 @@ def _restaurar_json(obj: Any) -> Any:
 
 
 def novo_id() -> str:
-    return time.strftime("%Y%m%d") + "-" + uuid.uuid4().hex[:6].upper()
+    """Identificador do processo: data de criacao + 40 bits aleatorios.
+
+    ``secrets`` e nao ``uuid4`` fatiado: o sufixo de 24 bits anterior dava cerca
+    de 16 milhoes de possibilidades por dia, o que e pouco para um identificador
+    que aparece na URL de um app publico. O formato continua cabendo no regex de
+    ``validar_pid``.
+    """
+    return time.strftime("%Y%m%d") + "-" + secrets.token_hex(5).upper()
 
 
 def _vazio_processo(pid: str) -> dict:
