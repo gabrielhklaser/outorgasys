@@ -18,7 +18,7 @@ import functools
 import json
 import traceback
 from pathlib import Path
-from typing import Any, Sequence
+from typing import TYPE_CHECKING, Any, Sequence
 
 import geopandas as gpd  # noqa: PLC0415
 import pandas as pd  # noqa: PLC0415
@@ -28,6 +28,9 @@ from .. import config as C
 from .. import rules
 from ..gis import cartografia, geo, layers, overpass
 from ..gis import skill_bridge as skills
+
+if TYPE_CHECKING:  # so para anotacao: evita carregar state em runtime
+    from ..state import Processo
 
 
 # --------------------------------------------------------------------------------------
@@ -142,7 +145,7 @@ def feicao_nomeada_mais_proxima(gdf, ponto_geo, epsg_utm: str,
 # --------------------------------------------------------------------------------------
 
 
-def analisar(proc, lat: float, lon: float, raio_seguranca: float = C.RAIO_SEGURANCA_M,
+def analisar(proc: Processo, lat: float, lon: float, raio_seguranca: float = C.RAIO_SEGURANCA_M,
              raio_contexto: float = 3000.0, gerar_mapas: bool = True,
              usar_osm: bool = True) -> dict:
     """Executa o Agente 2 e devolve o dicionario de saida estruturada."""

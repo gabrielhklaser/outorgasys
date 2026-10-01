@@ -14,11 +14,14 @@ Responsavel por:
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from .. import config as C
 from .. import rules
 from ..hydro import planilha
+
+if TYPE_CHECKING:  # so para anotacao: evita carregar state em runtime
+    from ..state import Processo
 
 
 def enquadrar(diametro_util_pol: float | None) -> dict:
@@ -52,7 +55,7 @@ def parametros_potabilidade() -> list[dict]:
     ]
 
 
-def validar(proc) -> rules.ResultadoValidacao:
+def validar(proc: Processo) -> rules.ResultadoValidacao:
     """Bateria completa de regras do Agente 1 sobre o processo."""
     return rules.validar_triagem(proc.data)
 
@@ -67,13 +70,13 @@ def resumo_validacao(res: rules.ResultadoValidacao) -> dict:
     }
 
 
-def pode_avancar(proc) -> tuple[bool, list[str]]:
+def pode_avancar(proc: Processo) -> tuple[bool, list[str]]:
     """True apenas se nao ha pendencias bloqueantes do Agente 1."""
     res = validar(proc)
     return res.ok, [f"{p.codigo}: {p.titulo}" for p in res.bloqueios]
 
 
-def _registro_igual(proc, chave: str, arquivo) -> dict | None:
+def _registro_igual(proc: Processo, chave: str, arquivo) -> dict | None:
     """Registro ja existente para este mesmo arquivo (nome e conteudo), ou None."""
     import hashlib  # noqa: PLC0415
 
@@ -95,7 +98,7 @@ def _registro_igual(proc, chave: str, arquivo) -> dict | None:
     return None
 
 
-def registrar_upload(proc, chave: str, arquivo, papel: str | None = None) -> dict:
+def registrar_upload(proc: Processo, chave: str, arquivo, papel: str | None = None) -> dict:
     """Persiste um arquivo enviado e devolve o registro criado."""
     if arquivo is None:
         return {}
@@ -118,7 +121,7 @@ def registrar_upload(proc, chave: str, arquivo, papel: str | None = None) -> dic
     return registro
 
 
-def registrar_upload_manual(proc, chave: str, caminho, nome: str | None = None,
+def registrar_upload_manual(proc: Processo, chave: str, caminho, nome: str | None = None,
                             meta: dict | None = None) -> dict:
     """Registra um arquivo JA existente em disco (gerado pela plataforma) como
     se fosse um envio do usuario. Usado pelo conjunto sintetico do Agente 3.
@@ -143,7 +146,7 @@ def registrar_upload_manual(proc, chave: str, caminho, nome: str | None = None,
     return registro
 
 
-def arquivos_enviados(proc) -> dict:
+def arquivos_enviados(proc: Processo) -> dict:
     docs = proc.get("documentos") or {}
     return {
         "ensaio_bombeamento": docs.get("ensaio_bombeamento"),
@@ -154,7 +157,7 @@ def arquivos_enviados(proc) -> dict:
     }
 
 
-def checklist_visual(proc) -> list[dict]:
+def checklist_visual(proc: Processo) -> list[dict]:
     """Checklist em formato pronto para a interface."""
     enf = proc.get("enquadramento") or {}
     docs = proc.get("documentos") or {}
@@ -213,7 +216,7 @@ def checklist_visual(proc) -> list[dict]:
     return itens
 
 
-def triar_documentos_com_docling(proc) -> dict[str, Any]:
+def triar_documentos_com_docling(proc: Processo) -> dict[str, Any]:
     """Executa a triagem estruturada com Docling e os agentes do GabeBrain
     para todos os documentos PDF anexados ao processo.
 
