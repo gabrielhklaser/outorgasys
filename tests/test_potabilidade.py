@@ -9,6 +9,8 @@ organoleptico).
 
 from __future__ import annotations
 
+import pytest
+
 from outorgasys import config as C
 from outorgasys.docreader import extrair_qualidade_agua
 from outorgasys.docreader.engine import DocumentoProcessado
@@ -60,3 +62,28 @@ def test_dureza_acima_de_300_e_nao_conforme():
 def test_dureza_ate_300_e_conforme():
     doc = _doc(["Dureza total      86 mg/L CaCO3     <= 300 mg/L     Sim"])
     assert _status(doc, "dureza") == "conforme"
+
+
+# --- resultados microbiologicos ------------------------------------------------
+
+
+@pytest.mark.parametrize("resultado", [
+    "Presente", "Presenca em 100 mL", "Positivo", "Detectado", "12 NMP/100 mL",
+])
+def test_resultado_microbiologico_positivo_e_nao_conforme(resultado):
+    doc = _doc([f"Escherichia coli      {resultado}      Ausencia em 100 mL     Nao"])
+    assert _status(doc, "escherichia_coli") == "nao_conforme"
+
+
+@pytest.mark.parametrize("resultado", [
+    "Ausente", "Ausencia em 100 mL", "Negativo", "Nao detectado", "< 1,0 NMP/100 mL",
+    "0 UFC/100 mL",
+])
+def test_resultado_microbiologico_negativo_e_conforme(resultado):
+    doc = _doc([f"Escherichia coli      {resultado}      Ausencia em 100 mL     Sim"])
+    assert _status(doc, "escherichia_coli") == "conforme"
+
+
+def test_resultado_microbiologico_ininteligivel_nao_atesta_conformidade():
+    doc = _doc(["Coliformes totais      ver anexo      Ausencia em 100 mL     -"])
+    assert _status(doc, "coliformes_totais") == "nao_conforme"

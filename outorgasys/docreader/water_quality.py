@@ -10,6 +10,7 @@ Padroes de Potabilidade brasileiros (Anexo 1 e Anexo 10 da Portaria 888/2021).
 from __future__ import annotations
 
 import re
+import unicodedata
 from typing import Any, Dict, List, Optional
 from .engine import DocumentoProcessado
 
@@ -31,6 +32,33 @@ LIMITES_POTABILIDADE = {
     "ferro": {"rotulo": "Ferro Total", "vmp": 0.3, "unidade": "mg/L", "tipo": "max"},
     "manganes": {"rotulo": "Manganes", "vmp": 0.1, "unidade": "mg/L", "tipo": "max"},
 }
+
+
+_NEGATIVO = re.compile(r"\b(ausen\w*|nao\s+detectad\w*|negativ\w*)")
+_POSITIVO = re.compile(r"\b(presen\w*|positiv\w*|detectad\w*)")
+
+
+def _sem_acento(texto: str) -> str:
+    return unicodedata.normalize("NFKD", texto).encode("ascii", "ignore").decode()
+
+
+def _microbio_conforme(raw: str, num: Optional[float]) -> tuple[bool, str]:
+    """Interpreta resultado de coliformes/E. coli; o padrao exige ausencia.
+
+    Devolve (conforme, motivo). Resultado que nao se consegue interpretar nao
+    atesta conformidade.
+    """
+    r = _sem_acento(raw.lower())
+    if _NEGATIVO.search(r):
+        return True, "Em conformidade com a Portaria 888/2021"
+    if _POSITIVO.search(r):
+        return False, "Presenca detectada (exige ausencia)"
+    if raw.lstrip().startswith("<"):
+        return True, "Abaixo do limite de quantificacao"
+    if num is not None:
+        return (num == 0), ("Em conformidade com a Portaria 888/2021" if num == 0
+                            else "Presenca detectada (exige ausencia)")
+    return False, f"Resultado nao interpretavel ({raw!r}): confira o laudo"
 
 
 _SEPARA_COLUNAS = re.compile(r"\s{2,}|\t")
@@ -144,9 +172,9 @@ def extrair_qualidade_agua(doc: DocumentoProcessado) -> Dict[str, Any]:
         motivo = "Em conformidade com a Portaria 888/2021"
 
         if tipo == "microbio":
-            if "aus" not in raw.lower() and (num is not None and num > 0):
+            ok_micro, motivo = _microbio_conforme(raw, num)
+            if not ok_micro:
                 status = "nao_conforme"
-                motivo = "Presenca detectada (exige ausencia)"
                 conforme_geral = False
         elif tipo == "max" and num is not None:
             if num > meta["vmp"]:
