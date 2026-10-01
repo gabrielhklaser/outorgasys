@@ -31,6 +31,25 @@ LIMITES_POTABILIDADE = {
 }
 
 
+_SEPARA_COLUNAS = re.compile(r"\s{2,}|\t")
+
+
+def _linha_de_tabela(linha: str) -> Optional[tuple[str, str]]:
+    """Divide 'Parametro   Resultado   VMP ...' em (parametro, resultado).
+
+    Leitores de PDF em modo layout (pypdf) devolvem cada linha de tabela com as
+    colunas separadas por dois ou mais espacos.
+    """
+    colunas = [c for c in _SEPARA_COLUNAS.split(linha.strip()) if c]
+    return (colunas[0], colunas[1]) if len(colunas) >= 2 else None
+
+
+def _nomeia_parametro(nome_coluna: str, chave: str, rotulo: str) -> bool:
+    """O texto da primeira coluna refere-se a este parametro?"""
+    n = nome_coluna.lower()
+    return rotulo.lower() in n or bool(re.search(rf"\b{re.escape(chave)}\b", n))
+
+
 def _converter_valor(val_str: str) -> Optional[float]:
     """Converte representacoes textuais de resultados ('< 5,0', '0,42 uT') para float."""
     s = val_str.replace("mg/L", "").replace("uT", "").replace("uH", "").replace("NTU", "").strip()
@@ -81,8 +100,18 @@ def extrair_qualidade_agua(doc: DocumentoProcessado) -> Dict[str, Any]:
     linhas = texto.splitlines()
     for linha in linhas:
         l_lower = linha.lower()
+        colunas = _linha_de_tabela(linha)
         for chave_padrao, meta in LIMITES_POTABILIDADE.items():
             if chave_padrao in parametros_encontrados:
+                continue
+            if colunas and _nomeia_parametro(colunas[0], chave_padrao, meta["rotulo"]):
+                parametros_encontrados[chave_padrao] = {
+                    "parametro": meta["rotulo"],
+                    "resultado_bruto": colunas[1],
+                    "valor_num": _converter_valor(colunas[1]),
+                    "pagina": 1,
+                    "fonte": "texto_tabela",
+                }
                 continue
             nome_padrao = meta["rotulo"].lower()
             if nome_padrao in l_lower or chave_padrao in l_lower:
