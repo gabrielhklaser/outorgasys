@@ -159,9 +159,7 @@ def _imagem(caminho: str | Path | None, largura: float = 17.0 * cm,
             altura_max: float = 10.5 * cm) -> Any:
     if not caminho:
         return _p("_Imagem nao disponivel._", getSampleStyleSheet()["BodyText"])
-    p = Path(caminho)
-    if not p.is_absolute():
-        p = C.ROOT / p
+    p = C.caminho_absoluto(caminho)
     if not p.exists():
         return _p(f"_Imagem nao encontrada: {caminho}_",
                   getSampleStyleSheet()["BodyText"])
