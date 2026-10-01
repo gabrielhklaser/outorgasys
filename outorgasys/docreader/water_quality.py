@@ -13,7 +13,9 @@ import re
 from typing import Any, Dict, List, Optional
 from .engine import DocumentoProcessado
 
-# Limites da Portaria GM/MS n. 888/2021
+# Limites da Portaria GM/MS n. 888/2021 (Anexos 1, 9 e 11); os mesmos valores
+# aparecem em config.PARAMETROS_POTABILIDADE e tests/test_potabilidade.py confere
+# que as duas tabelas nao divergem.
 LIMITES_POTABILIDADE = {
     "coliformes_totais": {"rotulo": "Coliformes Totais", "vmp": "Ausencia em 100 mL", "tipo": "microbio"},
     "escherichia_coli": {"rotulo": "Escherichia coli", "vmp": "Ausencia em 100 mL", "tipo": "microbio"},
@@ -25,7 +27,7 @@ LIMITES_POTABILIDADE = {
     "nitrato": {"rotulo": "Nitrato (como N)", "vmp": 10.0, "unidade": "mg/L", "tipo": "max"},
     "cloreto": {"rotulo": "Cloreto", "vmp": 250.0, "unidade": "mg/L", "tipo": "max"},
     "sulfato": {"rotulo": "Sulfato", "vmp": 250.0, "unidade": "mg/L", "tipo": "max"},
-    "dureza": {"rotulo": "Dureza Total", "vmp": 500.0, "unidade": "mg/L", "tipo": "max"},
+    "dureza": {"rotulo": "Dureza Total", "vmp": 300.0, "unidade": "mg/L", "tipo": "max"},
     "ferro": {"rotulo": "Ferro Total", "vmp": 0.3, "unidade": "mg/L", "tipo": "max"},
     "manganes": {"rotulo": "Manganes", "vmp": 0.1, "unidade": "mg/L", "tipo": "max"},
 }
