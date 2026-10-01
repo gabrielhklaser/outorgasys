@@ -254,7 +254,13 @@ def triar_documentos_com_docling(proc) -> dict[str, Any]:
                 "confianca": doc.confianca_fonte,
                 "justificativa": doc.justificativa_fonte,
                 "paginas": doc.num_paginas,
+                "avisos": list(doc.avisos),
             }
+
+            # O Docling cai para texto simples (ou perde uma tabela) em silencio
+            # se isto nao for registrado; quem assina precisa ver o que faltou.
+            for aviso in doc.avisos:
+                proc.log(1, f"Leitura de '{chave}': {aviso}", nivel="aviso")
 
             # Extracao especifica de analise laboratorial (Portaria 888/2021)
             if "analise" in chave or "laboratorial" in chave or "qualidade" in chave:
