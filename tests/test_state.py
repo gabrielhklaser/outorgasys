@@ -3,6 +3,8 @@
 
 from __future__ import annotations
 
+import json
+
 import pandas as pd
 import pytest
 
@@ -115,3 +117,28 @@ def test_pid_invalido_e_rejeitado(dados_tmp, pid):
 @pytest.mark.parametrize("pid", ["EX-CAMPOBOM-001", "20260930-A1B2C3", "T_x-1"])
 def test_pid_valido_e_aceito(dados_tmp, pid):
     assert Processo._json_de(pid).name == f"{pid}.json"
+
+
+# --- leitura tolerante ------------------------------------------------------------
+
+
+def test_json_com_bom_do_windows_carrega(dados_tmp):
+    dados = {"id": "T-BOM-001", "requerente": {"nome": "Ação"}}
+    (C.PROCESSOS / "T-BOM-001.json").write_bytes(
+        b"\xef\xbb\xbf" + json.dumps(dados).encode("utf-8"))
+
+    p = Processo.carregar("T-BOM-001")
+
+    assert p is not None and p["requerente"]["nome"] == "Ação"
+
+
+def test_json_corrompido_e_preservado_em_vez_de_sobrescrito(dados_tmp):
+    caminho = C.PROCESSOS / "T-RUIM-001.json"
+    caminho.write_text('{"id": "T-RUIM-001", "requerente": {"nome": ', encoding="utf-8")
+
+    assert Processo.carregar("T-RUIM-001") is None
+
+    copias = list(C.PROCESSOS.glob("T-RUIM-001.json.corrompido-*"))
+    assert len(copias) == 1
+    assert copias[0].read_text(encoding="utf-8").startswith('{"id": "T-RUIM-001"')
+    assert not caminho.exists()

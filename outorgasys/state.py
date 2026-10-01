@@ -238,8 +238,14 @@ class Processo:
         if not p.exists():
             return None
         try:
-            return _restaurar_json(json.loads(p.read_text(encoding="utf-8")))
-        except Exception:  # noqa: BLE001
+            # utf-8-sig: o Bloco de Notas do Windows grava UTF-8 com BOM.
+            return _restaurar_json(json.loads(p.read_text(encoding="utf-8-sig")))
+        except ValueError as exc:
+            # JSON ilegivel: guarda os bytes originais em vez de deixar o proximo
+            # salvar() sobrescrever o arquivo com um processo vazio.
+            copia = p.with_name(f"{p.name}.corrompido-{time.strftime('%Y%m%d%H%M%S')}")
+            p.replace(copia)
+            log.warning("JSON do processo %s ilegivel (%s); copia em %s", pid, exc, copia.name)
             return None
 
     # ------------------------------------------------------------------ caminhos
