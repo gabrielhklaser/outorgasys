@@ -98,17 +98,25 @@ def identificar_q_estavel(tempo_min: Sequence[Any],
     do ultimo terco da serie e sinaliza a ressalva.
     """
     t, q = _arr(tempo_min), _arr(vazao_m3h)
+    nota = ""
+    if len(t) != len(q):
+        # Planilha com lacunas na coluna Q: sem como parear, usa os primeiros pares
+        # em vez de levantar ValueError no broadcast do numpy.
+        n_par = min(len(t), len(q))
+        nota = (f" Tempos ({len(t)}) e vazoes ({len(q)}) em numero diferente; "
+                f"usados os {n_par} primeiros pares.")
+        t, q = t[:n_par], q[:n_par]
     mask = _finito(t) & _finito(q) & (q > 0)
     t, q = t[mask], q[mask]
     n = len(q)
     if n == 0:
         return VazaoEstabilizada(None, None, 0, None, "sem dados",
-                                 observacao="Nenhuma vazao valida informada.")
+                                 observacao="Nenhuma vazao valida informada." + nota)
     if n < 3:
         return VazaoEstabilizada(float(np.median(q)), 0, n, 0.0, "mediana (serie curta)",
                                  serie=q.tolist(), tempo_inicio_min=float(t[0]),
                                  observacao="Serie de vazoes muito curta para teste de "
-                                            "estabilizacao; adotada a mediana.")
+                                            "estabilizacao; adotada a mediana." + nota)
 
     # Ordena por tempo e garante monotonicidade crescente.
     ordem = np.argsort(t, kind="stable")
@@ -130,7 +138,7 @@ def identificar_q_estavel(tempo_min: Sequence[Any],
                 serie=janela.tolist(),
                 tempo_inicio_min=float(t[n - i]),
                 observacao=f"Patamar de {i} leituras a partir de t = {t[n - i]:.0f} min "
-                           f"(CV = {cv * 100:.1f}%).",
+                           f"(CV = {cv * 100:.1f}%)." + nota,
             )
             break
 
@@ -152,7 +160,7 @@ def identificar_q_estavel(tempo_min: Sequence[Any],
                 serie=janela.tolist(),
                 tempo_inicio_min=float(t[n - i]),
                 observacao=f"Patamar de {i} leituras a partir de t = {t[n - i]:.0f} min "
-                           f"(CV = {cv * 100:.1f}%).",
+                           f"(CV = {cv * 100:.1f}%)." + nota,
             )
         return melhor
 
@@ -169,7 +177,7 @@ def identificar_q_estavel(tempo_min: Sequence[Any],
         serie=janela.tolist(),
         tempo_inicio_min=float(t[corte]),
         observacao="Nao foi identificado patamar com CV <= %.0f%%; adotou-se a mediana "
-                   "do ultimo terco da serie. Revise a planilha." % (tolerancia_cv * 100),
+                   "do ultimo terco da serie. Revise a planilha." % (tolerancia_cv * 100) + nota,
     )
 
 
@@ -329,8 +337,14 @@ def calcular(ne: float | None, nd_final: float | None,
              t_linha_min: Sequence[Any] | None = None,
              s_residual_m: Sequence[Any] | None = None,
              raio_poco_m: float | None = None,
-             tempo_bombeamento_total_min: float | None = None) -> ResultadoHidraulico:
-    """Executa a memoria de calculo completa descrita no prompt do Agente 3."""
+             tempo_bombeamento_total_min: float | None = None,
+             tempo_vazao_min: Sequence[Any] | None = None) -> ResultadoHidraulico:
+    """Executa a memoria de calculo completa descrita no prompt do Agente 3.
+
+    ``tempo_vazao_min`` e o eixo de tempo das leituras de ``vazao_m3h``; use-o
+    quando a coluna Q tem lacunas e os tempos das demais colunas nao casam com ela.
+    Sem ele, ``tempo_min`` e usado.
+    """
     avisos: list[str] = []
     erros: list[str] = []
     detalhes: dict = {}
@@ -357,7 +371,9 @@ def calcular(ne: float | None, nd_final: float | None,
         erros.append("NE e/ou ND nao informados: impossivel calcular s_max.")
 
     # 2) Vazao estabilizada -----------------------------------------------------------
-    est = identificar_q_estavel(tempo_min or [], vazao_m3h or [])
+    est = identificar_q_estavel(
+        tempo_vazao_min if tempo_vazao_min is not None else (tempo_min or []),
+        vazao_m3h or [])
     q_estavel = est.q_estavel
     if q_estavel is None:
         erros.append("Nao foi possivel identificar a vazao estabilizada (Q_estavel).")
