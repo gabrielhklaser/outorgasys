@@ -110,6 +110,29 @@ def _sanear_json(obj: Any, _profundidade: int = 0) -> Any:
     return f"<{nome_tipo} nao serializavel>"
 
 
+def _restaurar_json(obj: Any) -> Any:
+    """Inverso de ``_sanear_json`` para DataFrames e Series.
+
+    Sem isto o processo carregado do disco traz o ensaio como dict
+    (``{"__tipo__": "dataframe", ...}``) e as paginas so funcionavam porque
+    relem a planilha a cada execucao.
+    """
+    if isinstance(obj, dict):
+        tipo = obj.get("__tipo__")
+        if tipo == "dataframe" and "colunas" in obj:
+            import pandas as pd  # noqa: PLC0415
+
+            return pd.DataFrame(obj.get("linhas") or [], columns=obj["colunas"])
+        if tipo == "serie":
+            import pandas as pd  # noqa: PLC0415
+
+            return pd.Series(obj.get("valores") or [])
+        return {k: _restaurar_json(v) for k, v in obj.items()}
+    if isinstance(obj, list):
+        return [_restaurar_json(v) for v in obj]
+    return obj
+
+
 def novo_id() -> str:
     return time.strftime("%Y%m%d") + "-" + uuid.uuid4().hex[:6].upper()
 
@@ -194,7 +217,7 @@ class Processo:
         if not p.exists():
             return None
         try:
-            return json.loads(p.read_text(encoding="utf-8"))
+            return _restaurar_json(json.loads(p.read_text(encoding="utf-8")))
         except Exception:  # noqa: BLE001
             return None
 
