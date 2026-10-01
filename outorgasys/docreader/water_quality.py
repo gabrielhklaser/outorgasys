@@ -10,10 +10,13 @@ Padroes de Potabilidade brasileiros (Anexo 1 e Anexo 10 da Portaria 888/2021).
 from __future__ import annotations
 
 import re
+import unicodedata
 from typing import Any, Dict, List, Optional
 from .engine import DocumentoProcessado
 
-# Limites da Portaria GM/MS n. 888/2021
+# Limites da Portaria GM/MS n. 888/2021 (Anexos 1, 9 e 11); os mesmos valores
+# aparecem em config.PARAMETROS_POTABILIDADE e tests/test_potabilidade.py confere
+# que as duas tabelas nao divergem.
 LIMITES_POTABILIDADE = {
     "coliformes_totais": {"rotulo": "Coliformes Totais", "vmp": "Ausencia em 100 mL", "tipo": "microbio"},
     "escherichia_coli": {"rotulo": "Escherichia coli", "vmp": "Ausencia em 100 mL", "tipo": "microbio"},
@@ -25,10 +28,56 @@ LIMITES_POTABILIDADE = {
     "nitrato": {"rotulo": "Nitrato (como N)", "vmp": 10.0, "unidade": "mg/L", "tipo": "max"},
     "cloreto": {"rotulo": "Cloreto", "vmp": 250.0, "unidade": "mg/L", "tipo": "max"},
     "sulfato": {"rotulo": "Sulfato", "vmp": 250.0, "unidade": "mg/L", "tipo": "max"},
-    "dureza": {"rotulo": "Dureza Total", "vmp": 500.0, "unidade": "mg/L", "tipo": "max"},
+    "dureza": {"rotulo": "Dureza Total", "vmp": 300.0, "unidade": "mg/L", "tipo": "max"},
     "ferro": {"rotulo": "Ferro Total", "vmp": 0.3, "unidade": "mg/L", "tipo": "max"},
     "manganes": {"rotulo": "Manganes", "vmp": 0.1, "unidade": "mg/L", "tipo": "max"},
 }
+
+
+_NEGATIVO = re.compile(r"\b(ausen\w*|nao\s+detectad\w*|negativ\w*)")
+_POSITIVO = re.compile(r"\b(presen\w*|positiv\w*|detectad\w*)")
+
+
+def _sem_acento(texto: str) -> str:
+    return unicodedata.normalize("NFKD", texto).encode("ascii", "ignore").decode()
+
+
+def _microbio_conforme(raw: str, num: Optional[float]) -> tuple[bool, str]:
+    """Interpreta resultado de coliformes/E. coli; o padrao exige ausencia.
+
+    Devolve (conforme, motivo). Resultado que nao se consegue interpretar nao
+    atesta conformidade.
+    """
+    r = _sem_acento(raw.lower())
+    if _NEGATIVO.search(r):
+        return True, "Em conformidade com a Portaria 888/2021"
+    if _POSITIVO.search(r):
+        return False, "Presenca detectada (exige ausencia)"
+    if raw.lstrip().startswith("<"):
+        return True, "Abaixo do limite de quantificacao"
+    if num is not None:
+        return (num == 0), ("Em conformidade com a Portaria 888/2021" if num == 0
+                            else "Presenca detectada (exige ausencia)")
+    return False, f"Resultado nao interpretavel ({raw!r}): confira o laudo"
+
+
+_SEPARA_COLUNAS = re.compile(r"\s{2,}|\t")
+
+
+def _linha_de_tabela(linha: str) -> Optional[tuple[str, str]]:
+    """Divide 'Parametro   Resultado   VMP ...' em (parametro, resultado).
+
+    Leitores de PDF em modo layout (pypdf) devolvem cada linha de tabela com as
+    colunas separadas por dois ou mais espacos.
+    """
+    colunas = [c for c in _SEPARA_COLUNAS.split(linha.strip()) if c]
+    return (colunas[0], colunas[1]) if len(colunas) >= 2 else None
+
+
+def _nomeia_parametro(nome_coluna: str, chave: str, rotulo: str) -> bool:
+    """O texto da primeira coluna refere-se a este parametro?"""
+    n = nome_coluna.lower()
+    return rotulo.lower() in n or bool(re.search(rf"\b{re.escape(chave)}\b", n))
 
 
 def _converter_valor(val_str: str) -> Optional[float]:
@@ -81,8 +130,18 @@ def extrair_qualidade_agua(doc: DocumentoProcessado) -> Dict[str, Any]:
     linhas = texto.splitlines()
     for linha in linhas:
         l_lower = linha.lower()
+        colunas = _linha_de_tabela(linha)
         for chave_padrao, meta in LIMITES_POTABILIDADE.items():
             if chave_padrao in parametros_encontrados:
+                continue
+            if colunas and _nomeia_parametro(colunas[0], chave_padrao, meta["rotulo"]):
+                parametros_encontrados[chave_padrao] = {
+                    "parametro": meta["rotulo"],
+                    "resultado_bruto": colunas[1],
+                    "valor_num": _converter_valor(colunas[1]),
+                    "pagina": 1,
+                    "fonte": "texto_tabela",
+                }
                 continue
             nome_padrao = meta["rotulo"].lower()
             if nome_padrao in l_lower or chave_padrao in l_lower:
@@ -113,9 +172,9 @@ def extrair_qualidade_agua(doc: DocumentoProcessado) -> Dict[str, Any]:
         motivo = "Em conformidade com a Portaria 888/2021"
 
         if tipo == "microbio":
-            if "aus" not in raw.lower() and (num is not None and num > 0):
+            ok_micro, motivo = _microbio_conforme(raw, num)
+            if not ok_micro:
                 status = "nao_conforme"
-                motivo = "Presenca detectada (exige ausencia)"
                 conforme_geral = False
         elif tipo == "max" and num is not None:
             if num > meta["vmp"]:
@@ -139,9 +198,17 @@ def extrair_qualidade_agua(doc: DocumentoProcessado) -> Dict[str, Any]:
             "pagina": achado["pagina"],
         })
 
+    avisos: List[str] = []
+    if not relatorio_conformidade:
+        # Nada lido nao e prova de conformidade: o veredito fica indeterminado.
+        conforme_geral = None
+        avisos.append("Nenhum parametro de potabilidade foi reconhecido no documento; "
+                      "a conformidade nao pode ser atestada automaticamente.")
+
     return {
         "arquivo": doc.nome,
         "conforme_potabilidade": conforme_geral,
         "parametros": relatorio_conformidade,
         "total_parametros_lidos": len(relatorio_conformidade),
+        "avisos": avisos,
     }

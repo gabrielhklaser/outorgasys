@@ -3,11 +3,13 @@
 
 from __future__ import annotations
 
+import html
 from pathlib import Path
 from typing import Any, Iterable, Sequence
 
 import streamlit as st
 
+from . import auth
 from . import config as C
 from .state import Processo, garantir_processo
 
@@ -51,6 +53,15 @@ CSS = """
 """
 
 
+def escapar(valor: Any) -> str:
+    """Escapa um valor para uso dentro de HTML cru (``unsafe_allow_html=True``).
+
+    Nome de arquivo, nome de camada e campos livres chegam aos blocos HTML da
+    interface; sem isto um nome como ``<img src=x onerror=...>`` virava markup.
+    """
+    return "" if valor is None else html.escape(str(valor))
+
+
 def aplicar_tema() -> None:
     st.set_page_config(
         page_title="OutorgaSys - SIOUT RS",
@@ -60,12 +71,15 @@ def aplicar_tema() -> None:
         menu_items={"About": f"{C.TITULO_SISTEMA}\n\nv{C.VERSAO}"},
     )
     st.markdown(CSS, unsafe_allow_html=True)
+    # Toda pagina chama aplicar_tema() primeiro; o portao fica aqui para nenhuma
+    # delas mostrar dados antes de a senha (quando configurada) ser informada.
+    auth.exigir_acesso()
 
 
 def cabecalho(titulo: str, subtitulo: str = "") -> None:
     st.markdown(
-        f'<div class="out-header"><h2>{titulo}</h2>'
-        f'<p>{subtitulo}</p></div>',
+        f'<div class="out-header"><h2>{escapar(titulo)}</h2>'
+        f'<p>{escapar(subtitulo)}</p></div>',
         unsafe_allow_html=True,
     )
 
@@ -78,7 +92,7 @@ def cabecalho(titulo: str, subtitulo: str = "") -> None:
 def chip(texto: str, tipo: str = "info") -> str:
     mapa = {"ok": "chip-ok", "pendente": "chip-pend", "bloqueio": "chip-bloq",
             "info": "chip-info", "off": "chip-off", "dispensado": "chip-off"}
-    return f'<span class="out-chip {mapa.get(tipo, "chip-info")}">{texto}</span>'
+    return f'<span class="out-chip {mapa.get(tipo, "chip-info")}">{escapar(texto)}</span>'
 
 
 def chips(itens: Iterable[tuple[str, str]]) -> None:
@@ -104,10 +118,10 @@ def mostrar_pendencias(pendencias: Sequence[dict], titulo: str = "Pendencias",
             rotulo = "BLOQUEANTE" if bloqueante else "RESSALVA"
             codigo = p.get("codigo", "")
             st.markdown(
-                f'<div class="{classe}"><b>{codigo}</b> '
+                f'<div class="{classe}"><b>{escapar(codigo)}</b> '
                 f'<span class="out-step">[{rotulo}]</span> — '
-                f'<b>{p.get("titulo", "")}</b><br/>{p.get("mensagem", "")}'
-                + (f'<br/><i>{p["sugestao"]}</i>' if p.get("sugestao") else "")
+                f'<b>{escapar(p.get("titulo", ""))}</b><br/>{escapar(p.get("mensagem", ""))}'
+                + (f'<br/><i>{escapar(p["sugestao"])}</i>' if p.get("sugestao") else "")
                 + "</div>",
                 unsafe_allow_html=True,
             )
@@ -239,9 +253,9 @@ def download_arquivo(relativo: str | None, rotulo: str = "Descarregar",
 
 
 def passo(num: int, titulo: str) -> None:
-    st.markdown(f'<div class="out-step">PASSO {num} · {titulo.upper()}</div>',
+    st.markdown(f'<div class="out-step">PASSO {num} · {escapar(titulo.upper())}</div>',
                 unsafe_allow_html=True)
 
 
 def fonte(texto: str) -> None:
-    st.markdown(f'<div class="out-fonte">{texto}</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="out-fonte">{escapar(texto)}</div>', unsafe_allow_html=True)

@@ -241,8 +241,11 @@ if mapas or mapa_html_rel:
                 p_html = C.caminho_absoluto(p_html)
             if p_html.exists():
                 html_code = p_html.read_text(encoding="utf-8", errors="replace")
-                import streamlit.components.v1 as components
-                components.html(html_code, height=620, scrolling=True)
+                if hasattr(st, "iframe"):
+                    st.iframe(html_code, height=620)
+                else:  # Streamlit antigo: components.html foi o antecessor de st.iframe
+                    import streamlit.components.v1 as components
+                    components.html(html_code, height=620, scrolling=True)
 
                 st.download_button(
                     "⬇️ Descarregar Mapa Interativo (HTML Standalone)",

@@ -18,7 +18,7 @@ import functools
 import json
 import traceback
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any, Sequence
 
 import geopandas as gpd  # noqa: PLC0415
 import pandas as pd  # noqa: PLC0415
@@ -28,6 +28,9 @@ from .. import config as C
 from .. import rules
 from ..gis import cartografia, geo, layers, overpass
 from ..gis import skill_bridge as skills
+
+if TYPE_CHECKING:  # so para anotacao: evita carregar state em runtime
+    from ..state import Processo
 
 
 # --------------------------------------------------------------------------------------
@@ -142,9 +145,9 @@ def feicao_nomeada_mais_proxima(gdf, ponto_geo, epsg_utm: str,
 # --------------------------------------------------------------------------------------
 
 
-def analisar(proc, lat: float, lon: float, raio_seguranca: float = C.RAIO_SEGURANCA_M,
+def analisar(proc: Processo, lat: float, lon: float, raio_seguranca: float = C.RAIO_SEGURANCA_M,
              raio_contexto: float = 3000.0, gerar_mapas: bool = True,
-             usar_osm: bool = True) -> dict:
+             usar_osm: bool = True, gerar_pranchas: bool = True) -> dict:
     """Executa o Agente 2 e devolve o dicionario de saida estruturada."""
     saida: dict[str, Any] = {
         "ok": False,
@@ -517,45 +520,55 @@ def analisar(proc, lat: float, lon: float, raio_seguranca: float = C.RAIO_SEGURA
     if gerar_mapas:
         try:
             dir_mapas = proc.dir_mapas
-            contexto = {
-                "coordenadas": coord,
-                "nome_poco": (proc.get("poco") or {}).get("nome") or proc.id,
-                "requerente": (proc.get("requerente") or {}).get("nome"),
-                "municipio": saida["municipio"],
-                "uf": (proc.get("imovel") or {}).get("uf", "RS"),
-                "municipio_gdf": municipio_gdf,
-                "geologia_gdf": geologia_gdf,
-                "geologia_campo_rotulo": "NOME_UNIDA",
-                "aquifero_gdf": aquifero_gdf,
-                "aquifero_campo_rotulo": "Name",
-                "drenagem_gdf": drenagem_gdf,
-                "cursos_dagua_gdf": cursos_gdf,
-                "corpos_dagua_gdf": corpos_dagua_gdf,
-                "nascentes_gdf": nascentes_gdf,
-                "fontes_poluicao_gdf": fontes_poluicao_gdf,
-                "vias_gdf": vias_gdf,
-                "propriedade_gdf": propriedade_gdf,
-                "ottobacia_gdf": detalhes.pop("_ottobacia_gdf", None),
-                "falhas_gdf": detalhes.pop("_falhas", None),
-                "formacao_geologica": saida["formacao_geologica"],
-                "litologia": detalhes.get("litologia"),
-                "sistema_aquifero": saida["sistema_aquifero"],
-                "regiao_hidrografica": saida["regiao_hidrografica"],
-                "bacia_hidrografica": saida["bacia_hidrografica"],
-                "corpo_hidrico_proximo": {
-                    **corpo_hidrico,
-                    "linha_gdf": linha_proxima_gdf,
-                },
-                "fonte_geologia": prov.get("geologia_rs", {}).get("origem"),
-                "fonte_drenagem": detalhes.get("corpo_hidrico_fonte"),
-            }
-            mapas = cartografia.gerar_todos(dir_mapas, contexto)
-            saida["caminho_mapas"] = [
-                C.caminho_relativo(p) for p in mapas.values()
-            ]
-            saida["detalhes"]["mapas"] = {
-                k: C.caminho_relativo(v) for k, v in mapas.items()
-            }
+            # Pops fora do if: _ottobacia_gdf/_falhas sao GeoDataFrames que nao
+            # podem vazar para o JSON, estejam as pranchas ligadas ou nao.
+            ottobacia_gdf = detalhes.pop("_ottobacia_gdf", None)
+            falhas_gdf = detalhes.pop("_falhas", None)
+
+            # As pranchas em JPG dependem de tiles de imagem de base (Esri/OSM)
+            # baixados em runtime. Sem rede elas sairiam sem fundo; por isso
+            # podem ser desligadas (--sem-mapas) enquanto o mapa interativo,
+            # que so embute URLs lidas no navegador, continua sendo gerado.
+            if gerar_pranchas:
+                contexto = {
+                    "coordenadas": coord,
+                    "nome_poco": (proc.get("poco") or {}).get("nome") or proc.id,
+                    "requerente": (proc.get("requerente") or {}).get("nome"),
+                    "municipio": saida["municipio"],
+                    "uf": (proc.get("imovel") or {}).get("uf", "RS"),
+                    "municipio_gdf": municipio_gdf,
+                    "geologia_gdf": geologia_gdf,
+                    "geologia_campo_rotulo": "NOME_UNIDA",
+                    "aquifero_gdf": aquifero_gdf,
+                    "aquifero_campo_rotulo": "Name",
+                    "drenagem_gdf": drenagem_gdf,
+                    "cursos_dagua_gdf": cursos_gdf,
+                    "corpos_dagua_gdf": corpos_dagua_gdf,
+                    "nascentes_gdf": nascentes_gdf,
+                    "fontes_poluicao_gdf": fontes_poluicao_gdf,
+                    "vias_gdf": vias_gdf,
+                    "propriedade_gdf": propriedade_gdf,
+                    "ottobacia_gdf": ottobacia_gdf,
+                    "falhas_gdf": falhas_gdf,
+                    "formacao_geologica": saida["formacao_geologica"],
+                    "litologia": detalhes.get("litologia"),
+                    "sistema_aquifero": saida["sistema_aquifero"],
+                    "regiao_hidrografica": saida["regiao_hidrografica"],
+                    "bacia_hidrografica": saida["bacia_hidrografica"],
+                    "corpo_hidrico_proximo": {
+                        **corpo_hidrico,
+                        "linha_gdf": linha_proxima_gdf,
+                    },
+                    "fonte_geologia": prov.get("geologia_rs", {}).get("origem"),
+                    "fonte_drenagem": detalhes.get("corpo_hidrico_fonte"),
+                }
+                mapas = cartografia.gerar_todos(dir_mapas, contexto)
+                saida["caminho_mapas"] = [
+                    C.caminho_relativo(p) for p in mapas.values()
+                ]
+                saida["detalhes"]["mapas"] = {
+                    k: C.caminho_relativo(v) for k, v in mapas.items()
+                }
 
             # ------------------------------------------------------------
             # Mapa Interativo Multicamadas (Skill gis-multicamadas)
@@ -579,7 +592,8 @@ def analisar(proc, lat: float, lon: float, raio_seguranca: float = C.RAIO_SEGURA
                     dados_poco=proc.get("poco") or {},
                 )
                 saida["mapa_interativo_html"] = C.caminho_relativo(caminho_html)
-                saida["detalhes"]["mapas"]["interativo"] = C.caminho_relativo(caminho_html)
+                saida["detalhes"].setdefault("mapas", {})[
+                    "interativo"] = C.caminho_relativo(caminho_html)
             except Exception as e_folium:
                 saida["erros"].append(f"Aviso Mapa Interativo: {e_folium}")
         except Exception as exc:  # noqa: BLE001

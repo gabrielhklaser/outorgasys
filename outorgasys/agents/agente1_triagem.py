@@ -14,11 +14,14 @@ Responsavel por:
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from .. import config as C
 from .. import rules
 from ..hydro import planilha
+
+if TYPE_CHECKING:  # so para anotacao: evita carregar state em runtime
+    from ..state import Processo
 
 
 def enquadrar(diametro_util_pol: float | None) -> dict:
@@ -52,7 +55,7 @@ def parametros_potabilidade() -> list[dict]:
     ]
 
 
-def validar(proc) -> rules.ResultadoValidacao:
+def validar(proc: Processo) -> rules.ResultadoValidacao:
     """Bateria completa de regras do Agente 1 sobre o processo."""
     return rules.validar_triagem(proc.data)
 
@@ -67,19 +70,47 @@ def resumo_validacao(res: rules.ResultadoValidacao) -> dict:
     }
 
 
-def pode_avancar(proc) -> tuple[bool, list[str]]:
+def pode_avancar(proc: Processo) -> tuple[bool, list[str]]:
     """True apenas se nao ha pendencias bloqueantes do Agente 1."""
     res = validar(proc)
     return res.ok, [f"{p.codigo}: {p.titulo}" for p in res.bloqueios]
 
 
-def registrar_upload(proc, chave: str, arquivo, papel: str | None = None) -> dict:
+def _registro_igual(proc: Processo, chave: str, arquivo) -> dict | None:
+    """Registro ja existente para este mesmo arquivo (nome e conteudo), ou None."""
+    import hashlib  # noqa: PLC0415
+
+    from ..state import nome_arquivo_seguro  # noqa: PLC0415
+
+    try:
+        nome = nome_arquivo_seguro(arquivo.name)
+    except ValueError:
+        return None
+    atual = (proc.get("documentos") or {}).get(chave)
+    candidatos = atual if isinstance(atual, list) else [atual]
+    digest = hashlib.sha256(arquivo.getbuffer()).hexdigest()
+    for reg in candidatos:
+        if (isinstance(reg, dict) and reg.get("nome") == nome
+                and reg.get("sha256") == digest
+                and C.caminho_absoluto(reg.get("caminho")) is not None
+                and C.caminho_absoluto(reg.get("caminho")).exists()):
+            return reg
+    return None
+
+
+def registrar_upload(proc: Processo, chave: str, arquivo, papel: str | None = None) -> dict:
     """Persiste um arquivo enviado e devolve o registro criado."""
     if arquivo is None:
         return {}
+    # O Streamlit reexecuta a pagina a cada interacao e o uploader continua com o
+    # mesmo arquivo; sem esta checagem cada rerun regravava o arquivo e somava uma
+    # linha ao log do processo.
+    existente = _registro_igual(proc, chave, arquivo)
+    if existente is not None:
+        return existente
     caminho = proc.salvar_upload(chave, arquivo)
     registro = {
-        "nome": getattr(arquivo, "name", str(caminho)),
+        "nome": caminho.name if caminho else str(getattr(arquivo, "name", "")),
         "caminho": C.caminho_relativo(caminho) if caminho else None,
         "tamanho": caminho.stat().st_size if caminho else 0,
         "papel": papel,
@@ -90,7 +121,7 @@ def registrar_upload(proc, chave: str, arquivo, papel: str | None = None) -> dic
     return registro
 
 
-def registrar_upload_manual(proc, chave: str, caminho, nome: str | None = None,
+def registrar_upload_manual(proc: Processo, chave: str, caminho, nome: str | None = None,
                             meta: dict | None = None) -> dict:
     """Registra um arquivo JA existente em disco (gerado pela plataforma) como
     se fosse um envio do usuario. Usado pelo conjunto sintetico do Agente 3.
@@ -115,7 +146,7 @@ def registrar_upload_manual(proc, chave: str, caminho, nome: str | None = None,
     return registro
 
 
-def arquivos_enviados(proc) -> dict:
+def arquivos_enviados(proc: Processo) -> dict:
     docs = proc.get("documentos") or {}
     return {
         "ensaio_bombeamento": docs.get("ensaio_bombeamento"),
@@ -126,7 +157,7 @@ def arquivos_enviados(proc) -> dict:
     }
 
 
-def checklist_visual(proc) -> list[dict]:
+def checklist_visual(proc: Processo) -> list[dict]:
     """Checklist em formato pronto para a interface."""
     enf = proc.get("enquadramento") or {}
     docs = proc.get("documentos") or {}
@@ -185,7 +216,7 @@ def checklist_visual(proc) -> list[dict]:
     return itens
 
 
-def triar_documentos_com_docling(proc) -> dict[str, Any]:
+def triar_documentos_com_docling(proc: Processo) -> dict[str, Any]:
     """Executa a triagem estruturada com Docling e os agentes do GabeBrain
     para todos os documentos PDF anexados ao processo.
 
@@ -226,7 +257,13 @@ def triar_documentos_com_docling(proc) -> dict[str, Any]:
                 "confianca": doc.confianca_fonte,
                 "justificativa": doc.justificativa_fonte,
                 "paginas": doc.num_paginas,
+                "avisos": list(doc.avisos),
             }
+
+            # O Docling cai para texto simples (ou perde uma tabela) em silencio
+            # se isto nao for registrado; quem assina precisa ver o que faltou.
+            for aviso in doc.avisos:
+                proc.log(1, f"Leitura de '{chave}': {aviso}", nivel="aviso")
 
             # Extracao especifica de analise laboratorial (Portaria 888/2021)
             if "analise" in chave or "laboratorial" in chave or "qualidade" in chave:

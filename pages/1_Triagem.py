@@ -11,7 +11,7 @@ from outorgasys.hydro import planilha
 from outorgasys.state import Processo
 from outorgasys.ui import (
     aplicar_tema, barra_lateral, bloco_status, cabecalho, chip, chips,
-    download_arquivo, fonte, mostrar_pendencias, passo, tabela,
+    download_arquivo, escapar, fonte, mostrar_pendencias, passo, tabela,
 )
 
 aplicar_tema()
@@ -74,7 +74,7 @@ if enf["definido"]:
     cor = "bloqueio" if enf["exige_ensaio_24h"] else "ok"
     st.markdown(
         f'<div class="out-panel">{chip(enf["rotulo"], cor)}<br/><br/>'
-        f'{enf["descricao"]}</div>',
+        f'{escapar(enf["descricao"])}</div>',
         unsafe_allow_html=True,
     )
 
@@ -227,6 +227,10 @@ if qualidade_dados or destilacoes:
             st.success("✅ Todos os parametros laboratoriais estao em conformidade com o Padrao de Potabilidade.")
         else:
             st.error("⚠️ Foram identificadas inconformidades nos parametros laboratoriais segundo a Portaria 888/2021.")
+    elif qualidade_dados:
+        for aviso in qualidade_dados.get("avisos") or [
+                "Nenhum parametro de potabilidade foi reconhecido no documento."]:
+            st.warning(aviso)
 
     if destilacoes:
         with st.expander("📄 Notas Destiladas GabeBrain (Citacao exata de pagina e confianca da fonte)"):
@@ -515,7 +519,7 @@ for item in a1.checklist_visual(proc):
             "dispensado": "off"}
     st.markdown(
         f'{chip(item["item"], mapa.get(item["status"], "off"))}'
-        f'<span class="out-fonte">{item["detalhe"]}</span>',
+        f'<span class="out-fonte">{escapar(item["detalhe"])}</span>',
         unsafe_allow_html=True,
     )
 

@@ -11,10 +11,13 @@ from __future__ import annotations
 
 import calendar
 import math
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from .. import config as C
 from .. import rules
+
+if TYPE_CHECKING:  # so para anotacao: evita carregar state em runtime
+    from ..state import Processo
 
 
 # --------------------------------------------------------------------------------------
@@ -25,8 +28,9 @@ from .. import rules
 def dias_operacao_por_mes(ano: int, dias_semana: float) -> list[float]:
     """Dias de operacao em cada mes, a partir da periodicidade semanal.
 
-    A periodicidade informada (dias por semana) e distribuida proportionalmente
-    sobre os dias uteis de cada mes do calendario informado.
+    A periodicidade informada (dias por semana) e distribuida proporcionalmente
+    sobre os dias corridos de cada mes do calendario informado: dias do mes x
+    dias por semana / 7. Nao se descontam fins de semana nem feriados.
     """
     fracao = max(0.0, min(1.0, float(dias_semana) / 7.0))
     out = []
@@ -42,8 +46,10 @@ def quadro_vazao(ano: int, horas_dia: float, dias_semana: float,
     dias = dias_operacao_por_mes(ano, dias_semana)
     linhas = []
     total = 0.0
-    for i, (nome, n_dias) in enumerate(zip(C.NOMES_MESES, dias), start=1):
-        volume = n_dias * horas_dia * vazao_m3h
+    for i, (nome, n_dias) in enumerate(zip(C.NOMES_MESES, dias, strict=True), start=1):
+        # Arredonda cada linha antes de somar: o total precisa fechar com o que o
+        # quadro mostra (a soma dos volumes sem arredondar diferia em centesimos).
+        volume = round(n_dias * horas_dia * vazao_m3h, 2)
         total += volume
         linhas.append({
             "mes": nome,
@@ -70,7 +76,7 @@ def quadro_vazao(ano: int, horas_dia: float, dias_semana: float,
 # --------------------------------------------------------------------------------------
 
 
-def auditar_equipamentos(proc, q_estavel: float | None, q_ot: float | None,
+def auditar_equipamentos(proc: Processo, q_estavel: float | None, q_ot: float | None,
                          nd_m: float | None, vazao_adotada: float | None,
                          horas_dia: float | None) -> dict:
     """Cruzamento da capacidade do poco com os equipamentos declarados."""
@@ -118,13 +124,7 @@ def auditar_equipamentos(proc, q_estavel: float | None, q_ot: float | None,
     }
 
 
-def _num(v: Any) -> float | None:
-    try:
-        if v is None or str(v).strip() == "":
-            return None
-        return float(str(v).replace(",", "."))
-    except Exception:  # noqa: BLE001
-        return None
+_num = rules._num  # uma unica conversao numerica para o projeto (ver rules._num)
 
 
 def _velocidade(hidro: dict, vazao: float | None) -> float | None:
@@ -160,7 +160,7 @@ def escolher_vazao_adotada(hidraulica: dict, preferencia: str = "auto") -> dict:
         adotada = min(q_ot, q_est)
         return {
             "vazao": adotada,
-            "origem": "Q_ot" if adotada == q_ot else "Q_estavel",
+            "origem": "Q_ot" if q_ot <= q_est else "Q_estavel",
             "justificativa": (
                 "Adota-se o menor valor entre Q_ot (vazao otima de campo, que ja "
                 "incorpora o fator de seguranca de longo prazo de "
@@ -171,11 +171,16 @@ def escolher_vazao_adotada(hidraulica: dict, preferencia: str = "auto") -> dict:
         return {"vazao": q_est, "origem": "Q_estavel",
                 "justificativa": "Sem Q_ot calculada (falta ensaio de recuperacao); "
                                  "adota-se Q_estavel com ressalva expressa no parecer."}
-    if q_jl:
-        return {"vazao": q_jl, "origem": "Jacob-Lohman",
-                "justificativa": "Sem Q_estavel/Q_ot: usada a estimativa de "
-                                 "Jacob-Lohman como ultimo recurso."}
-    return {"vazao": None, "origem": None, "justificativa": "Sem dados hidraulicos."}
+    # Jacob-Lohman nao entra aqui como "ultimo recurso": e uma contraprova de
+    # regime permanente com recarga, calculada a partir do proprio Q_estavel, e
+    # coloca-la no quadro de vazao levaria uma estimativa informativa para a
+    # transcricao do SIOUT.
+    nota_jl = (f" Ha estimativa de Jacob-Lohman ({q_jl:.2f} m3/h), mas ela serve "
+               "de contraprova e nao substitui o ensaio de bombeamento."
+               if q_jl else "")
+    return {"vazao": None, "origem": None,
+            "justificativa": "Sem Q_estavel nem Q_ot: o quadro de vazao nao pode "
+                             "ser montado." + nota_jl}
 
 
 # --------------------------------------------------------------------------------------
@@ -183,7 +188,7 @@ def escolher_vazao_adotada(hidraulica: dict, preferencia: str = "auto") -> dict:
 # --------------------------------------------------------------------------------------
 
 
-def executar(proc, ano: int | None = None, preferencia_vazao: str = "auto") -> dict:
+def executar(proc: Processo, ano: int | None = None, preferencia_vazao: str = "auto") -> dict:
     """Executa o Agente 4 e devolve o balanco completo + auditorias."""
     import datetime as _dt
 

@@ -7,11 +7,15 @@ __pycache__/
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
+.coverage
+htmlcov/
 .DS_Store
 
 # --- dados brutos / temporarios (nao versionar: sao recompilados pelo workflow) ---
 data/raw/
 data/tmp/
+# Diagnostico de rede do workflow probe-fontes: agora e artefato da execucao.
+data/.probe.log
 # Excepcao: relatorio de defeitos do processo de exemplo (acompanha o exemplo versionado).
 data/saida/*
 !/data/saida/defeitos_EX-CAMPOBOM-001.md

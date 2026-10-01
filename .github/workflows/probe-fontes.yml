@@ -2,8 +2,11 @@ name: probe-fontes
 
 # Diagnostico rapido de alcance de rede dos servidores institucionais.
 # Roda em grupo de concorrencia proprio para nao esperar o build de dados.
-# O resultado e gravado em data/.probe.log no proprio repositorio, porque o
-# ambiente do agente nao consegue baixar os logs do Actions.
+# O resultado vai para o sumario da execucao e para um artefato de 30 dias:
+#   gh run view <id> --log          # saida dos passos
+#   gh run download <id> -n probe-fontes
+# Antes o log era commitado em data/.probe.log, o que enchia o historico com
+# um commit por sondagem e mantinha o fluxo com contents: write sem precisar.
 
 on:
   workflow_dispatch:
@@ -12,7 +15,7 @@ on:
       - ".github/workflows/probe-fontes.yml"
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
   group: probe-fontes
@@ -24,9 +27,7 @@ jobs:
     timeout-minutes: 15
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
 
       - name: Sondar fontes candidatas
         run: |
@@ -77,17 +78,19 @@ jobs:
             curl -sSI -L --max-time 30 -A 'Mozilla/5.0' "$u" | grep -iE '^(HTTP/|content-length|content-type)' | head -6
           done
 
-      - name: Publicar resultado no repositorio
+      - name: Publicar resultado no sumario da execucao
         run: |
-          git config user.name  "outorgasys-bot"
-          git config user.email "bot@users.noreply.github.com"
-          mkdir -p data
-          cp -f /tmp/probe.log data/.probe.log
-          git add -A -- data/.probe.log
-          if git diff --cached --quiet; then
-            echo "Sem mudancas no diagnostico."
-          else
-            git commit -m "ci: resultado da sondagem de fontes [skip ci]"
-            git pull --rebase --autostash origin "${GITHUB_REF_NAME}" || true
-            git push origin "HEAD:${GITHUB_REF_NAME}" || true
-          fi
+          {
+            echo "## Sondagem de fontes"
+            echo
+            echo '```'
+            cat /tmp/probe.log
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Guardar o log como artefato
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: probe-fontes
+          path: /tmp/probe.log
+          retention-days: 30

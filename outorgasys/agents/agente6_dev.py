@@ -20,11 +20,14 @@ import platform
 import sys
 import traceback
 from pathlib import Path
-from typing import Any, Iterable
+from typing import TYPE_CHECKING, Any, Iterable
 
 from .. import config as C
 from ..gis import layers
 from ..gis import skill_bridge as skills
+
+if TYPE_CHECKING:  # so para anotacao: evita carregar state em runtime
+    from ..state import Processo
 
 SEVERIDADES = {
     "critico": 0,      # impede a emissao do relatorio
@@ -89,7 +92,7 @@ def _iter_dict(d: Any, prefixo: str = "") -> Iterable[tuple[str, Any]]:
         yield prefixo, d
 
 
-def coletar(proc) -> list[dict]:
+def coletar(proc: Processo) -> list[dict]:
     """Varre o processo e o ambiente, devolvendo a lista normalizada de defeitos."""
     achados: list[dict] = []
 
@@ -441,7 +444,7 @@ def resumo(achados: list[dict]) -> dict:
 # --------------------------------------------------------------------------------------
 
 
-def relatorio_markdown(proc, achados: list[dict]) -> str:
+def relatorio_markdown(proc: Processo, achados: list[dict]) -> str:
     r = resumo(achados)
     L = [
         "# RELATORIO DE DEFEITOS E PLANO DE CORRECAO",
@@ -544,7 +547,13 @@ def corpo_issue(a: dict) -> str:
 # --------------------------------------------------------------------------------------
 
 
-def executar(proc, salvar: bool = True) -> dict:
+def caminho_relatorio(proc: Processo) -> str | None:
+    """Caminho (relativo ao projeto, quando possivel) do relatorio de defeitos ja gravado."""
+    destino = C.SAIDA / f"defeitos_{proc.id}.md"
+    return C.caminho_relativo(destino) if destino.is_file() else None
+
+
+def executar(proc: Processo, salvar: bool = True) -> dict:
     """Roda o Agente 6 e devolve o relatorio consolidado."""
     saida: dict[str, Any] = {"ok": False, "resumo": {}, "achados": [], "arquivo": None}
     try:
@@ -565,7 +574,7 @@ def executar(proc, salvar: bool = True) -> dict:
     return saida
 
 
-def registrar(proc, titulo: str, detalhe: str = "", categoria: str = "ambiente",
+def registrar(proc: Processo, titulo: str, detalhe: str = "", categoria: str = "ambiente",
               severidade: str = "medio", agente: int | None = None,
               sugestao: str = "") -> dict:
     """Registra manualmente um novo defeito no processo (usado pela UI)."""
