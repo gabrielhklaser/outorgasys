@@ -4,11 +4,13 @@
 from __future__ import annotations
 
 import json
+import re
 
 import pandas as pd
 import pytest
 
 from outorgasys import config as C
+from outorgasys import state
 from outorgasys.state import Processo
 
 
@@ -171,3 +173,12 @@ def test_upload_com_novo_conteudo_e_registrado_de_novo(dados_tmp):
     recebidos = [e for e in p["log"] if "Arquivo recebido" in e["mensagem"]]
     assert len(recebidos) == 2
     assert p["documentos"]["analise_laboratorial"]["tamanho"] == len(b"versao 2")
+
+
+def test_novo_id_tem_40_bits_de_entropia_e_formato_estavel():
+    """O sufixo era uuid4 fatiado em 24 bits; agora vem de secrets com 40."""
+    ids = {state.novo_id() for _ in range(500)}
+
+    assert len(ids) == 500
+    assert all(re.fullmatch(r"\d{8}-[0-9A-F]{10}", i) for i in ids)
+    assert all(state.validar_pid(i) == i for i in ids)

@@ -1,134 +1,111 @@
 # Revisão técnica e roadmap de melhorias
 
-Última revisão: 2026-10-01. A anterior (2026-09-28) está registrada no fim deste
-arquivo.
+Última revisão: 2026-10-01 (retomada no mesmo dia). A de 2026-09-28 está no fim
+deste arquivo.
 
-**O que mudou neste documento.** Dos 15 itens da lista de 2026-09-28, 9 foram
-resolvidos, 3 resolvidos em parte (1, 4 e 10) e 3 seguem abertos (5, 14 e 15).
-A revisão de hoje achou mais 25 problemas, todos corrigidos com teste que falhava
-antes. Os títulos perderam os emojis, a tabela de aplicados ganhou a evidência
-de cada defeito, e o que continua aberto ficou separado do que foi resolvido.
+**O que mudou nesta revisão.** A lista de 2026-09-28 ficou quase toda resolvida
+na revisão da manhã; a retomada da tarde fechou o que faltava e que dava para
+fechar sem o responsável técnico: o exemplo versionado foi regenerado offline,
+os erros que caíam em silêncio agora avisam, o lock reprodutível existe e os
+pisos de versão são exercitados pela CI. O que depende de decisão humana
+(contraprova assinada, LGPD, login individual) continua em *Pendente*.
 
 ## Em números
 
-| | 2026-09-28 | 2026-10-01 |
-|---|---|---|
-| Testes | 7 (só `theis`) | 148 |
-| Cobertura de linha | não medida | 82% (47% antes do teste de caminho completo) |
-| CI de testes | nenhum | `tests.yml`: ruff, pytest, os dois smoke tests |
-| Smoke `smoke_exemplo.py` em Linux | 6 de 7 páginas, e reescrevia o JSON versionado | 7 de 7, em cópia temporária |
+| | 2026-09-28 | 2026-10-01 (manhã) | retomada |
+|---|---|---|---|
+| Testes | 7 (só `theis`) | 148 | 169 |
+| Cobertura de linha | não medida | 82% | idem |
+| CI de testes | nenhum | ruff, pytest, dois smoke | + job `piso` (versões mínimas) |
+| Lock reprodutível | nenhum | tetos de major | `requirements.lock` com SHA-256 |
+| Smoke `smoke_exemplo.py` | 6 de 7, reescrevia o JSON | 7 de 7, cópia temporária | 7 de 7 |
 
-## Aplicado em 2026-10-01
+## Aplicado na retomada de 2026-10-01
 
-Cada linha corresponde a um commit com o mesmo assunto; o corpo do commit traz a
-reprodução.
-
-### Quebrava no Render (Linux)
+### Exemplo versionado desatualizado (era Alto 1)
 
 | Problema | Evidência | Correção |
 |---|---|---|
-| O JSON do exemplo guarda `data\processos\...` (gerado no Windows) | 35 caminhos com `\`; Agente 5 levantava `FileNotFoundError`; nenhuma imagem do exemplo aparecia | `caminho_absoluto` aceita os dois separadores; `caminho_relativo` grava `/`; o PDF também usa essa função |
-| A página do Agente 3 trocava o ensaio salvo pelo resultado de uma leitura que falhou | Rodar o smoke apagou cerca de 690 linhas do JSON versionado (`ensaio.ok` virou `false`) | Só substitui quando a leitura funciona; senão avisa e mantém o salvo |
-| `DataFrame` salvo em JSON voltava como dict | A página só funcionava porque relia a planilha a cada execução | `_restaurar_json` fecha o ciclo salvar/carregar |
-| `import outorgasys.docreader` falhava (`No module named 'fitz'`) | PyMuPDF não está no `requirements.txt` | `pypdf` como padrão; PyMuPDF e Docling opcionais. Os 12 parâmetros do laudo de exemplo saem iguais aos do Docling |
-| Coluna Q vazia ou com lacunas derrubava o Agente 3 | `ValueError` de broadcast, shapes `(59,)` e `(0,)` | Pares (t, Q) válidos; `identificar_q_estavel` não levanta mais |
-| `st.components.v1.html` removido "após 2026-06-01" | Aviso a cada abertura do mapa | `st.iframe` quando existe |
-| `streamlit>=1.30` | `width="stretch"` só existe em `st.button` a partir do 1.48 e em `st.image` do 1.49 | Piso 1.49, conferido rodando a suíte com `streamlit==1.49.0` |
+| O JSON commitado mostrava a contraprova antiga e um total que não fechava | `Q_jacob_lohman_m3h` = 4,14 (2π) e volume anual 37.521,87 contra 37.521,84 das linhas | `scripts/semente_campo_bom.py --sem-mapas` refaz cálculos, laudo e PDF reaproveitando as pranchas; o JSON saiu com 8,29 m³/h e 37.521,84 |
+| Caminhos gravados no formato Windows quebravam no Linux | `data\\processos\\...` com barra invertida no JSON | `caminho_relativo`/`caminho_absoluto` normalizam para `/` na regravação |
+| Não dava para regenerar o exemplo sem tiles | as pranchas JPG dependem de imagem de base baixada da Esri/OSM | `agente2.analisar` ganhou `gerar_pranchas`: o mapa interativo (que só embute URLs) é redesenhado offline e as pranchas ficam intocadas; `--limpar --sem-mapas` é recusado para não apagar as pranchas boas |
+| Nada impedia o exemplo de ficar para trás de novo | a correção da manhã não tocou no JSON | `tests/test_exemplo_versionado.py` recomputa a contraprova com 4π, confere o total com as linhas e os caminhos; falhou antes da regeneração (4,14 ≠ 8,29) e passa depois |
 
-### Segurança
+### Erros que caíam em silêncio (era Médio 4)
 
 | Problema | Evidência | Correção |
 |---|---|---|
-| `remover_upload` apagava fora do diretório | O registro guardava `uploaded.name` cru; com `../../x.json` o teste apagou o arquivo-alvo | O registro usa o nome saneado e `remover_upload` sanea antes do `unlink` |
-| `pid` sem validação | `Processo(pid="../x")` apontava para fora de `data/processos` | `validar_pid`: `[A-Za-z0-9][A-Za-z0-9_-]{0,63}` |
-| Texto do usuário em HTML da interface | Nome de arquivo `<img onerror=...>` virava markup na Triagem | `ui.escapar` em chips, pendências, cabeçalho, rodapé e nos pontos dinâmicos |
-| Atributos de camadas no mapa Folium | O tooltip usa `innerHTML` num iframe com scripts e acesso same-origin (a docstring de `st.iframe` avisa) | Escape de colunas e valores antes de chamar a skill; skill vendorizada intacta |
-| Texto livre no `Paragraph` do ReportLab | `<img src="caminho">` embutiu um mapa de outro processo no PDF; `<Sul>` sumia do laudo | `_dado()` escapa; o comentário de `_sanitize` dizia que escapava e não escapava |
-| JSON com BOM ou corrompido virava "processo inexistente" | O próximo `salvar()` sobrescrevia o original | Lê `utf-8-sig`; JSON ilegível é renomeado para `.corrompido-<data>` |
-| App público, sem senha | Qualquer visitante lista e baixa qualquer processo | Portão opcional `OUTORGASYS_SENHA` (ver limites em `outorgasys/auth.py`) |
-| Actions por tag mutável, com `contents: write` | `@v4`, `@v5` | Fixadas por SHA; Dependabot mantém. `contents: write` fica porque os fluxos de dados fazem push |
+| `ajustar_reta_recuperacao` ignorava `metodo` e trocava Theil-Sen por MQ sem aviso | sem scipy o laudo dizia "Theil-Sen" e usava outra reta | `metodo` é respeitado; a queda registra `Theil-Sen indisponivel (RuntimeError...)` em `observacao`, e método desconhecido também avisa |
+| `except Exception: pass` no Docling engolia tabela e conversão | uma tabela de potabilidade ilegível sumia sem rastro | `DocumentoProcessado.avisos` recebe a falha da tabela e a queda geral; o Agente 1 registra cada aviso no log do processo |
 
-### Resultado numérico
+### Vazão e validações (eram Médio 5 e Baixo 11)
 
 | Problema | Evidência | Correção |
 |---|---|---|
-| Contraprova de Jacob-Lohman pela metade | `2π` onde Cooper-Jacob invertido pede `4π`; contra Theis exato (`4πTs / W(u)`) o código dava 4,23 contra 8,47 m³/h | `4π`; as premissas (S, t, r) aparecem na tabela do laudo |
-| Vazão manual não entrava no cálculo de `T` | Sem Q na planilha, `T` e `Q_ot` ficavam vazios | A vazão manual entra em `calcular` |
-| Limites de potabilidade desatualizados | Cádmio 0,005, dureza 500 e STD 1000 são do Anexo XX da PRC 5/2017 | 0,003, 300 e 500 mg/L ([Portaria GM/MS 888/2021](https://bvsms.saude.gov.br/bvs/saudelegis/gm/2021/prt0888_07_05_2021.html), Anexos 9 e 11); teste garante que as duas tabelas do código não divergem |
-| E. coli "Presente" saía como conforme | Só reprovava se achasse um número maior que zero | Interpreta presença, positivo, detectado, ausência e `< 1,0 NMP/100 mL` |
-| Laudo sem parâmetros lidos saía "conforme" | `conforme_geral` começava em `True` | Devolve `None` e um aviso; a Triagem mostra o aviso |
-| `_num("nan")` e `_num("inf")` passavam | `validar_padrao_explotacao("nan", 3)` não gerava pendência | Só números finitos |
-| Total anual do quadro não fechava com as linhas | 1735 de 2000 regimes testados; no exemplo 37.521,87 contra 37.521,84 | Cada linha é arredondada antes de somar |
+| Jacob-Lohman como "último recurso" da vazão adotada | o ramo só é alcançável sem Q_estavel, mas a estimativa só existe com Q_estavel | ramo removido; a justificativa cita a estimativa como contraprova, sem virar vazão do quadro |
+| `validar_reservacao` nunca emitia RES-002 e numerava pelo filtro | `_num(0)` é falso, então capacidade 0 saía da lista antes do laço | índice vem da lista informada; capacidade 0 ou ilegível gera RES-002 no número certo |
+| EQP-020 misturava inglês e cedilha | "...evitar cavitation e sucção de ar." | "cavitacao e succao de ar", ASCII como o resto das mensagens |
 
-### Interface, qualidade e testes
+### Infraestrutura (eram Médio 7, Médio 8 e Baixo 13)
 
-- A seção "Parecer conclusivo" da página 5 mostrava um chip vermelho com "-": lia
-  chaves que o laudo não grava. Agora lista `conclusoes` e `recomendacoes`.
-- O botão de download do relatório do Agente 6 ficava sempre desabilitado
-  (apontava para uma pasta `out/` que não existe).
-- Cada rerun do Streamlit regravava o upload e somava uma linha ao log do
-  processo; o registro agora é idempotente (nome saneado e SHA-256).
-- `_arr` aceita texto, `None` e `pd.NA`; o laço "amplia a janela" que nunca
-  executava saiu (teste de equivalência com 300 séries aleatórias).
-- `requirements.txt`: tetos no próximo major, três pacotes sem uso removidos,
-  instalação limpa conferida. `skills/gis_multicamadas` (cópia antiga) removida.
-- Testes de caminho completo sobre o exemplo (`test_pipeline_exemplo.py`, cerca
-  de 20 s), de escape, de autenticação e de cada módulo alterado. Os smoke tests
-  contam imagens de verdade e passam em Streamlit 1.49 e 1.64.
+| Problema | Evidência | Correção |
+|---|---|---|
+| Cada sondagem de fontes empurrava um commit | `data/.probe.log` versionado; fluxo com `contents: write` | o resultado vai para o sumário da execução e um artefato de 30 dias; `permissions: contents: read` e arquivo no `.gitignore` |
+| Lock e pisos não existiam | tetos de major reduzem variação, mas não a eliminam; os pisos nunca eram testados | `requirements.lock` (uv, `--generate-hashes --universal`) instala com `pip --require-hashes`, conferido num venv limpo; `requirements-piso.txt` + job `piso` na CI: 168 passaram, 1 pulado (st.iframe) |
+| Nada acusava lock fora dos limites de `requirements.txt` | divergência passaria em silêncio | `tests/test_lock_requisitos.py`; verificado trocando o piso do numpy para `>=2.5` e vendo o teste acusar `numpy==2.4.6 fora de >=2.5,<3` |
+| `novo_id` com 24 bits | `uuid4().hex[:6]` para um id que aparece na URL | `secrets.token_hex(5)` (40 bits), formato `AAAAMMDD-XXXXXXXXXX` dentro do `validar_pid` |
+| `proc` sem tipo nos agentes | 19 assinaturas públicas sem anotação | `proc: Processo` sob `TYPE_CHECKING` nos seis agentes |
 
 ## Pendente (priorizado)
 
 ### Alto
-1. **Regenerar o exemplo versionado.** O JSON, o laudo e o PDF em
-   `data/processos/EX-CAMPOBOM-001*` ainda mostram a contraprova antiga (4,14
-   m³/h) e o volume anual de 37.521,87 m³. Rode
-   `python scripts/semente_campo_bom.py --limpar` numa máquina com rede (os mapas
-   baixam tiles) e faça commit. Não regenerei aqui porque, sem rede, os mapas
-   sairiam sem imagem de fundo.
-2. **Conferência pelo responsável técnico**, que o código não resolve sozinho:
-   - contraprova de Jacob-Lohman com `4π` e premissas S = 1e-4, t = 365 d;
+1. **Conferência pelo responsável técnico**, que o código não resolve sozinho:
+   - contraprova de Jacob-Lohman com `4π` e premissas S = 1e-4, t = 365 d (o valor
+     de 8,29 m³/h do exemplo segue sendo uma estimativa de ordem de grandeza);
    - regra do SIOUT para dias de operação fracionários (31 × 5 / 7 = 22,14);
    - faixa de pH (6,0 a 9,5) em `water_quality.py` e `config.py`: o trecho da
      Portaria 888/2021 consultado não traz essa recomendação;
    - cianeto (0,07 mg/L) saiu do Anexo 9 em 2021 e continua nas tabelas como
      referência.
-3. **Acesso por pessoa.** O portão por senha é compartilhado e sem trilha de
-   auditoria. Para usuários individuais: `st.login` (OIDC) ou proxy autenticado.
+2. **Acesso por pessoa.** O portão `OUTORGASYS_SENHA` é compartilhado e sem
+   trilha de auditoria. Para usuários individuais: `st.login` (OIDC) ou proxy
+   autenticado.
 
 ### Médio
-4. Erros silenciados: `docreader/engine.py` (`except Exception: pass` nas tabelas
-   do Docling), `theis.ajustar_reta_recuperacao` (cai de Theil-Sen para mínimos
-   quadrados sem aviso e ignora o parâmetro `metodo`).
-5. `agente4.escolher_vazao_adotada`: o ramo "último recurso" com Jacob-Lohman não
-   é alcançável (a contraprova só existe quando há `Q_estável`) e, se fosse,
-   adotaria uma estimativa informativa como vazão do quadro. Remover.
-6. Os JSONs de processo guardam CPF/CNPJ e endereço em texto no disco. Definir
+3. Os JSONs de processo guardam CPF/CNPJ e endereço em texto no disco. Definir
    retenção e acesso (LGPD) antes de dados reais.
-7. Lock com hashes para build reprodutível. Os tetos de major reduzem a variação,
-   mas não a eliminam. O piso das bibliotecas numéricas (pandas 2.1, numpy 1.26)
-   não é exercitado pela CI, que instala as versões mais novas.
-8. `data/.probe.log` continua versionado a cada execução do `probe-fontes`.
 
 ### Baixo
-9. Tipagem: anotar `proc: Processo` nos agentes; `TypedDict` ou dataclass nos
-   retornos públicos.
-10. Histórico dominado por `chore(auto-sync)`; usar commits descritivos nas
-    mudanças de código.
-11. `rules`: a mensagem EQP-020 mistura português e inglês; em
-    `validar_reservacao` o índice da mensagem refere-se à lista já filtrada.
-12. `skill_bridge` sobe um processo Python por operação geométrica. Chamar o
-    shapely em memória seria mais rápido, mas a integração por skill faz parte
-    do desenho.
-13. `novo_id()` usa 24 bits aleatórios; com o portão de senha ativo o risco cai.
+4. Histórico dominado por `chore(auto-sync)`; usar commits descritivos nas
+   mudanças de código. (Os commits desta revisão seguem essa convenção; o
+   histórico antigo fica como está.)
+5. `skill_bridge` sobe um processo Python por operação geométrica. Chamar o
+   shapely em memória seria mais rápido, mas a integração por skill faz parte
+   do desenho.
+6. Tipagem: `proc` foi anotado, mas os retornos públicos dos agentes ainda são
+   `dict`; `TypedDict`/dataclass fica para uma próxima passada.
 
 ## Como verificar
 
 ```bash
 pip install -r requirements-dev.txt
-python -m pytest                       # 148 testes, cerca de 40 s
-python tests/smoke_ui.py               # páginas com processo vazio
-python tests/smoke_exemplo.py          # páginas com o exemplo (cópia temporária)
+python -m pytest                       # 169 testes, cerca de 40 s
+python tests/smoke_ui.py               # paginas com processo vazio
+python tests/smoke_exemplo.py          # paginas com o exemplo (copia temporaria)
 ruff check .
+```
+
+Ambiente sem tiles (CI, rede restrita) regenera o exemplo com:
+
+```bash
+python scripts/semente_campo_bom.py --sem-mapas
+```
+
+Ambiente com os pisos declarados e com o lock:
+
+```bash
+pip install -r requirements-piso.txt   # o que o job piso da CI roda
+pip install --require-hashes -r requirements.lock
 ```
 
 ## Revisão de 2026-09-28 (histórico)

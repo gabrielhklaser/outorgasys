@@ -4,7 +4,7 @@ tipo: N
 rotulo_tipo: Norma Tecnica / Regulamento Legal
 confianca_fonte: A
 justificativa_fonte: Norma tecnica oficial ou resolucao estatal dotada de forca de lei
-processado_em: 2026-09-25
+processado_em: 2026-10-01
 paginas: 1
 ---
 
@@ -30,7 +30,7 @@ O presente documento foi submetido ao processo de outorga do SIOUT RS e triado a
 - [CONFORME] **Nitrato (como N):** `2,1 mg/L` (VMP: `10.0`) -- p. 1
 - [CONFORME] **Cloreto:** `18,4 mg/L` (VMP: `250.0`) -- p. 1
 - [CONFORME] **Sulfato:** `9,7 mg/L` (VMP: `250.0`) -- p. 1
-- [CONFORME] **Dureza Total:** `86 mg/L CaCO3` (VMP: `500.0`) -- p. 1
+- [CONFORME] **Dureza Total:** `86 mg/L CaCO3` (VMP: `300.0`) -- p. 1
 - [CONFORME] **Ferro Total:** `0,09 mg/L` (VMP: `0.3`) -- p. 1
 - [CONFORME] **Manganes:** `0,03 mg/L` (VMP: `0.1`) -- p. 1
 - **Titular / Proprietario Declarado:** Metalurgica Sinos Ltda. -- p. 1

@@ -59,6 +59,7 @@ class DocumentoProcessado:
     tabelas: List[TabelaExtraida]
     metadados_brutos: Dict[str, Any] = field(default_factory=dict)
     achados_tecnicos: List[Dict[str, Any]] = field(default_factory=list)
+    avisos: List[str] = field(default_factory=list)
 
 
 def classificar_tipologia(texto: str) -> tuple[str, str, str, str]:
@@ -105,6 +106,7 @@ def processar_documento(caminho: str | Path, usar_docling: bool = True) -> Docum
     texto_completo = ""
     paginas: List[str] = []
     tabelas: List[TabelaExtraida] = []
+    avisos: List[str] = []
     markdown = ""
     meta_brutos: Dict[str, Any] = {}
 
@@ -130,7 +132,7 @@ def processar_documento(caminho: str | Path, usar_docling: bool = True) -> Docum
 
             # Extrai tabelas do docling
             if hasattr(docling_doc, "tables"):
-                for idx, t in enumerate(docling_doc.tables):
+                for idx, t in enumerate(docling_doc.tables, start=1):
                     try:
                         df = t.export_to_dataframe()
                         headers = [str(c) for c in df.columns]
@@ -142,11 +144,21 @@ def processar_documento(caminho: str | Path, usar_docling: bool = True) -> Docum
                             linhas=rows,
                             dados_dict=[{str(k): str(v) for k, v in rec.items()} for rec in records]
                         ))
-                    except Exception:
-                        pass
-        except Exception:
-            # Fallback para o texto do pymupdf caso o docling encontre alguma excecao
+                    except Exception as exc:  # noqa: BLE001
+                        # A tabela ilegivel nao invalida o resto da leitura, mas o
+                        # numero perdido tem de aparecer para quem assina o laudo:
+                        # era exatamente esse o parametro de potabilidade.
+                        avisos.append(
+                            f"Docling: falha ao extrair a tabela {idx} "
+                            f"(pagina {getattr(t, 'page_no', '?') or '?'}): "
+                            f"{type(exc).__name__}: {exc}.")
+        except Exception as exc:  # noqa: BLE001
+            # Cai para o texto do pypdf/PyMuPDF. A queda precisa ser visivel:
+            # sem Docling nao ha tabela estruturada, so texto corrido.
             markdown = texto_completo
+            avisos.append(
+                f"Docling falhou neste arquivo ({type(exc).__name__}: {exc}); "
+                "usada a extracao de texto simples, sem tabelas estruturadas.")
     else:
         markdown = texto_completo
 
@@ -166,4 +178,5 @@ def processar_documento(caminho: str | Path, usar_docling: bool = True) -> Docum
         paginas=paginas,
         tabelas=tabelas,
         metadados_brutos=meta_brutos,
+        avisos=avisos,
     )

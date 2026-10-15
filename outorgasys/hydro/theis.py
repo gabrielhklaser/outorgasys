@@ -209,10 +209,27 @@ class RetaRecuperacao:
         }
 
 
+METODOS_OLS = {"minimos-quadrados", "minimos quadrados", "ols", "least-squares",
+               "polyfit"}
+
+
+def _ajuste_ols(x: np.ndarray, y: np.ndarray) -> tuple[float, float]:
+    """Reta por minimos quadrados (inclinacao, intercepto)."""
+    b, a = np.polyfit(x, y, 1)
+    return float(b), float(a)
+
+
 def ajustar_reta_recuperacao(t_sobre_tlinha: Sequence[Any],
                              s_residual_m: Sequence[Any],
                              metodo: str = "theil-sen") -> RetaRecuperacao:
-    """Ajusta ``s'`` contra ``log10(t/t')`` e devolve Δs' (modulo)."""
+    """Ajusta ``s'`` contra ``log10(t/t')`` e devolve Δs' (modulo).
+
+    ``metodo`` aceita ``"theil-sen"`` (padrao, robusto a leituras fora da reta) e
+    ``"minimos-quadrados"``. Quando o Theil-Sen nao esta disponivel - scipy nao
+    instalado - o ajuste cai para minimos quadrados e a troca fica registrada em
+    ``observacao``, porque os dois metodos dao inclinacoes diferentes sobre a
+    mesma serie e isso aparece em Δs', T e Q_ot do laudo.
+    """
     x_raw, y = _arr(t_sobre_tlinha), _arr(s_residual_m)
     mask = _finito(x_raw) & _finito(y) & (x_raw > 0)
     x_raw, y = x_raw[mask], y[mask]
@@ -232,23 +249,36 @@ def ajustar_reta_recuperacao(t_sobre_tlinha: Sequence[Any],
             observacao="Apenas dois pontos: ajuste exato, sem estatistica de qualidade.",
         )
 
-    try:
-        from scipy import stats  # noqa: PLC0415
-
-        res = stats.theilslopes(y, x, 0.95)
-        b, a = float(res[0]), float(res[1])
-        metodo_usado = "Theil-Sen (robusto)"
-    except Exception:  # noqa: BLE001
-        b, a = np.polyfit(x, y, 1)
-        b, a = float(b), float(a)
+    metodo_pedido = str(metodo or "theil-sen").strip().lower().replace("_", "-")
+    nota_metodo = ""
+    if metodo_pedido in METODOS_OLS:
+        b, a = _ajuste_ols(x, y)
         metodo_usado = "minimos quadrados"
+    else:
+        if metodo_pedido != "theil-sen":
+            nota_metodo = f"Metodo '{metodo}' nao reconhecido; usado Theil-Sen."
+        try:
+            from scipy import stats  # noqa: PLC0415
+
+            res = stats.theilslopes(y, x, 0.95)
+            b, a = float(res[0]), float(res[1])
+            metodo_usado = "Theil-Sen (robusto)"
+        except Exception as exc:  # noqa: BLE001
+            # scipy ausente ou theilslopes com entrada degenerada. Os dois metodos
+            # dao inclinacoes diferentes sobre a mesma serie, e Δs' alimenta T e
+            # Q_ot do laudo: a troca nao pode passar em silencio.
+            b, a = _ajuste_ols(x, y)
+            metodo_usado = "minimos quadrados"
+            nota_metodo = (f"Theil-Sen indisponivel ({type(exc).__name__}: {exc}); "
+                           "ajuste por minimos quadrados, que e sensivel a leituras "
+                           "fora da reta. Confira Δs' antes de assinar.")
 
     y_hat = a + b * x
     ss_res = float(np.sum((y - y_hat) ** 2))
     ss_tot = float(np.sum((y - np.mean(y)) ** 2))
     r2 = 1.0 - ss_res / ss_tot if ss_tot > 1e-12 else None
 
-    obs = ""
+    obs = nota_metodo
     if r2 is not None and r2 < 0.85:
         obs = (f"Ajuste com R² = {r2:.3f} (baixo). Verifique se a fase de recuperacao "
                "foi registrada corretamente e se ha leituras ruidosas.")
@@ -265,7 +295,8 @@ def ajustar_reta_recuperacao(t_sobre_tlinha: Sequence[Any],
         n_pontos=int(n),
         metodo=metodo_usado,
         x=x_raw.tolist(), y=y.tolist(), y_ajustado=y_hat.tolist(),
-        observacao=obs or f"Ajuste {metodo_usado} sobre {n} pontos.",
+        observacao=((obs + " ") if obs else "")
+                   + f"Ajuste {metodo_usado} sobre {n} pontos.",
     )
 
 

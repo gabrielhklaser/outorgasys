@@ -292,17 +292,34 @@ recuperar a transmissividade de entrada (erro de ~0,3 %).
 
 ## Testes
 
-148 testes em ~40 s (cobertura de 82% de linha, medida com `pytest-cov`), dois
+169 testes em ~40 s (cobertura de 82% de linha, medida com `pytest-cov`), dois
 smoke tests de página e regras do ruff aprovadas pelo workflow `tests.yml` em
-todo push e pull request.
+todo push e pull request. O mesmo workflow roda uma segunda vez no job `piso`,
+com as versões mínimas declaradas em `requirements.txt` (Streamlit 1.49,
+pandas 2.1, numpy 1.26, geopandas 0.14), para que um piso quebrado apareça na
+CI e não na máquina de alguém.
 
 ```bash
 pip install -r requirements-dev.txt
 
-.venv/bin/python -m pytest               # 148 testes (pytest-cov opcional: --cov=outorgasys)
+.venv/bin/python -m pytest               # 169 testes (pytest-cov opcional: --cov=outorgasys)
 .venv/bin/python tests/smoke_ui.py       # todas as páginas com processo vazio
 .venv/bin/python tests/smoke_exemplo.py  # todas as páginas com o exemplo carregado
 .venv/bin/ruff check .
+```
+
+Para reconstruir exatamente o mesmo ambiente, use o lock com hashes:
+
+```bash
+pip install --require-hashes -r requirements.lock
+```
+
+O processo de exemplo pode ser regenerado sem acesso a tiles de mapa (CI, rede
+restrita) — as pranchas já em disco são reaproveitadas e só o cálculo, o laudo e
+o mapa interativo são refeitos:
+
+```bash
+.venv/bin/python scripts/semente_campo_bom.py --sem-mapas
 ```
 
 Os dois smoke tests usam `streamlit.testing.v1.AppTest` e falham se qualquer página levantar

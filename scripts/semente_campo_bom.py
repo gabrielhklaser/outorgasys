@@ -7,6 +7,12 @@ para validacao ponta a ponta:
 
     .venv/bin/python scripts/semente_campo_bom.py            # cria/atualiza
     .venv/bin/python scripts/semente_campo_bom.py --limpar   # apaga e refaz
+    .venv/bin/python scripts/semente_campo_bom.py --sem-mapas  # sem tiles (offline)
+
+``--sem-mapas`` refaz os calculos, o laudo e o PDF reaproveitando as pranchas
+cartograficas que ja estao em disco. Use em maquinas sem acesso a tiles
+(ex.: CI ou rede restrita): as pranchas dependem de imagem de base baixada da
+Esri/OSM e sairiam sem fundo se fossem redesenhadas offline.
 
 Uso pela interface: iniciar o app e abrir o processo "EX-CAMPOBOM-001".
 """
@@ -132,7 +138,13 @@ def _falha(n: int, texto: str) -> None:
     print(f"      agente {n}: PENDENTE - {texto}", flush=True)
 
 
-def construir(limpar: bool = False) -> Processo:
+def construir(limpar: bool = False, sem_mapas: bool = False) -> Processo:
+    if limpar and sem_mapas:
+        raise SystemExit(
+            "--limpar apaga as pranchas que ja estao em disco; com --sem-mapas o "
+            "exemplo sairia sem imagem de fundo (as pranchas dependem de tiles). "
+            "Rode apenas --sem-mapas para reaproveitar as pranchas existentes, ou "
+            "tire --sem-mapas numa maquina com rede para redesenhar os mapas.")
     if limpar:
         shutil.rmtree(Processo._diretorio_de(ID_PROCESSO), ignore_errors=True)
         Processo._json_de(ID_PROCESSO).unlink(missing_ok=True)
@@ -211,8 +223,21 @@ def construir(limpar: bool = False) -> Processo:
 
     # ------------------------------------------------------------------ Agente 2
     _etapa(2, "Cruzamento espacial e pranchas cartograficas")
+    mapas_existentes = list(
+        (proc.get("geoespacial") or {}).get("caminho_mapas") or [])
     saida_geo = a2.analisar(proc, LAT, LON, raio_seguranca=C.RAIO_SEGURANCA_M,
-                            raio_contexto=3000.0, gerar_mapas=True, usar_osm=True)
+                            raio_contexto=3000.0, gerar_mapas=True,
+                            gerar_pranchas=not sem_mapas,
+                            usar_osm=True)
+    if sem_mapas and not saida_geo.get("caminho_mapas") and mapas_existentes:
+        # Offline nao ha tiles: reaproveita as pranchas que ja estao em disco e
+        # normaliza o separador de caminho para "/" enquanto reencaminha.
+        saida_geo["caminho_mapas"] = [
+            C.caminho_relativo(C.caminho_absoluto(m)) for m in mapas_existentes]
+        saida_geo["detalhes"].setdefault("mapas", {})["reaproveitado"] = True
+        proc.log(2, "Pranchas cartograficas reaproveitadas do processo existente "
+                    "(--sem-mapas: sem acesso a tiles de imagem de base).",
+                 nivel="aviso")
     proc["geoespacial"] = saida_geo
     proc.data.setdefault("imovel", {})["municipio"] = saida_geo.get("municipio")
     proc.concluir_agente(2)
@@ -267,9 +292,12 @@ def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--limpar", action="store_true",
                     help="apaga o diretorio do processo antes de reconstruir")
+    ap.add_argument("--sem-mapas", action="store_true", dest="sem_mapas",
+                    help="refaz calculos/laudo sem redesenhar as pranchas "
+                         "(reaproveita as que ja estao em disco; use offline)")
     args = ap.parse_args()
     try:
-        construir(limpar=args.limpar)
+        construir(limpar=args.limpar, sem_mapas=args.sem_mapas)
     except Exception:  # noqa: BLE001
         traceback.print_exc()
         return 1

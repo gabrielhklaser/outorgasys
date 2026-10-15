@@ -4,7 +4,7 @@ tipo: D
 rotulo_tipo: Documento Notarial / Certidao de Registro de Imoveis
 confianca_fonte: A
 justificativa_fonte: Certidao notarial oficial dotada de fe publica
-processado_em: 2026-09-25
+processado_em: 2026-10-01
 paginas: 1
 ---
 
@@ -24,6 +24,6 @@ O presente documento foi submetido ao processo de outorga do SIOUT RS e triado a
 - **Area Superficial Registrada:** 1.8 -- p. 1
 
 ## Conformidade Normativa e Evidencias
-- **Conformidade Geral de Potabilidade:** CONFORME
+- **Conformidade Geral de Potabilidade:** PENDENTE / INCONFORME
 - **Total de Parametros Avaliados:** 0
 - **Citacao e Rastreabilidade:** Todos os dados foram extraidos diretamente do documento original anexado ao processo.

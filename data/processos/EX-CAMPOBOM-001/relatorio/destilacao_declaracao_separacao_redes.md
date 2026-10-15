@@ -4,7 +4,7 @@ tipo: D
 rotulo_tipo: Declaracao Administrativa de Separacao de Redes
 confianca_fonte: B
 justificativa_fonte: Declaracao formal assinada pelo titular e responsavel com responsabilidade civil e penal
-processado_em: 2026-09-25
+processado_em: 2026-10-01
 paginas: 1
 ---
 
@@ -23,6 +23,6 @@ O presente documento foi submetido ao processo de outorga do SIOUT RS e triado a
 - Nenhum parametro quantitativo especifico identificado no texto, p. 1
 
 ## Conformidade Normativa e Evidencias
-- **Conformidade Geral de Potabilidade:** CONFORME
+- **Conformidade Geral de Potabilidade:** PENDENTE / INCONFORME
 - **Total de Parametros Avaliados:** 0
 - **Citacao e Rastreabilidade:** Todos os dados foram extraidos diretamente do documento original anexado ao processo.

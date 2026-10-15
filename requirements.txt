@@ -46,3 +46,18 @@ requests>=2.31,<3
 # pymupdf  : extracao de texto mais precisa em PDFs complexos. Licenca AGPL; sem ele a
 #            leitura usa pypdf (ver outorgasys/docreader/engine.py).
 # docling  : tabelas estruturadas de laudos. Instalacao grande (traz torch).
+
+# --- lock e pisos -----------------------------------------------------------------------
+# requirements.lock fixa todas as versoes com hash SHA-256 (resolucao universal,
+# Python 3.11). O Render continua instalando por este arquivo; use o lock quando
+# precisar reconstruir exatamente o mesmo ambiente:
+#
+#   pip install --require-hashes -r requirements.lock
+#
+# Regenerar depois de mexer acima:
+#
+#   uv pip compile requirements.txt --generate-hashes --universal \
+#       --python-version 3.11 -o requirements.lock
+#
+# tests/test_lock_requisitos.py falha quando os dois divergem. Os pisos listados
+# acima sao instalados de proposito pela CI a partir de requirements-piso.txt.

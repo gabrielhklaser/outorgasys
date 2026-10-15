@@ -2,7 +2,7 @@
   "id": "EX-CAMPOBOM-001",
   "versao": "1.0.0",
   "criado_em": "2026-09-23T12:25:28",
-  "atualizado_em": "2026-09-25T17:54:40",
+  "atualizado_em": "2026-10-01T16:37:00",
   "status": "triagem",
   "agentes_concluidos": [
     1,
@@ -45,8 +45,8 @@
   "documentos": {
     "ensaio_bombeamento": {
       "nome": "ensaio_bombeamento_PT-01.xlsx",
-      "caminho": "data\\processos\\EX-CAMPOBOM-001\\arquivos\\ensaio_bombeamento_PT-01.xlsx",
-      "tamanho": 10382,
+      "caminho": "data/processos/EX-CAMPOBOM-001/arquivos/ensaio_bombeamento_PT-01.xlsx",
+      "tamanho": 10289,
       "origem": "gerado pela plataforma",
       "sintetico": true,
       "parametros_geracao": {
@@ -61,24 +61,24 @@
     },
     "matricula_imovel": {
       "nome": "matricula_imovel_exemplo.pdf",
-      "caminho": "data\\processos\\EX-CAMPOBOM-001\\arquivos\\matricula_imovel_exemplo.pdf",
-      "tamanho": 2535,
+      "caminho": "data/processos/EX-CAMPOBOM-001/arquivos/matricula_imovel_exemplo.pdf",
+      "tamanho": 2532,
       "origem": "gerado pela plataforma",
       "exemplo": true,
       "nao_valido_para_protocolo": true
     },
     "analise_laboratorial": {
       "nome": "analise_laboratorial_exemplo.pdf",
-      "caminho": "data\\processos\\EX-CAMPOBOM-001\\arquivos\\analise_laboratorial_exemplo.pdf",
-      "tamanho": 3686,
+      "caminho": "data/processos/EX-CAMPOBOM-001/arquivos/analise_laboratorial_exemplo.pdf",
+      "tamanho": 3702,
       "origem": "gerado pela plataforma",
       "exemplo": true,
       "nao_valido_para_protocolo": true
     },
     "declaracao_separacao_redes": {
       "nome": "declaracao_separacao_redes_exemplo.pdf",
-      "caminho": "data\\processos\\EX-CAMPOBOM-001\\arquivos\\declaracao_separacao_redes_exemplo.pdf",
-      "tamanho": 3006,
+      "caminho": "data/processos/EX-CAMPOBOM-001/arquivos/declaracao_separacao_redes_exemplo.pdf",
+      "tamanho": 3013,
       "origem": "gerado pela plataforma",
       "exemplo": true,
       "nao_valido_para_protocolo": true
@@ -86,7 +86,7 @@
     "registro_fotografico": [
       {
         "nome": "foto_01_boca_poco.jpg",
-        "caminho": "data\\processos\\EX-CAMPOBOM-001\\arquivos\\foto_01_boca_poco.jpg",
+        "caminho": "data/processos/EX-CAMPOBOM-001/arquivos/foto_01_boca_poco.jpg",
         "tamanho": 34657,
         "origem": "gerado pela plataforma",
         "exemplo": true,
@@ -94,7 +94,7 @@
       },
       {
         "nome": "foto_02_laje_protecao.jpg",
-        "caminho": "data\\processos\\EX-CAMPOBOM-001\\arquivos\\foto_02_laje_protecao.jpg",
+        "caminho": "data/processos/EX-CAMPOBOM-001/arquivos/foto_02_laje_protecao.jpg",
         "tamanho": 39823,
         "origem": "gerado pela plataforma",
         "exemplo": true,
@@ -102,7 +102,7 @@
       },
       {
         "nome": "foto_03_cercamento.jpg",
-        "caminho": "data\\processos\\EX-CAMPOBOM-001\\arquivos\\foto_03_cercamento.jpg",
+        "caminho": "data/processos/EX-CAMPOBOM-001/arquivos/foto_03_cercamento.jpg",
         "tamanho": 44399,
         "origem": "gerado pela plataforma",
         "exemplo": true,
@@ -110,7 +110,7 @@
       },
       {
         "nome": "foto_04_cavalete_hidrometro.jpg",
-        "caminho": "data\\processos\\EX-CAMPOBOM-001\\arquivos\\foto_04_cavalete_hidrometro.jpg",
+        "caminho": "data/processos/EX-CAMPOBOM-001/arquivos/foto_04_cavalete_hidrometro.jpg",
         "tamanho": 38241,
         "origem": "gerado pela plataforma",
         "exemplo": true,
@@ -195,9 +195,9 @@
       "distancia_m": 358.95
     },
     "caminho_mapas": [
-      "data\\processos\\EX-CAMPOBOM-001\\mapas\\mapa_situacao.jpg",
-      "data\\processos\\EX-CAMPOBOM-001\\mapas\\mapa_geologico.jpg",
-      "data\\processos\\EX-CAMPOBOM-001\\mapas\\mapa_hidrologico.jpg"
+      "data/processos/EX-CAMPOBOM-001/mapas/mapa_situacao.jpg",
+      "data/processos/EX-CAMPOBOM-001/mapas/mapa_geologico.jpg",
+      "data/processos/EX-CAMPOBOM-001/mapas/mapa_hidrologico.jpg"
     ],
     "detalhes": {
       "buffer": {
@@ -245,7 +245,7 @@
               "ok": "True",
               "resource_limits": "{'declared_within_feature_limit': True, 'feature_data_loaded': False, 'max_features_for_downstream_load': 100000, 'max_input_bytes': 67108864}",
               "source": "{'basename_sha256': 'ba4023f1b3630c3ba0a9c025e8ced422d01e6a5fbdbc2eb67c1c5a86985d5086', 'path_emitted': False, 'primary_file_bytes': 11067392, 'primary_file_...",
-              "stack": "{'matches_pinned_snapshot': {'geopandas': True, 'numpy': False, 'packaging': False, 'pandas': False, 'pyarrow': False, 'pyogrio': True, 'pyproj': False, 'sha...",
+              "stack": "{'matches_pinned_snapshot': {'geopandas': False, 'numpy': False, 'packaging': False, 'pandas': False, 'pyarrow': False, 'pyogrio': True, 'pyproj': True, 'sha...",
               "technical_inventory": "{'bounds_available': True, 'bounds_redacted': True, 'crs': {'authority': 'EPSG:4674', 'axes': [{'abbreviation': 'Lat', 'direction': 'north', 'unit': 'degree'...",
               "tool": "vector_inventory",
               "warnings": "['No feature values, coordinates, bounds, paths, layer names, or field names were emitted.', 'GDAL/GEOS/PROJ and binary wheels are native-code trust boundari..."
@@ -273,7 +273,7 @@
               "ok": "True",
               "resource_limits": "{'declared_within_feature_limit': True, 'feature_data_loaded': False, 'max_features_for_downstream_load': 100000, 'max_input_bytes': 67108864}",
               "source": "{'basename_sha256': '58fa068b7894bd52d66207ff329531ac6e5aab0beb7f9a857adfe5d29a007c06', 'path_emitted': False, 'primary_file_bytes': 2011136, 'primary_file_s...",
-              "stack": "{'matches_pinned_snapshot': {'geopandas': True, 'numpy': False, 'packaging': False, 'pandas': False, 'pyarrow': False, 'pyogrio': True, 'pyproj': False, 'sha...",
+              "stack": "{'matches_pinned_snapshot': {'geopandas': False, 'numpy': False, 'packaging': False, 'pandas': False, 'pyarrow': False, 'pyogrio': True, 'pyproj': True, 'sha...",
               "technical_inventory": "{'bounds_available': True, 'bounds_redacted': True, 'crs': {'authority': 'EPSG:4674', 'axes': [{'abbreviation': 'Lat', 'direction': 'north', 'unit': 'degree'...",
               "tool": "vector_inventory",
               "warnings": "['No feature values, coordinates, bounds, paths, layer names, or field names were emitted.', 'GDAL/GEOS/PROJ and binary wheels are native-code trust boundari..."
@@ -301,7 +301,7 @@
               "ok": "True",
               "resource_limits": "{'declared_within_feature_limit': True, 'feature_data_loaded': False, 'max_features_for_downstream_load': 100000, 'max_input_bytes': 67108864}",
               "source": "{'basename_sha256': '51965a2a9670b1de5e0d3cceb02fb19d1f1277fcf874a99b75277579471e1d7a', 'path_emitted': False, 'primary_file_bytes': 10670080, 'primary_file_...",
-              "stack": "{'matches_pinned_snapshot': {'geopandas': True, 'numpy': False, 'packaging': False, 'pandas': False, 'pyarrow': False, 'pyogrio': True, 'pyproj': False, 'sha...",
+              "stack": "{'matches_pinned_snapshot': {'geopandas': False, 'numpy': False, 'packaging': False, 'pandas': False, 'pyarrow': False, 'pyogrio': True, 'pyproj': True, 'sha...",
               "technical_inventory": "{'bounds_available': True, 'bounds_redacted': True, 'crs': {'authority': 'EPSG:4674', 'axes': [{'abbreviation': 'Lat', 'direction': 'north', 'unit': 'degree'...",
               "tool": "vector_inventory",
               "warnings": "['No feature values, coordinates, bounds, paths, layer names, or field names were emitted.', 'GDAL/GEOS/PROJ and binary wheels are native-code trust boundari..."
@@ -329,7 +329,7 @@
               "ok": "True",
               "resource_limits": "{'declared_within_feature_limit': True, 'feature_data_loaded': False, 'max_features_for_downstream_load': 100000, 'max_input_bytes': 67108864}",
               "source": "{'basename_sha256': 'f7f0276674ffaf1119b4b6fd8ab863910382a91baa22932786b257a30aecdd1e', 'path_emitted': False, 'primary_file_bytes': 27832320, 'primary_file_...",
-              "stack": "{'matches_pinned_snapshot': {'geopandas': True, 'numpy': False, 'packaging': False, 'pandas': False, 'pyarrow': False, 'pyogrio': True, 'pyproj': False, 'sha...",
+              "stack": "{'matches_pinned_snapshot': {'geopandas': False, 'numpy': False, 'packaging': False, 'pandas': False, 'pyarrow': False, 'pyogrio': True, 'pyproj': True, 'sha...",
               "technical_inventory": "{'bounds_available': True, 'bounds_redacted': True, 'crs': {'authority': 'EPSG:4674', 'axes': [{'abbreviation': 'Lat', 'direction': 'north', 'unit': 'degree'...",
               "tool": "vector_inventory",
               "warnings": "['No feature values, coordinates, bounds, paths, layer names, or field names were emitted.', 'GDAL/GEOS/PROJ and binary wheels are native-code trust boundari..."
@@ -345,7 +345,7 @@
               "output": "{'basename_sha256': None, 'path_emitted': False, 'requested': False, 'roundtrip_verified': False, 'sha256': None, 'written': False}",
               "repair_contract": "{'keep_collapsed': True, 'method': 'linework', 'precision_grid': None, 'precision_grid_units': None, 'source_modified': False, 'type_transition_rows': 0}",
               "simulated_after": "{'coordinates_emitted': False, 'duplicate_index_rows': 0, 'empty': 0, 'features': 67535, 'geometry_type_counts': {'LineString': 67535}, 'has_m': 0, 'has_z': ...",
-              "source": "{'path_emitted': False, 'primary_file_bytes': 27832320, 'primary_file_sha256': '73fa92978f61c3316bc2ddfd7ab69fea77771cb203741727c0da5342e376546e'}",
+              "source": "{'path_emitted': False, 'primary_file_bytes': 27832320, 'primary_file_sha256': '6d070884c01d8c2c80a5b7d4ddeb908cda9a6933ed8faf85297235c419afe6b5'}",
               "stable_id_audit": "{'duplicate_rows': None, 'null_rows': None, 'provided': False}"
             }
           }
@@ -354,7 +354,7 @@
           "bbox": "{'crosses_antimeridian': False, 'provided': False, 'used_as_area_of_interest': False, 'values_emitted': False}",
           "best_available": "True",
           "candidate_count": "1",
-          "candidate_summaries_first_five": "[{'accuracy_known': False, 'accuracy_metres': None, 'area_of_use_name': 'Between 54°W and 48°W, southern hemisphere between 80°S and equator, onshore and off...",
+          "candidate_summaries_first_five": "[{'accuracy_known': True, 'accuracy_metres': 0.0, 'area_of_use_name': 'World', 'description': 'axis order change (2D) + UTM zone 22S'}]",
           "coordinate_array_order": "x_y_via_always_xy",
           "coordinates_emitted": "False",
           "coordinates_transformed": "False",
@@ -366,10 +366,8 @@
         }
       },
       "mapas": {
-        "mapa_situacao": "data\\processos\\EX-CAMPOBOM-001\\mapas\\mapa_situacao.jpg",
-        "mapa_geologico": "data\\processos\\EX-CAMPOBOM-001\\mapas\\mapa_geologico.jpg",
-        "mapa_hidrologico": "data\\processos\\EX-CAMPOBOM-001\\mapas\\mapa_hidrologico.jpg",
-        "interativo": "data\\processos\\EX-CAMPOBOM-001\\mapas\\mapa_interativo_camadas.html"
+        "interativo": "data/processos/EX-CAMPOBOM-001/mapas/mapa_interativo_camadas.html",
+        "reaproveitado": true
       }
     },
     "proveniencia": {
@@ -480,7 +478,7 @@
     },
     "pendencias": [],
     "erros": [],
-    "mapa_interativo_html": "data\\processos\\EX-CAMPOBOM-001\\mapas\\mapa_interativo_camadas.html"
+    "mapa_interativo_html": "data/processos/EX-CAMPOBOM-001/mapas/mapa_interativo_camadas.html"
   },
   "ensaio": {
     "ok": true,
@@ -1192,7 +1190,7 @@
       "q_capacidade_especifica_m3h_m": 4.176166139464615,
       "q_longo_prazo_m3h_m": 4.7832566896025,
       "Q_ot_m3h": 13.73751321253838,
-      "Q_jacob_lohman_m3h": 4.143994414790098,
+      "Q_jacob_lohman_m3h": 8.287988829580195,
       "tempo_bombeamento_min": 1440.0,
       "duracao_h": 24.0
     },
@@ -1208,7 +1206,7 @@
       "q_capacidade_especifica": 4.176166139464615,
       "q_longo_prazo": 4.7832566896025,
       "Q_ot": 13.73751321253838,
-      "Q_jacob_lohman": 4.143994414790098,
+      "Q_jacob_lohman": 8.287988829580195,
       "tempo_bombeamento_min": 1440.0,
       "vazao_estabilizada": {
         "q_estavel": 11.993949152542374,
@@ -1227,14 +1225,14 @@
         "n_pontos": 59,
         "metodo": "Theil-Sen (robusto)",
         "equacao": "s' = +0.3671·log10(t/t') +0.0031   (R² = 0.9917)",
-        "observacao": "Coeficiente angular positivo: o rebaixamento residual deveria decair com t/t'. Confira a planilha de recuperacao."
+        "observacao": "Coeficiente angular positivo: o rebaixamento residual deveria decair com t/t'. Confira a planilha de recuperacao. Ajuste Theil-Sen (robusto) sobre 59 pontos."
       },
       "avisos": [],
       "erros": [],
       "detalhes": {
         "observacao_vazao": "Patamar de 59 leituras a partir de t = 1 min (CV = 1.0%).",
         "t_bombeamento_total_min": 1440.0,
-        "observacao_recuperacao": "Coeficiente angular positivo: o rebaixamento residual deveria decair com t/t'. Confira a planilha de recuperacao.",
+        "observacao_recuperacao": "Coeficiente angular positivo: o rebaixamento residual deveria decair com t/t'. Confira a planilha de recuperacao. Ajuste Theil-Sen (robusto) sobre 59 pontos.",
         "jacob_lohman": {
           "raio_m": 0.0762,
           "S_adotado": 0.0001,
@@ -1245,9 +1243,9 @@
       }
     },
     "graficos": {
-      "painel": "data\\processos\\EX-CAMPOBOM-001\\graficos\\graficos_ensaio.png",
-      "rebaixamento": "data\\processos\\EX-CAMPOBOM-001\\graficos\\grafico_rebaixamento.png",
-      "recuperacao": "data\\processos\\EX-CAMPOBOM-001\\graficos\\grafico_recuperacao.png"
+      "painel": "data/processos/EX-CAMPOBOM-001/graficos/graficos_ensaio.png",
+      "rebaixamento": "data/processos/EX-CAMPOBOM-001/graficos/grafico_rebaixamento.png",
+      "recuperacao": "data/processos/EX-CAMPOBOM-001/graficos/grafico_recuperacao.png"
     },
     "avisos": [],
     "erros": [],
@@ -1625,8 +1623,8 @@
         ]
       },
       "tendencia": {
-        "a": 1.6896614630076452,
-        "b": 0.3636157606255771,
+        "a": 1.689661463007644,
+        "b": 0.3636157606255775,
         "r2": 0.9950818387015555,
         "equacao": "s = +0.3636·log10(t) +1.6897   (R² = 0.9951)"
       }
@@ -1752,7 +1750,7 @@
           "volume_m3_mes": 3186.55
         }
       ],
-      "volume_anual_m3": 37521.87,
+      "volume_anual_m3": 37521.84,
       "vazao_media_diaria_m3_dia": 102.8,
       "vazao_diaria_max_m3_dia": 143.927,
       "horas_dia": 12.0,
@@ -1845,7 +1843,7 @@
         "titulo": "LAUDO TECNICO DE CARACTERIZACAO HIDROGEOLOGICA",
         "subtitulo": "MEMORIAL DESCRITIVO PARA OUTORGA DE AGUA SUBTERRANEA - SIOUT/RS",
         "processo": "EX-CAMPOBOM-001",
-        "data_emissao": "25/09/2026",
+        "data_emissao": "01/10/2026",
         "versao_sistema": "1.0.0"
       },
       "identificacao": {
@@ -1924,7 +1922,7 @@
             "q_capacidade_especifica_m3h_m": 4.176166139464615,
             "q_longo_prazo_m3h_m": 4.7832566896025,
             "Q_ot_m3h": 13.73751321253838,
-            "Q_jacob_lohman_m3h": 4.143994414790098,
+            "Q_jacob_lohman_m3h": 8.287988829580195,
             "tempo_bombeamento_min": 1440.0,
             "duracao_h": 24.0
           },
@@ -1940,7 +1938,7 @@
             "q_capacidade_especifica": 4.176166139464615,
             "q_longo_prazo": 4.7832566896025,
             "Q_ot": 13.73751321253838,
-            "Q_jacob_lohman": 4.143994414790098,
+            "Q_jacob_lohman": 8.287988829580195,
             "tempo_bombeamento_min": 1440.0,
             "vazao_estabilizada": {
               "q_estavel": 11.993949152542374,
@@ -1959,14 +1957,14 @@
               "n_pontos": 59,
               "metodo": "Theil-Sen (robusto)",
               "equacao": "s' = +0.3671·log10(t/t') +0.0031   (R² = 0.9917)",
-              "observacao": "Coeficiente angular positivo: o rebaixamento residual deveria decair com t/t'. Confira a planilha de recuperacao."
+              "observacao": "Coeficiente angular positivo: o rebaixamento residual deveria decair com t/t'. Confira a planilha de recuperacao. Ajuste Theil-Sen (robusto) sobre 59 pontos."
             },
             "avisos": [],
             "erros": [],
             "detalhes": {
               "observacao_vazao": "Patamar de 59 leituras a partir de t = 1 min (CV = 1.0%).",
               "t_bombeamento_total_min": 1440.0,
-              "observacao_recuperacao": "Coeficiente angular positivo: o rebaixamento residual deveria decair com t/t'. Confira a planilha de recuperacao.",
+              "observacao_recuperacao": "Coeficiente angular positivo: o rebaixamento residual deveria decair com t/t'. Confira a planilha de recuperacao. Ajuste Theil-Sen (robusto) sobre 59 pontos.",
               "jacob_lohman": {
                 "raio_m": 0.0762,
                 "S_adotado": 0.0001,
@@ -1977,9 +1975,9 @@
             }
           },
           "graficos": {
-            "painel": "data\\processos\\EX-CAMPOBOM-001\\graficos\\graficos_ensaio.png",
-            "rebaixamento": "data\\processos\\EX-CAMPOBOM-001\\graficos\\grafico_rebaixamento.png",
-            "recuperacao": "data\\processos\\EX-CAMPOBOM-001\\graficos\\grafico_recuperacao.png"
+            "painel": "data/processos/EX-CAMPOBOM-001/graficos/graficos_ensaio.png",
+            "rebaixamento": "data/processos/EX-CAMPOBOM-001/graficos/grafico_rebaixamento.png",
+            "recuperacao": "data/processos/EX-CAMPOBOM-001/graficos/grafico_recuperacao.png"
           },
           "avisos": [],
           "erros": [],
@@ -2357,8 +2355,8 @@
               ]
             },
             "tendencia": {
-              "a": 1.6896614630076452,
-              "b": 0.3636157606255771,
+              "a": 1.689661463007644,
+              "b": 0.3636157606255775,
               "r2": 0.9950818387015555,
               "equacao": "s = +0.3636·log10(t) +1.6897   (R² = 0.9951)"
             }
@@ -2417,8 +2415,8 @@
           },
           {
             "parametro": "Contraprova Jacob-Lohman",
-            "valor": "4,14 m3/h",
-            "criterio": "Estimativa independente de longo prazo"
+            "valor": "8,29 m3/h",
+            "criterio": "Q = 4π·T·s / ln(2,25·T·t / (r²·S)); premissas adotadas: S = 0.0001, t = 365 d, r = 0.0762 m"
           },
           {
             "parametro": "Duracao do ensaio",
@@ -2676,7 +2674,7 @@
             "volume_m3_mes": 3186.55
           }
         ],
-        "volume_anual_m3": 37521.87,
+        "volume_anual_m3": 37521.84,
         "vazao_media_diaria_m3_dia": 102.8,
         "vazao_diaria_max_m3_dia": 143.927,
         "horas_dia": 12.0,
@@ -2722,19 +2720,19 @@
         "titulo": "Geologo",
         "registro": "CREA-RS 0000000000",
         "art": "ART RS2024 0000000",
-        "local_data": "____________________, 25/09/2026",
+        "local_data": "____________________, 01/10/2026",
         "nota_normativa": "Conforme a norma CEGM/CREA-RS n. 08/2022, o presente laudo deve ser assinado por profissional habilitado (Geologo ou Engenheiro de Minas) com a respectiva Anotacao de Responsabilidade Tecnica (ART)."
       },
       "anexos": {
         "mapas": [
-          "data\\processos\\EX-CAMPOBOM-001\\mapas\\mapa_situacao.jpg",
-          "data\\processos\\EX-CAMPOBOM-001\\mapas\\mapa_geologico.jpg",
-          "data\\processos\\EX-CAMPOBOM-001\\mapas\\mapa_hidrologico.jpg"
+          "data/processos/EX-CAMPOBOM-001/mapas/mapa_situacao.jpg",
+          "data/processos/EX-CAMPOBOM-001/mapas/mapa_geologico.jpg",
+          "data/processos/EX-CAMPOBOM-001/mapas/mapa_hidrologico.jpg"
         ],
         "graficos": {
-          "painel": "data\\processos\\EX-CAMPOBOM-001\\graficos\\graficos_ensaio.png",
-          "rebaixamento": "data\\processos\\EX-CAMPOBOM-001\\graficos\\grafico_rebaixamento.png",
-          "recuperacao": "data\\processos\\EX-CAMPOBOM-001\\graficos\\grafico_recuperacao.png"
+          "painel": "data/processos/EX-CAMPOBOM-001/graficos/graficos_ensaio.png",
+          "rebaixamento": "data/processos/EX-CAMPOBOM-001/graficos/grafico_rebaixamento.png",
+          "recuperacao": "data/processos/EX-CAMPOBOM-001/graficos/grafico_recuperacao.png"
         },
         "proveniencia": {
           "municipios_rs": {
@@ -2844,28 +2842,13 @@
         }
       }
     },
-    "markdown": "data\\processos\\EX-CAMPOBOM-001\\relatorio\\laudo_tecnico.md",
-    "pdf": "data\\processos\\EX-CAMPOBOM-001\\relatorio\\laudo_tecnico.pdf",
-    "minuta": "data\\processos\\EX-CAMPOBOM-001\\relatorio\\minuta_siout.md",
+    "markdown": "data/processos/EX-CAMPOBOM-001/relatorio/laudo_tecnico.md",
+    "pdf": "data/processos/EX-CAMPOBOM-001/relatorio/laudo_tecnico.pdf",
+    "minuta": "data/processos/EX-CAMPOBOM-001/relatorio/minuta_siout.md",
     "erros": [],
     "avisos": []
   },
   "issues": [
-    {
-      "id": "D010",
-      "categoria": "ambiente",
-      "categoria_rotulo": "Ambiente e dependencias",
-      "severidade": "critico",
-      "titulo": "Dependencias ausentes",
-      "detalhe": "Pacotes nao importaveis: fiona",
-      "agente": null,
-      "origem": "diagnostico de ambiente",
-      "sugestao": "Reinstale com: pip install -r requirements.txt",
-      "correcao": [
-        "Reinstalar as dependencias: pip install -r requirements.txt.",
-        "Reiniciar a aplicacao."
-      ]
-    },
     {
       "id": "D001",
       "categoria": "geoespacial",
@@ -3020,7 +3003,7 @@
       ]
     },
     {
-      "id": "D011",
+      "id": "D010",
       "categoria": "geoespacial",
       "categoria_rotulo": "Base geoespacial",
       "severidade": "info",
@@ -3337,6 +3320,186 @@
       "agente": 6,
       "nivel": "info",
       "mensagem": "Triagem concluida: 11 achados."
+    },
+    {
+      "ts": "2026-10-01T16:31:56",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Arquivo registrado em 'ensaio_bombeamento': ensaio_bombeamento_PT-01.xlsx"
+    },
+    {
+      "ts": "2026-10-01T16:31:57",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Arquivo registrado em 'matricula_imovel': matricula_imovel_exemplo.pdf"
+    },
+    {
+      "ts": "2026-10-01T16:31:57",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Arquivo registrado em 'analise_laboratorial': analise_laboratorial_exemplo.pdf"
+    },
+    {
+      "ts": "2026-10-01T16:31:57",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Arquivo registrado em 'declaracao_separacao_redes': declaracao_separacao_redes_exemplo.pdf"
+    },
+    {
+      "ts": "2026-10-01T16:31:57",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Arquivo registrado em 'registro_fotografico': foto_01_boca_poco.jpg"
+    },
+    {
+      "ts": "2026-10-01T16:31:57",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Arquivo registrado em 'registro_fotografico': foto_02_laje_protecao.jpg"
+    },
+    {
+      "ts": "2026-10-01T16:31:57",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Arquivo registrado em 'registro_fotografico': foto_03_cercamento.jpg"
+    },
+    {
+      "ts": "2026-10-01T16:31:57",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Arquivo registrado em 'registro_fotografico': foto_04_cavalete_hidrometro.jpg"
+    },
+    {
+      "ts": "2026-10-01T16:31:57",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Cadastro de exemplo carregado. Os anexos (matricula, analise laboratorial, declaracao de separacao de redes e registro fotografico) sao exemplos gerados pela plataforma e estao marcados como nao validos para protocolo."
+    },
+    {
+      "ts": "2026-10-01T16:31:57",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Docling/GabeBrain: documento 'matricula_imovel' processado com confianca A."
+    },
+    {
+      "ts": "2026-10-01T16:31:57",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Docling/GabeBrain: documento 'analise_laboratorial' processado com confianca A."
+    },
+    {
+      "ts": "2026-10-01T16:31:57",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Docling/GabeBrain: documento 'declaracao_separacao_redes' processado com confianca B."
+    },
+    {
+      "ts": "2026-10-01T16:32:04",
+      "agente": 2,
+      "nivel": "aviso",
+      "mensagem": "Pranchas cartograficas reaproveitadas do processo existente (--sem-mapas: sem acesso a tiles de imagem de base)."
+    },
+    {
+      "ts": "2026-10-01T16:32:08",
+      "agente": 5,
+      "nivel": "info",
+      "mensagem": "Relatorio tecnico emitido."
+    },
+    {
+      "ts": "2026-10-01T16:32:10",
+      "agente": 6,
+      "nivel": "info",
+      "mensagem": "Triagem concluida: 10 achados."
+    },
+    {
+      "ts": "2026-10-01T16:36:47",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Arquivo registrado em 'ensaio_bombeamento': ensaio_bombeamento_PT-01.xlsx"
+    },
+    {
+      "ts": "2026-10-01T16:36:47",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Arquivo registrado em 'matricula_imovel': matricula_imovel_exemplo.pdf"
+    },
+    {
+      "ts": "2026-10-01T16:36:47",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Arquivo registrado em 'analise_laboratorial': analise_laboratorial_exemplo.pdf"
+    },
+    {
+      "ts": "2026-10-01T16:36:47",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Arquivo registrado em 'declaracao_separacao_redes': declaracao_separacao_redes_exemplo.pdf"
+    },
+    {
+      "ts": "2026-10-01T16:36:47",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Arquivo registrado em 'registro_fotografico': foto_01_boca_poco.jpg"
+    },
+    {
+      "ts": "2026-10-01T16:36:47",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Arquivo registrado em 'registro_fotografico': foto_02_laje_protecao.jpg"
+    },
+    {
+      "ts": "2026-10-01T16:36:47",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Arquivo registrado em 'registro_fotografico': foto_03_cercamento.jpg"
+    },
+    {
+      "ts": "2026-10-01T16:36:47",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Arquivo registrado em 'registro_fotografico': foto_04_cavalete_hidrometro.jpg"
+    },
+    {
+      "ts": "2026-10-01T16:36:47",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Cadastro de exemplo carregado. Os anexos (matricula, analise laboratorial, declaracao de separacao de redes e registro fotografico) sao exemplos gerados pela plataforma e estao marcados como nao validos para protocolo."
+    },
+    {
+      "ts": "2026-10-01T16:36:47",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Docling/GabeBrain: documento 'matricula_imovel' processado com confianca A."
+    },
+    {
+      "ts": "2026-10-01T16:36:47",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Docling/GabeBrain: documento 'analise_laboratorial' processado com confianca A."
+    },
+    {
+      "ts": "2026-10-01T16:36:47",
+      "agente": 1,
+      "nivel": "info",
+      "mensagem": "Docling/GabeBrain: documento 'declaracao_separacao_redes' processado com confianca B."
+    },
+    {
+      "ts": "2026-10-01T16:36:54",
+      "agente": 2,
+      "nivel": "aviso",
+      "mensagem": "Pranchas cartograficas reaproveitadas do processo existente (--sem-mapas: sem acesso a tiles de imagem de base)."
+    },
+    {
+      "ts": "2026-10-01T16:36:58",
+      "agente": 5,
+      "nivel": "info",
+      "mensagem": "Relatorio tecnico emitido."
+    },
+    {
+      "ts": "2026-10-01T16:37:00",
+      "agente": 6,
+      "nivel": "info",
+      "mensagem": "Triagem concluida: 10 achados."
     }
   ],
   "responsavel_tecnico": {
@@ -3361,7 +3524,7 @@
       "q_capacidade_especifica_m3h_m": 4.176166139464615,
       "q_longo_prazo_m3h_m": 4.7832566896025,
       "Q_ot_m3h": 13.73751321253838,
-      "Q_jacob_lohman_m3h": 4.143994414790098,
+      "Q_jacob_lohman_m3h": 8.287988829580195,
       "tempo_bombeamento_min": 1440.0,
       "duracao_h": 24.0
     },
@@ -3377,7 +3540,7 @@
       "q_capacidade_especifica": 4.176166139464615,
       "q_longo_prazo": 4.7832566896025,
       "Q_ot": 13.73751321253838,
-      "Q_jacob_lohman": 4.143994414790098,
+      "Q_jacob_lohman": 8.287988829580195,
       "tempo_bombeamento_min": 1440.0,
       "vazao_estabilizada": {
         "q_estavel": 11.993949152542374,
@@ -3396,14 +3559,14 @@
         "n_pontos": 59,
         "metodo": "Theil-Sen (robusto)",
         "equacao": "s' = +0.3671·log10(t/t') +0.0031   (R² = 0.9917)",
-        "observacao": "Coeficiente angular positivo: o rebaixamento residual deveria decair com t/t'. Confira a planilha de recuperacao."
+        "observacao": "Coeficiente angular positivo: o rebaixamento residual deveria decair com t/t'. Confira a planilha de recuperacao. Ajuste Theil-Sen (robusto) sobre 59 pontos."
       },
       "avisos": [],
       "erros": [],
       "detalhes": {
         "observacao_vazao": "Patamar de 59 leituras a partir de t = 1 min (CV = 1.0%).",
         "t_bombeamento_total_min": 1440.0,
-        "observacao_recuperacao": "Coeficiente angular positivo: o rebaixamento residual deveria decair com t/t'. Confira a planilha de recuperacao.",
+        "observacao_recuperacao": "Coeficiente angular positivo: o rebaixamento residual deveria decair com t/t'. Confira a planilha de recuperacao. Ajuste Theil-Sen (robusto) sobre 59 pontos.",
         "jacob_lohman": {
           "raio_m": 0.0762,
           "S_adotado": 0.0001,
@@ -3414,9 +3577,9 @@
       }
     },
     "graficos": {
-      "painel": "data\\processos\\EX-CAMPOBOM-001\\graficos\\graficos_ensaio.png",
-      "rebaixamento": "data\\processos\\EX-CAMPOBOM-001\\graficos\\grafico_rebaixamento.png",
-      "recuperacao": "data\\processos\\EX-CAMPOBOM-001\\graficos\\grafico_recuperacao.png"
+      "painel": "data/processos/EX-CAMPOBOM-001/graficos/graficos_ensaio.png",
+      "rebaixamento": "data/processos/EX-CAMPOBOM-001/graficos/grafico_rebaixamento.png",
+      "recuperacao": "data/processos/EX-CAMPOBOM-001/graficos/grafico_recuperacao.png"
     },
     "avisos": [],
     "erros": [],
@@ -3794,8 +3957,8 @@
         ]
       },
       "tendencia": {
-        "a": 1.6896614630076452,
-        "b": 0.3636157606255771,
+        "a": 1.689661463007644,
+        "b": 0.3636157606255775,
         "r2": 0.9950818387015555,
         "equacao": "s = +0.3636·log10(t) +1.6897   (R² = 0.9951)"
       }
@@ -3899,7 +4062,7 @@
         "chave": "dureza",
         "parametro": "Dureza Total",
         "resultado": "86 mg/L CaCO3",
-        "vmp": 500.0,
+        "vmp": 300.0,
         "unidade": "mg/L",
         "status": "conforme",
         "motivo": "Em conformidade com a Portaria 888/2021",
@@ -3926,7 +4089,8 @@
         "pagina": 1
       }
     ],
-    "total_parametros_lidos": 12
+    "total_parametros_lidos": 12,
+    "avisos": []
   },
   "parametros_qualidade": {
     "coliformes_totais": "Ausencia em 100 mL",
@@ -3946,17 +4110,17 @@
     "matricula_imovel": {
       "tipo": "D",
       "confianca": "A",
-      "nota": "---\ntitle: matricula_imovel_exemplo.pdf (Destilacao GabeBrain)\ntipo: D\nrotulo_tipo: Documento Notarial / Certidao de Registro de Imoveis\nconfianca_fonte: A\njustificativa_fonte: Certidao notarial oficial dotada de fe publica\nprocessado_em: 2026-09-25\npaginas: 1\n---\n\n# Destilacao Documental GabeBrain - matricula_imovel_exemplo.pdf\n\n**Tipo Documental:** `D` -- Documento Notarial / Certidao de Registro de Imoveis  \n**Nivel de Confianca da Fonte:** `A` (Certidao notarial oficial dotada de fe publica)  \n**Extensao:** 1 pagina(s) analisadas via Docling / PyMuPDF  \n\n---\n\n## Escopo e Objeto do Documento\nO presente documento foi submetido ao processo de outorga do SIOUT RS e triado automaticamente pelo leitor estruturado GabeBrain.\n\n## Principais Achados Tecnicos (com citacao de pagina)\n- **Titular / Proprietario Declarado:** Metalurgica Sinos Ltda. — CNPJ 00.000.000/0001-00 -- p. 1\n- **Area Superficial Registrada:** 1.8 -- p. 1\n\n## Conformidade Normativa e Evidencias\n- **Conformidade Geral de Potabilidade:** CONFORME\n- **Total de Parametros Avaliados:** 0\n- **Citacao e Rastreabilidade:** Todos os dados foram extraidos diretamente do documento original anexado ao processo.\n"
+      "nota": "---\ntitle: matricula_imovel_exemplo.pdf (Destilacao GabeBrain)\ntipo: D\nrotulo_tipo: Documento Notarial / Certidao de Registro de Imoveis\nconfianca_fonte: A\njustificativa_fonte: Certidao notarial oficial dotada de fe publica\nprocessado_em: 2026-10-01\npaginas: 1\n---\n\n# Destilacao Documental GabeBrain - matricula_imovel_exemplo.pdf\n\n**Tipo Documental:** `D` -- Documento Notarial / Certidao de Registro de Imoveis  \n**Nivel de Confianca da Fonte:** `A` (Certidao notarial oficial dotada de fe publica)  \n**Extensao:** 1 pagina(s) analisadas via Docling / PyMuPDF  \n\n---\n\n## Escopo e Objeto do Documento\nO presente documento foi submetido ao processo de outorga do SIOUT RS e triado automaticamente pelo leitor estruturado GabeBrain.\n\n## Principais Achados Tecnicos (com citacao de pagina)\n- **Titular / Proprietario Declarado:** Metalurgica Sinos Ltda. — CNPJ 00.000.000/0001-00 -- p. 1\n- **Area Superficial Registrada:** 1.8 -- p. 1\n\n## Conformidade Normativa e Evidencias\n- **Conformidade Geral de Potabilidade:** PENDENTE / INCONFORME\n- **Total de Parametros Avaliados:** 0\n- **Citacao e Rastreabilidade:** Todos os dados foram extraidos diretamente do documento original anexado ao processo.\n"
     },
     "analise_laboratorial": {
       "tipo": "N",
       "confianca": "A",
-      "nota": "---\ntitle: analise_laboratorial_exemplo.pdf (Destilacao GabeBrain)\ntipo: N\nrotulo_tipo: Norma Tecnica / Regulamento Legal\nconfianca_fonte: A\njustificativa_fonte: Norma tecnica oficial ou resolucao estatal dotada de forca de lei\nprocessado_em: 2026-09-25\npaginas: 1\n---\n\n# Destilacao Documental GabeBrain - analise_laboratorial_exemplo.pdf\n\n**Tipo Documental:** `N` -- Norma Tecnica / Regulamento Legal  \n**Nivel de Confianca da Fonte:** `A` (Norma tecnica oficial ou resolucao estatal dotada de forca de lei)  \n**Extensao:** 1 pagina(s) analisadas via Docling / PyMuPDF  \n\n---\n\n## Escopo e Objeto do Documento\nO presente documento foi submetido ao processo de outorga do SIOUT RS e triado automaticamente pelo leitor estruturado GabeBrain.\n\n## Principais Achados Tecnicos (com citacao de pagina)\n### Resultados Analiticos de Potabilidade (Portaria GM/MS 888/2021)\n- [CONFORME] **Coliformes Totais:** `Ausencia em 100 mL` (VMP: `Ausencia em 100 mL`) -- p. 1\n- [CONFORME] **Escherichia coli:** `Ausencia em 100 mL` (VMP: `Ausencia em 100 mL`) -- p. 1\n- [CONFORME] **Turbidez:** `0,42 uT` (VMP: `5.0`) -- p. 1\n- [CONFORME] **Cor Aparente:** `< 5,0 uH` (VMP: `15.0`) -- p. 1\n- [CONFORME] **pH:** `7,1` (VMP: `6.0 a 9.5`) -- p. 1\n- [CONFORME] **Fluoreto:** `0,12 mg/L` (VMP: `1.5`) -- p. 1\n- [CONFORME] **Nitrato (como N):** `2,1 mg/L` (VMP: `10.0`) -- p. 1\n- [CONFORME] **Cloreto:** `18,4 mg/L` (VMP: `250.0`) -- p. 1\n- [CONFORME] **Sulfato:** `9,7 mg/L` (VMP: `250.0`) -- p. 1\n- [CONFORME] **Dureza Total:** `86 mg/L CaCO3` (VMP: `500.0`) -- p. 1\n- [CONFORME] **Ferro Total:** `0,09 mg/L` (VMP: `0.3`) -- p. 1\n- [CONFORME] **Manganes:** `0,03 mg/L` (VMP: `0.1`) -- p. 1\n- **Titular / Proprietario Declarado:** Metalurgica Sinos Ltda. -- p. 1\n\n## Conformidade Normativa e Evidencias\n- **Conformidade Geral de Potabilidade:** CONFORME\n- **Total de Parametros Avaliados:** 12\n- **Citacao e Rastreabilidade:** Todos os dados foram extraidos diretamente do documento original anexado ao processo.\n"
+      "nota": "---\ntitle: analise_laboratorial_exemplo.pdf (Destilacao GabeBrain)\ntipo: N\nrotulo_tipo: Norma Tecnica / Regulamento Legal\nconfianca_fonte: A\njustificativa_fonte: Norma tecnica oficial ou resolucao estatal dotada de forca de lei\nprocessado_em: 2026-10-01\npaginas: 1\n---\n\n# Destilacao Documental GabeBrain - analise_laboratorial_exemplo.pdf\n\n**Tipo Documental:** `N` -- Norma Tecnica / Regulamento Legal  \n**Nivel de Confianca da Fonte:** `A` (Norma tecnica oficial ou resolucao estatal dotada de forca de lei)  \n**Extensao:** 1 pagina(s) analisadas via Docling / PyMuPDF  \n\n---\n\n## Escopo e Objeto do Documento\nO presente documento foi submetido ao processo de outorga do SIOUT RS e triado automaticamente pelo leitor estruturado GabeBrain.\n\n## Principais Achados Tecnicos (com citacao de pagina)\n### Resultados Analiticos de Potabilidade (Portaria GM/MS 888/2021)\n- [CONFORME] **Coliformes Totais:** `Ausencia em 100 mL` (VMP: `Ausencia em 100 mL`) -- p. 1\n- [CONFORME] **Escherichia coli:** `Ausencia em 100 mL` (VMP: `Ausencia em 100 mL`) -- p. 1\n- [CONFORME] **Turbidez:** `0,42 uT` (VMP: `5.0`) -- p. 1\n- [CONFORME] **Cor Aparente:** `< 5,0 uH` (VMP: `15.0`) -- p. 1\n- [CONFORME] **pH:** `7,1` (VMP: `6.0 a 9.5`) -- p. 1\n- [CONFORME] **Fluoreto:** `0,12 mg/L` (VMP: `1.5`) -- p. 1\n- [CONFORME] **Nitrato (como N):** `2,1 mg/L` (VMP: `10.0`) -- p. 1\n- [CONFORME] **Cloreto:** `18,4 mg/L` (VMP: `250.0`) -- p. 1\n- [CONFORME] **Sulfato:** `9,7 mg/L` (VMP: `250.0`) -- p. 1\n- [CONFORME] **Dureza Total:** `86 mg/L CaCO3` (VMP: `300.0`) -- p. 1\n- [CONFORME] **Ferro Total:** `0,09 mg/L` (VMP: `0.3`) -- p. 1\n- [CONFORME] **Manganes:** `0,03 mg/L` (VMP: `0.1`) -- p. 1\n- **Titular / Proprietario Declarado:** Metalurgica Sinos Ltda. -- p. 1\n\n## Conformidade Normativa e Evidencias\n- **Conformidade Geral de Potabilidade:** CONFORME\n- **Total de Parametros Avaliados:** 12\n- **Citacao e Rastreabilidade:** Todos os dados foram extraidos diretamente do documento original anexado ao processo.\n"
     },
     "declaracao_separacao_redes": {
       "tipo": "D",
       "confianca": "B",
-      "nota": "---\ntitle: declaracao_separacao_redes_exemplo.pdf (Destilacao GabeBrain)\ntipo: D\nrotulo_tipo: Declaracao Administrativa de Separacao de Redes\nconfianca_fonte: B\njustificativa_fonte: Declaracao formal assinada pelo titular e responsavel com responsabilidade civil e penal\nprocessado_em: 2026-09-25\npaginas: 1\n---\n\n# Destilacao Documental GabeBrain - declaracao_separacao_redes_exemplo.pdf\n\n**Tipo Documental:** `D` -- Declaracao Administrativa de Separacao de Redes  \n**Nivel de Confianca da Fonte:** `B` (Declaracao formal assinada pelo titular e responsavel com responsabilidade civil e penal)  \n**Extensao:** 1 pagina(s) analisadas via Docling / PyMuPDF  \n\n---\n\n## Escopo e Objeto do Documento\nO presente documento foi submetido ao processo de outorga do SIOUT RS e triado automaticamente pelo leitor estruturado GabeBrain.\n\n## Principais Achados Tecnicos (com citacao de pagina)\n- Nenhum parametro quantitativo especifico identificado no texto, p. 1\n\n## Conformidade Normativa e Evidencias\n- **Conformidade Geral de Potabilidade:** CONFORME\n- **Total de Parametros Avaliados:** 0\n- **Citacao e Rastreabilidade:** Todos os dados foram extraidos diretamente do documento original anexado ao processo.\n"
+      "nota": "---\ntitle: declaracao_separacao_redes_exemplo.pdf (Destilacao GabeBrain)\ntipo: D\nrotulo_tipo: Declaracao Administrativa de Separacao de Redes\nconfianca_fonte: B\njustificativa_fonte: Declaracao formal assinada pelo titular e responsavel com responsabilidade civil e penal\nprocessado_em: 2026-10-01\npaginas: 1\n---\n\n# Destilacao Documental GabeBrain - declaracao_separacao_redes_exemplo.pdf\n\n**Tipo Documental:** `D` -- Declaracao Administrativa de Separacao de Redes  \n**Nivel de Confianca da Fonte:** `B` (Declaracao formal assinada pelo titular e responsavel com responsabilidade civil e penal)  \n**Extensao:** 1 pagina(s) analisadas via Docling / PyMuPDF  \n\n---\n\n## Escopo e Objeto do Documento\nO presente documento foi submetido ao processo de outorga do SIOUT RS e triado automaticamente pelo leitor estruturado GabeBrain.\n\n## Principais Achados Tecnicos (com citacao de pagina)\n- Nenhum parametro quantitativo especifico identificado no texto, p. 1\n\n## Conformidade Normativa e Evidencias\n- **Conformidade Geral de Potabilidade:** PENDENTE / INCONFORME\n- **Total de Parametros Avaliados:** 0\n- **Citacao e Rastreabilidade:** Todos os dados foram extraidos diretamente do documento original anexado ao processo.\n"
     }
   }
 }

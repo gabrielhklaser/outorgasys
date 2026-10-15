@@ -157,3 +157,49 @@ if __name__ == "__main__":
         if nome.startswith("test_") and callable(fn):
             fn()
             print(f"[OK] {nome}")
+
+
+def test_reta_recuperacao_respeita_o_metodo_pedido():
+    """O parametro ``metodo`` existia mas era ignorado: sempre saia Theil-Sen."""
+    razao = [2, 5, 10, 50, 100]
+    s = [3.0 - 0.5 * math.log10(x) for x in razao]
+
+    r = theis.ajustar_reta_recuperacao(razao, s, metodo="minimos-quadrados")
+
+    assert "minimos quadrados" in r.metodo.lower()
+    assert abs(r.delta_s_linha - 0.5) < 1e-6
+
+
+def test_reta_recuperacao_padrao_continua_sendo_theil_sen():
+    razao = [2, 5, 10, 50, 100]
+    s = [3.0 - 0.5 * math.log10(x) for x in razao]
+
+    assert "theil-sen" in theis.ajustar_reta_recuperacao(razao, s).metodo.lower()
+
+
+def test_reta_recuperacao_avisa_a_queda_para_minimos_quadrados(monkeypatch):
+    """Sem scipy o ajuste cai para minimos quadrados; o laudo precisa dizer."""
+    import scipy.stats as st
+
+    def _quebra(*args, **kwargs):  # noqa: ANN001
+        raise RuntimeError("scipy indisponivel")
+
+    monkeypatch.setattr(st, "theilslopes", _quebra)
+
+    razao = [2, 5, 10, 50, 100]
+    s = [3.0 - 0.5 * math.log10(x) for x in razao]
+    r = theis.ajustar_reta_recuperacao(razao, s)
+
+    assert "minimos quadrados" in r.metodo.lower()
+    assert "theil-sen" in r.observacao.lower()
+    assert "RuntimeError" in r.observacao
+
+
+def test_reta_recuperacao_com_metodo_desconhecido_avisa(monkeypatch):
+    razao = [2, 5, 10, 50, 100]
+    s = [3.0 - 0.5 * math.log10(x) for x in razao]
+
+    r = theis.ajustar_reta_recuperacao(razao, s, metodo="wavelets")
+
+    assert "wavelets" in r.observacao
+    assert "theil-sen" in r.metodo.lower()
